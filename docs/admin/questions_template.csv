@@ -1,0 +1,3 @@
+course_id,prompt,difficulty,genre,choice_1,choice_2,choice_3,choice_4,correct_choice,explanation,question_id
+00000000-0000-0000-0000-000000000001,"例: 生成AIが発展するとデータセンター需要が高まる理由は？",2,engineering,"端末内で完結するから","GPU計算/電力/冷却/ネットワークが必要だから","ストレージ需要が減るから","回線が不要になるから",2,"解説（任意）",
+

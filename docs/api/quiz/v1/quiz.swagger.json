@@ -1,0 +1,328 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "quiz/v1/quiz.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "QuizService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/quiz.v1.QuizService/ListQuestions": {
+      "post": {
+        "summary": "問題一覧取得（トピック固定・認証不要）",
+        "operationId": "QuizService_ListQuestions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v1.ListQuestionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v1.ListQuestionsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
+    "/quiz.v1.QuizService/ListRankings": {
+      "post": {
+        "summary": "ランキング取得（認証不要）",
+        "operationId": "QuizService_ListRankings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v1.ListRankingsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v1.ListRankingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
+    "/quiz.v1.QuizService/SubmitAnswers": {
+      "post": {
+        "summary": "回答提出 → スコア + 解説 + AI フィードバック",
+        "operationId": "QuizService_SubmitAnswers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v1.SubmitAnswersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v1.SubmitAnswersRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    },
+    "quiz.v1.AnswerResult": {
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "string"
+        },
+        "isCorrect": {
+          "type": "boolean"
+        },
+        "correctChoiceId": {
+          "type": "string"
+        },
+        "explanation": {
+          "type": "string",
+          "title": "RAG 風解説（関連 doc をコンテキストに渡して生成）"
+        }
+      }
+    },
+    "quiz.v1.Choice": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v1.ListQuestionsRequest": {
+      "type": "object",
+      "properties": {
+        "topicId": {
+          "type": "string",
+          "title": "MVP ではトピックを1つ固定とするため空でも動作する"
+        },
+        "genre": {
+          "type": "string",
+          "title": "コース選択フィルタ（空文字 / 0 = すべて）"
+        },
+        "difficulty": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v1.ListQuestionsResponse": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v1.Question"
+          }
+        }
+      }
+    },
+    "quiz.v1.ListRankingsRequest": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v1.ListRankingsResponse": {
+      "type": "object",
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v1.RankingEntry"
+          }
+        }
+      }
+    },
+    "quiz.v1.Question": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v1.Choice"
+          }
+        }
+      }
+    },
+    "quiz.v1.RankingEntry": {
+      "type": "object",
+      "properties": {
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "username": {
+          "type": "string"
+        },
+        "correctCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tier": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v1.SubmitAnswersRequest": {
+      "type": "object",
+      "properties": {
+        "answers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v1.UserAnswer"
+          }
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v1.SubmitAnswersResponse": {
+      "type": "object",
+      "properties": {
+        "correctCount": {
+          "type": "integer",
+          "format": "int32",
+          "title": "スコア"
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tier": {
+          "type": "string",
+          "title": "\"S\" | \"A\" | \"B\" | \"C\""
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v1.AnswerResult"
+          },
+          "title": "問題ごとの正誤 + 解説"
+        },
+        "aiFeedback": {
+          "type": "string",
+          "title": "Claude API が生成する総合フィードバック"
+        }
+      }
+    },
+    "quiz.v1.UserAnswer": {
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "string"
+        },
+        "choiceId": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Agent",
+      "Bash(mise *)",
+      "Bash(go *)",
+      "Bash(pnpm *)",
+      "Bash(buf *)",
+      "Bash(sqlc *)",
+      "Bash(docker *)",
+      "Bash(terraform *)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(mkdir *)",
+      "Bash(ls *)",
+      "Bash(find *)",
+      "Bash(cat *)"
+    ],
+    "deny": []
+  }
+}

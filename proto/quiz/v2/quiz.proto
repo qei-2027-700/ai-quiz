@@ -1,0 +1,229 @@
+syntax = "proto3";
+
+package quiz.v2;
+
+option go_package = "github.com/km/ai-quiz/gen/quiz/v2;quizv2";
+
+// v2 は「汎用クイズ基盤」を目的に、Attempt（受験）を中心に据えて疎結合化する。
+// v1 は後方互換のために残し、破壊的変更は v2 で行う。
+
+service QuizService {
+  // コース一覧（v1 の topics をコースとして扱う）
+  rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
+
+  // 受験開始（Attempt を作成）
+  rpc StartAttempt(StartAttemptRequest) returns (StartAttemptResponse);
+
+  // Attempt に紐づく問題一覧を取得
+  rpc ListQuestions(ListQuestionsRequest) returns (ListQuestionsResponse);
+
+  // 回答提出（採点結果は同期、AI/RAG は Insights として attempt_id に紐づけて取得）
+  rpc SubmitAnswers(SubmitAnswersRequest) returns (SubmitAnswersResponse);
+
+  // AI/RAG Insights 取得（生成中の場合は status=PENDING）
+  rpc GetAttemptInsights(GetAttemptInsightsRequest) returns (GetAttemptInsightsResponse);
+
+  // ランキング取得（認証不要）
+  rpc ListRankings(ListRankingsRequest) returns (ListRankingsResponse);
+}
+
+// ─────────────────────────────────────────
+// Courses
+// ─────────────────────────────────────────
+
+message Course {
+  string id          = 1;
+  string name        = 2;
+  string description = 3;
+}
+
+message ListCoursesRequest {}
+
+message ListCoursesResponse {
+  repeated Course courses = 1;
+}
+
+// ─────────────────────────────────────────
+// Attempt lifecycle
+// ─────────────────────────────────────────
+
+message StartAttemptRequest {
+  string course_id = 1;
+  string username  = 2;
+}
+
+message StartAttemptResponse {
+  string attempt_id = 1;
+}
+
+message ListQuestionsRequest {
+  string attempt_id = 1;
+
+  // フィルタ（後方互換のため残すが、将来は attributes ベースの汎用フィルタへ移行予定）
+  string genre      = 2;
+  int32  difficulty = 3;
+}
+
+message ListQuestionsResponse {
+  repeated Question questions = 1;
+}
+
+// ─────────────────────────────────────────
+// Questions / Answers (extensible via oneof)
+// ─────────────────────────────────────────
+
+message Question {
+  string id     = 1;
+  string prompt = 2;
+
+  // 汎用メタデータ（例: genre, difficulty, tags 等）
+  map<string, string> attributes = 3;
+
+  oneof body {
+    MultipleChoiceBody multiple_choice = 10;
+    MultiSelectBody    multi_select    = 11;
+    OrderingBody       ordering        = 12;
+  }
+}
+
+message Choice {
+  string id         = 1;
+  string text       = 2;
+  int32  sort_order = 3;
+}
+
+message MultipleChoiceBody {
+  repeated Choice choices = 1;
+}
+
+message MultiSelectBody {
+  repeated Choice choices = 1;
+}
+
+message OrderingItem {
+  string id         = 1;
+  string text       = 2;
+  int32  sort_order = 3;
+}
+
+message OrderingBody {
+  repeated OrderingItem items = 1;
+}
+
+message UserAnswer {
+  string question_id = 1;
+
+  oneof body {
+    SingleChoiceAnswer single_choice = 10;
+    MultiChoiceAnswer  multi_choice  = 11;
+    OrderingAnswer     ordering      = 12;
+  }
+}
+
+message SingleChoiceAnswer {
+  string choice_id = 1;
+}
+
+message MultiChoiceAnswer {
+  repeated string choice_ids = 1;
+}
+
+message OrderingAnswer {
+  repeated string ordered_item_ids = 1;
+}
+
+// ─────────────────────────────────────────
+// SubmitAnswers (core result)
+// ─────────────────────────────────────────
+
+message SubmitAnswersRequest {
+  string attempt_id           = 1;
+  repeated UserAnswer answers = 2;
+}
+
+message SubmitAnswersResponse {
+  AttemptResult   result          = 1;
+  InsightsStatus  insights_status = 2;
+}
+
+message AttemptResult {
+  int32 correct_count = 1;
+  int32 total_count   = 2;
+  string tier         = 3; // "S" | "A" | "B" | "C"
+  repeated QuestionResult question_results = 4;
+}
+
+message QuestionResult {
+  string question_id = 1;
+  bool   is_correct  = 2;
+
+  oneof correct {
+    SingleChoiceCorrect single_choice = 10;
+    MultiChoiceCorrect  multi_choice  = 11;
+    OrderingCorrect     ordering      = 12;
+  }
+
+  // まずは DB 由来の解説（将来は AI/RAG 生成の補足を Insights 側に追加可能）
+  string explanation = 20;
+}
+
+message SingleChoiceCorrect {
+  string choice_id = 1;
+}
+
+message MultiChoiceCorrect {
+  repeated string choice_ids = 1;
+}
+
+message OrderingCorrect {
+  repeated string ordered_item_ids = 1;
+}
+
+// ─────────────────────────────────────────
+// Insights (AI/RAG)
+// ─────────────────────────────────────────
+
+enum InsightsStatus {
+  INSIGHTS_STATUS_UNSPECIFIED = 0;
+  INSIGHTS_STATUS_PENDING     = 1;
+  INSIGHTS_STATUS_READY       = 2;
+  INSIGHTS_STATUS_FAILED      = 3;
+}
+
+message GetAttemptInsightsRequest {
+  string attempt_id = 1;
+}
+
+message GetAttemptInsightsResponse {
+  InsightsStatus status        = 1;
+  string ai_feedback           = 2;
+  repeated Citation citations  = 3;
+  string error_message         = 4;
+}
+
+message Citation {
+  string source = 1;
+  string quote  = 2;
+}
+
+// ─────────────────────────────────────────
+// Rankings (same shape as v1)
+// ─────────────────────────────────────────
+
+message ListRankingsRequest {
+  int32 limit = 1;
+}
+
+message ListRankingsResponse {
+  repeated RankingEntry entries = 1;
+}
+
+message RankingEntry {
+  int32  rank          = 1;
+  string username      = 2;
+  int32  correct_count = 3;
+  int32  total_count   = 4;
+  string tier          = 5;
+  string created_at    = 6;
+}
+

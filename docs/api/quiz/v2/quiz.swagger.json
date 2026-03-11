@@ -1,0 +1,665 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "quiz/v2/quiz.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "QuizService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/quiz.v2.QuizService/GetAttemptInsights": {
+      "post": {
+        "summary": "AI/RAG Insights 取得（生成中の場合は status=PENDING）",
+        "operationId": "QuizService_GetAttemptInsights",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.GetAttemptInsightsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.GetAttemptInsightsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
+    "/quiz.v2.QuizService/ListCourses": {
+      "post": {
+        "summary": "コース一覧（v1 の topics をコースとして扱う）",
+        "operationId": "QuizService_ListCourses",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListCoursesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListCoursesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
+    "/quiz.v2.QuizService/ListQuestions": {
+      "post": {
+        "summary": "Attempt に紐づく問題一覧を取得",
+        "operationId": "QuizService_ListQuestions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListQuestionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListQuestionsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
+    "/quiz.v2.QuizService/ListRankings": {
+      "post": {
+        "summary": "ランキング取得（認証不要）",
+        "operationId": "QuizService_ListRankings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListRankingsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListRankingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
+    "/quiz.v2.QuizService/StartAttempt": {
+      "post": {
+        "summary": "受験開始（Attempt を作成）",
+        "operationId": "QuizService_StartAttempt",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.StartAttemptResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.StartAttemptRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
+    "/quiz.v2.QuizService/SubmitAnswers": {
+      "post": {
+        "summary": "回答提出（採点結果は同期、AI/RAG は Insights として attempt_id に紐づけて取得）",
+        "operationId": "QuizService_SubmitAnswers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.SubmitAnswersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.SubmitAnswersRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    },
+    "quiz.v2.AttemptResult": {
+      "type": "object",
+      "properties": {
+        "correctCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tier": {
+          "type": "string",
+          "title": "\"S\" | \"A\" | \"B\" | \"C\""
+        },
+        "questionResults": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.QuestionResult"
+          }
+        }
+      }
+    },
+    "quiz.v2.Choice": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v2.Citation": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "quote": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.Course": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.GetAttemptInsightsRequest": {
+      "type": "object",
+      "properties": {
+        "attemptId": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.GetAttemptInsightsResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/quiz.v2.InsightsStatus"
+        },
+        "aiFeedback": {
+          "type": "string"
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.Citation"
+          }
+        },
+        "errorMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.InsightsStatus": {
+      "type": "string",
+      "enum": [
+        "INSIGHTS_STATUS_UNSPECIFIED",
+        "INSIGHTS_STATUS_PENDING",
+        "INSIGHTS_STATUS_READY",
+        "INSIGHTS_STATUS_FAILED"
+      ],
+      "default": "INSIGHTS_STATUS_UNSPECIFIED"
+    },
+    "quiz.v2.ListCoursesRequest": {
+      "type": "object"
+    },
+    "quiz.v2.ListCoursesResponse": {
+      "type": "object",
+      "properties": {
+        "courses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.Course"
+          }
+        }
+      }
+    },
+    "quiz.v2.ListQuestionsRequest": {
+      "type": "object",
+      "properties": {
+        "attemptId": {
+          "type": "string"
+        },
+        "genre": {
+          "type": "string",
+          "title": "フィルタ（後方互換のため残すが、将来は attributes ベースの汎用フィルタへ移行予定）"
+        },
+        "difficulty": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v2.ListQuestionsResponse": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.Question"
+          }
+        }
+      }
+    },
+    "quiz.v2.ListRankingsRequest": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v2.ListRankingsResponse": {
+      "type": "object",
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.RankingEntry"
+          }
+        }
+      }
+    },
+    "quiz.v2.MultiChoiceAnswer": {
+      "type": "object",
+      "properties": {
+        "choiceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "quiz.v2.MultiChoiceCorrect": {
+      "type": "object",
+      "properties": {
+        "choiceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "quiz.v2.MultiSelectBody": {
+      "type": "object",
+      "properties": {
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.Choice"
+          }
+        }
+      }
+    },
+    "quiz.v2.MultipleChoiceBody": {
+      "type": "object",
+      "properties": {
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.Choice"
+          }
+        }
+      }
+    },
+    "quiz.v2.OrderingAnswer": {
+      "type": "object",
+      "properties": {
+        "orderedItemIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "quiz.v2.OrderingBody": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.OrderingItem"
+          }
+        }
+      }
+    },
+    "quiz.v2.OrderingCorrect": {
+      "type": "object",
+      "properties": {
+        "orderedItemIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "quiz.v2.OrderingItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v2.Question": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "汎用メタデータ（例: genre, difficulty, tags 等）"
+        },
+        "multipleChoice": {
+          "$ref": "#/definitions/quiz.v2.MultipleChoiceBody"
+        },
+        "multiSelect": {
+          "$ref": "#/definitions/quiz.v2.MultiSelectBody"
+        },
+        "ordering": {
+          "$ref": "#/definitions/quiz.v2.OrderingBody"
+        }
+      }
+    },
+    "quiz.v2.QuestionResult": {
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "string"
+        },
+        "isCorrect": {
+          "type": "boolean"
+        },
+        "singleChoice": {
+          "$ref": "#/definitions/quiz.v2.SingleChoiceCorrect"
+        },
+        "multiChoice": {
+          "$ref": "#/definitions/quiz.v2.MultiChoiceCorrect"
+        },
+        "ordering": {
+          "$ref": "#/definitions/quiz.v2.OrderingCorrect"
+        },
+        "explanation": {
+          "type": "string",
+          "title": "まずは DB 由来の解説（将来は AI/RAG 生成の補足を Insights 側に追加可能）"
+        }
+      }
+    },
+    "quiz.v2.RankingEntry": {
+      "type": "object",
+      "properties": {
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "username": {
+          "type": "string"
+        },
+        "correctCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tier": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.SingleChoiceAnswer": {
+      "type": "object",
+      "properties": {
+        "choiceId": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.SingleChoiceCorrect": {
+      "type": "object",
+      "properties": {
+        "choiceId": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.StartAttemptRequest": {
+      "type": "object",
+      "properties": {
+        "courseId": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.StartAttemptResponse": {
+      "type": "object",
+      "properties": {
+        "attemptId": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.SubmitAnswersRequest": {
+      "type": "object",
+      "properties": {
+        "attemptId": {
+          "type": "string"
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.UserAnswer"
+          }
+        }
+      }
+    },
+    "quiz.v2.SubmitAnswersResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/quiz.v2.AttemptResult"
+        },
+        "insightsStatus": {
+          "$ref": "#/definitions/quiz.v2.InsightsStatus"
+        }
+      }
+    },
+    "quiz.v2.UserAnswer": {
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "string"
+        },
+        "singleChoice": {
+          "$ref": "#/definitions/quiz.v2.SingleChoiceAnswer"
+        },
+        "multiChoice": {
+          "$ref": "#/definitions/quiz.v2.MultiChoiceAnswer"
+        },
+        "ordering": {
+          "$ref": "#/definitions/quiz.v2.OrderingAnswer"
+        }
+      }
+    }
+  }
+}

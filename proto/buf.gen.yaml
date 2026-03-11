@@ -1,0 +1,37 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/km/ai-quiz/gen
+plugins:
+  # Go サーバーコード生成 → backend/gen/
+  - remote: buf.build/protocolbuffers/go
+    out: ../backend/gen
+    opt:
+      - paths=source_relative
+
+  # Go Connect-RPC コード生成 → backend/gen/
+  - remote: buf.build/connectrpc/go
+    out: ../backend/gen
+    opt:
+      - paths=source_relative
+
+  # TypeScript 型生成 → frontend/packages/api-client/src/gen/
+  - remote: buf.build/bufbuild/es
+    out: ../frontend/packages/api-client/src/gen
+    opt:
+      - target=ts
+
+  # TypeScript Connect-RPC クライアント生成 → frontend/packages/api-client/src/gen/
+  - remote: buf.build/connectrpc/es
+    out: ../frontend/packages/api-client/src/gen
+    opt:
+      - target=ts
+
+  # OpenAPI v2 (Swagger) 生成 → docs/api/
+  - remote: buf.build/grpc-ecosystem/openapiv2
+    out: ../docs/api
+    opt:
+      - openapi_naming_strategy=fqn
+      - generate_unbound_methods=true

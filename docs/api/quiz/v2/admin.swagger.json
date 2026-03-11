@@ -1,0 +1,127 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "quiz/v2/admin.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AdminService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/quiz.v2.AdminService/ImportQuestionsCsv": {
+      "post": {
+        "summary": "Import questions from CSV. MVP: add-only.\nFuture: allow updates by specifying question_id column.",
+        "operationId": "AdminService_ImportQuestionsCsv",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ImportQuestionsCsvResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ImportQuestionsCsvRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AdminService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "google.protobuf.Any": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "google.rpc.Status": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/google.protobuf.Any"
+          }
+        }
+      }
+    },
+    "quiz.v2.CsvRowError": {
+      "type": "object",
+      "properties": {
+        "rowNumber": {
+          "type": "integer",
+          "format": "int32",
+          "title": "1-based (including header row)"
+        },
+        "field": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.ImportQuestionsCsvRequest": {
+      "type": "object",
+      "properties": {
+        "csv": {
+          "type": "string",
+          "format": "byte"
+        },
+        "dryRun": {
+          "type": "boolean"
+        }
+      }
+    },
+    "quiz.v2.ImportQuestionsCsvResponse": {
+      "type": "object",
+      "properties": {
+        "createdQuestions": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.CsvRowError"
+          }
+        }
+      }
+    }
+  }
+}

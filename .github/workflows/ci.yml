@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  proto:
+    name: Proto (buf lint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: bufbuild/buf-setup-action@v1
+        with:
+          version: latest
+
+      - name: buf lint
+        working-directory: proto
+        run: buf lint
+
+      - name: buf breaking (vs main)
+        working-directory: proto
+        run: |
+          buf breaking --against "https://github.com/${{ github.repository }}.git#branch=main,subdir=proto"
+
+  backend:
+    name: Backend (Go)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache: true
+
+      - name: Install sqlc
+        run: go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+
+      - name: sqlc vet
+        working-directory: backend
+        run: sqlc vet
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          working-directory: backend
+          version: latest
+
+      - name: go test
+        working-directory: backend
+        run: go test ./... -race -coverprofile=coverage.out
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage.out
+
+  frontend:
+    name: Frontend (Node)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: pnpm install
+        run: pnpm install --frozen-lockfile
+
+      - name: lint (oxlint)
+        run: pnpm --filter frontend lint
+
+      - name: type-check
+        run: pnpm --filter frontend type-check
+
+      - name: test
+        run: pnpm --filter frontend test
+
+      - name: build
+        run: pnpm --filter frontend build

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package quiz.v2;
+
+option go_package = "github.com/km/ai-quiz/gen/quiz/v2;quizv2";
+
+// Admin API for managing quiz content.
+service AdminService {
+  // Import questions from CSV. MVP: add-only.
+  // Future: allow updates by specifying question_id column.
+  rpc ImportQuestionsCsv(ImportQuestionsCsvRequest) returns (ImportQuestionsCsvResponse);
+}
+
+message ImportQuestionsCsvRequest {
+  bytes csv     = 1;
+  bool  dry_run = 2;
+}
+
+message ImportQuestionsCsvResponse {
+  int32 created_questions = 1;
+  repeated CsvRowError errors = 2;
+}
+
+message CsvRowError {
+  int32 row_number = 1; // 1-based (including header row)
+  string field     = 2;
+  string message   = 3;
+}
+

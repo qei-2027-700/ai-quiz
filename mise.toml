@@ -1,0 +1,106 @@
+[tools]
+# ランタイム
+go   = "1.22"
+node = "22"
+pnpm = "9"
+
+# Protocol Buffers / gRPC
+"aqua:bufbuild/buf" = "latest"
+
+# Go ツール群（go install 経由）
+"go:github.com/sqlc-dev/sqlc/cmd/sqlc"                              = "latest"
+"go:github.com/air-verse/air"                                        = "latest"
+"go:github.com/golangci/golangci-lint/cmd/golangci-lint"            = "latest"
+# migrate は go run -tags postgres で実行するためここには含めない
+
+# インフラ
+terraform = "1.8"
+
+[env]
+# Go
+GOPATH        = "{{env.HOME}}/go"
+CGO_ENABLED   = "0"
+
+# アプリ共通（ローカル開発用デフォルト値）
+# 実際の値は .env.local で上書きすること
+APP_ENV       = "local"
+DATABASE_URL  = "postgres://postgres:postgres@localhost:5433/lifecycle_dev?sslmode=disable"
+JWT_SECRET    = "local-dev-secret-change-in-production"
+PORT          = "8081"
+VITE_API_URL  = "http://localhost:8081"
+# Google OAuth の return_to 許可リスト（ローカル開発用）
+# Vite はポート競合時に 5174/5175... にずれることがあるため複数許可する。
+AUTH_RETURN_TO_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:5175,http://127.0.0.1:5175"
+
+[tasks.migrate]
+description = "DBマイグレーション（up）"
+run = "go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest -path backend/DDL -database \"$DATABASE_URL\" up"
+
+[tasks.migrate-down]
+description = "DBマイグレーション（1つ戻す）"
+run = "go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest -path backend/DDL -database \"$DATABASE_URL\" down 1"
+
+[tasks.seed]
+description = "開発用シードデータ投入（backend/seeds/seeder.sql）"
+run = "psql \"$DATABASE_URL\" -f backend/seeds/seeder.sql"
+
+[tasks.reset]
+description = "DB をリセットして migrate + seed を再実行"
+run = """
+docker compose down -v
+docker compose up -d postgres
+sleep 2
+mise run migrate
+mise run seed
+"""
+
+[tasks.setup]
+description = "初回セットアップ（ツール導入 + DB 起動 + migrate + seed）"
+run = """
+mise install
+docker compose up -d postgres
+sleep 2
+mise run migrate
+mise run seed
+"""
+
+[tasks.dev]
+description = "フロントエンド・バックエンドを同時起動"
+run = """
+cd backend  && air &
+cd frontend && pnpm dev
+"""
+
+[tasks.generate]
+description = "コード生成（buf → Go/TS/OpenAPI + sqlc）"
+run = """
+cd proto    && buf generate
+cd ../backend  && go generate ./...
+"""
+
+[tasks.docs]
+description = "API ドキュメントをブラウザでプレビュー（Redoc）"
+run = "npx @redocly/cli preview-docs docs/api/apidocs.swagger.json --port 8080"
+
+[tasks.lint]
+description = "全体 Lint"
+run = """
+cd backend  && golangci-lint run ./...
+cd proto    && buf lint
+cd frontend && pnpm lint
+"""
+
+[tasks.test]
+description = "全体テスト"
+run = """
+cd backend  && go test ./...
+cd frontend && pnpm test
+"""
+
+[tasks.generate-seed]
+description = "mockデータからDBシードSQLを生成"
+run = "cd frontend && pnpm generate-seed"
+
+[tasks.seed-to-mock]
+description = "seeder.sql からモックデータ（quizMockData.ts）を自動生成"
+run = "cd frontend && pnpm seed-to-mock"

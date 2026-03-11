@@ -1,0 +1,27 @@
+{
+  "name": "@ai-quiz/shared",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./stores": "./src/stores/index.ts",
+    "./utils": "./src/utils/index.ts",
+    "./validation": "./src/validation/index.ts",
+    "./constants": "./src/constants/index.ts",
+    "./mocks/quizMockData": "./src/mocks/quizMockData.ts"
+  },
+  "dependencies": {
+    "@ai-quiz/api-client": "workspace:*",
+    "@tanstack/react-query": "^5.0.0",
+    "zustand": "^5.0.0",
+    "zod": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

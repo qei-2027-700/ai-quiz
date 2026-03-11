@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS quiz_results;
+DROP TABLE IF EXISTS explanations;
+DROP TABLE IF EXISTS choices;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS topics;

@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package quiz.v1;
+
+option go_package = "github.com/km/ai-quiz/backend/gen/quiz/v1;quizv1";
+
+// ─────────────────────────────────────────
+// Service
+// ─────────────────────────────────────────
+
+service QuizService {
+  // 問題一覧取得（トピック固定・認証不要）
+  rpc ListQuestions(ListQuestionsRequest) returns (ListQuestionsResponse);
+
+  // 回答提出 → スコア + 解説 + AI フィードバック
+  rpc SubmitAnswers(SubmitAnswersRequest) returns (SubmitAnswersResponse);
+
+  // ランキング取得（認証不要）
+  rpc ListRankings(ListRankingsRequest) returns (ListRankingsResponse);
+}
+
+// ─────────────────────────────────────────
+// ListQuestions
+// ─────────────────────────────────────────
+
+message ListQuestionsRequest {
+  // MVP ではトピックを1つ固定とするため空でも動作する
+  optional string topic_id  = 1;
+  // コース選択フィルタ（空文字 / 0 = すべて）
+  string genre      = 2;
+  int32  difficulty = 3;
+}
+
+message ListQuestionsResponse {
+  repeated Question questions = 1;
+}
+
+// ─────────────────────────────────────────
+// SubmitAnswers
+// ─────────────────────────────────────────
+
+message SubmitAnswersRequest {
+  repeated UserAnswer answers = 1;
+  string username             = 2;
+}
+
+message SubmitAnswersResponse {
+  // スコア
+  int32 correct_count = 1;
+  int32 total_count   = 2;
+  string tier         = 3; // "S" | "A" | "B" | "C"
+
+  // 問題ごとの正誤 + 解説
+  repeated AnswerResult results = 4;
+
+  // Claude API が生成する総合フィードバック
+  string ai_feedback = 5;
+}
+
+// ─────────────────────────────────────────
+// ListRankings
+// ─────────────────────────────────────────
+
+message ListRankingsRequest {
+  int32 limit = 1;
+}
+
+message ListRankingsResponse {
+  repeated RankingEntry entries = 1;
+}
+
+message RankingEntry {
+  int32  rank          = 1;
+  string username      = 2;
+  int32  correct_count = 3;
+  int32  total_count   = 4;
+  string tier          = 5;
+  string created_at    = 6;
+}
+
+// ─────────────────────────────────────────
+// Shared messages
+// ─────────────────────────────────────────
+
+message Question {
+  string          id      = 1;
+  string          text    = 2;
+  repeated Choice choices = 3;
+}
+
+message Choice {
+  string id   = 1;
+  string text = 2;
+}
+
+message UserAnswer {
+  string question_id = 1;
+  string choice_id   = 2;
+}
+
+message AnswerResult {
+  string question_id       = 1;
+  bool   is_correct        = 2;
+  string correct_choice_id = 3;
+  string explanation       = 4; // RAG 風解説（関連 doc をコンテキストに渡して生成）
+}

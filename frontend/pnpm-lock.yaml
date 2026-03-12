@@ -8,10 +8,10 @@ importers:
 
   .:
     dependencies:
-      '@lifecycle/api-client':
+      '@ai-quiz/api-client':
         specifier: file:./packages/api-client
         version: link:packages/api-client
-      '@lifecycle/shared':
+      '@ai-quiz/shared':
         specifier: file:./packages/shared
         version: file:packages/shared(@types/react@18.3.28)(react@18.3.1)
       '@tanstack/react-query':
@@ -96,7 +96,7 @@ importers:
 
   packages/shared:
     dependencies:
-      '@lifecycle/api-client':
+      '@ai-quiz/api-client':
         specifier: workspace:*
         version: link:../api-client
       '@tanstack/react-query':
@@ -117,6 +117,11 @@ importers:
         version: 5.9.3
 
 packages:
+
+  '@ai-quiz/shared@file:packages/shared':
+    resolution: {directory: packages/shared, type: directory}
+    peerDependencies:
+      react: ^18.0.0
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -524,11 +529,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
-
-  '@lifecycle/shared@file:packages/shared':
-    resolution: {directory: packages/shared, type: directory}
-    peerDependencies:
-      react: ^18.0.0
 
   '@oxlint/darwin-arm64@0.16.12':
     resolution: {integrity: sha512-G7phYhlIA4ke2nW7tHLl+E5+rvdzgGA6830D+e+y1RGllT0w2ONGdKcVTj+2pXGCw6yPmCC5fDsDEn2+RPTfxg==}
@@ -1289,6 +1289,18 @@ packages:
 
 snapshots:
 
+  '@ai-quiz/shared@file:packages/shared(@types/react@18.3.28)(react@18.3.1)':
+    dependencies:
+      '@ai-quiz/api-client': link:packages/api-client
+      '@tanstack/react-query': 5.90.21(react@18.3.1)
+      react: 18.3.1
+      zod: 3.25.76
+      zustand: 5.0.11(@types/react@18.3.28)(react@18.3.1)
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+      - use-sync-external-store
+
   '@babel/code-frame@7.29.0':
     dependencies:
       '@babel/helper-validator-identifier': 7.28.5
@@ -1577,18 +1589,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  '@lifecycle/shared@file:packages/shared(@types/react@18.3.28)(react@18.3.1)':
-    dependencies:
-      '@lifecycle/api-client': link:packages/api-client
-      '@tanstack/react-query': 5.90.21(react@18.3.1)
-      react: 18.3.1
-      zod: 3.25.76
-      zustand: 5.0.11(@types/react@18.3.28)(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - use-sync-external-store
 
   '@oxlint/darwin-arm64@0.16.12':
     optional: true

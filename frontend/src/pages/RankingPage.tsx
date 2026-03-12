@@ -6,7 +6,7 @@ import type { RankingEntry } from "@ai-quiz/api-client";
 const TIER_COLOR: Record<string, string> = {
   S: "text-yellow-400",
   A: "text-green-400",
-  B: "text-blue-400",
+  B: "text-cyan-400",
   C: "text-gray-400",
 };
 

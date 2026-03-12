@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { content, type Locale } from "./content";
+import { Mascot } from "../../components/Mascot";
 
 interface Props {
   locale: Locale;
@@ -12,17 +13,17 @@ const BRAND_NAME = import.meta.env.VITE_APP_BRAND_NAME || "ai-quiz";
 
 const LINE_COLORS: Record<string, string> = {
   prompt: "#00e5ff",
-  info:   "#666",
-  blank:  "transparent",
-  q:      "#e2e8f0",
+  info: "#666",
+  blank: "transparent",
+  q: "#e2e8f0",
   choice: "#94a3b8",
-  ok:     "#4ade80",
+  ok: "#4ade80",
   result: "#a78bfa",
 };
 
 function Terminal({ lines }: { lines: Array<{ type: string; text: string }> }) {
   const [visibleLines, setVisibleLines] = useState(0);
-  const [charCount, setCharCount]       = useState(0);
+  const [charCount, setCharCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Replace occurrences of "ai-quiz" with dynamic BRAND_NAME in terminal lines
@@ -252,7 +253,13 @@ export default function LandingPage({ locale }: Props) {
           </a>
         </div>
 
-        <Terminal lines={c.terminal} />
+        <div className="relative w-full flex flex-col items-center">
+          <Terminal lines={c.terminal} />
+          <Mascot
+            className="pointer-events-none mt-6 sm:mt-0 sm:absolute sm:-right-14 sm:-bottom-12"
+            sizePx={160}
+          />
+        </div>
       </section>
 
       {/* Stats */}

@@ -25,8 +25,8 @@ export default function SettingsPage() {
               className={`
                 cursor-pointer relative inline-flex h-7 w-12 shrink-0 rounded-full border-2 border-transparent
                 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-blue-500 focus-visible:ring-offset-2
-                ${autoAdvance ? "bg-blue-600" : "bg-gray-200"}
+                focus-visible:ring-cyan-400 focus-visible:ring-offset-2
+                ${autoAdvance ? "bg-cyan-500" : "bg-gray-200"}
               `}
             >
               <span
@@ -54,8 +54,8 @@ export default function SettingsPage() {
               className={`
                 cursor-pointer relative inline-flex h-7 w-12 shrink-0 rounded-full border-2 border-transparent
                 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-blue-500 focus-visible:ring-offset-2
-                ${isDark ? "bg-blue-600" : "bg-gray-200"}
+                focus-visible:ring-cyan-400 focus-visible:ring-offset-2
+                ${isDark ? "bg-cyan-500" : "bg-gray-200"}
               `}
             >
               <span

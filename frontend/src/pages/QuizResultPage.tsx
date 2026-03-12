@@ -7,7 +7,7 @@ import type { SubmitAnswersResponse, Question, QuestionResult, GetAttemptInsight
 const TIER_STYLES: Record<string, string> = {
   S: "bg-yellow-400 text-yellow-900",
   A: "bg-green-500 text-white",
-  B: "bg-blue-500 text-white",
+  B: "bg-cyan-500 text-black",
   C: "bg-gray-400 text-white",
 };
 
@@ -105,21 +105,21 @@ export default function QuizResultPage() {
               <>
                 <div className="flex items-center gap-3 mb-4">
                   <h2 className="text-lg font-bold text-gray-700 dark:text-white/70">AI フィードバック</h2>
-                  <span className="text-xs font-medium text-blue-500">
+                  <span className="text-xs font-medium text-cyan-400">
                     {insights?.status === InsightsStatus.FAILED ? "失敗" : "分析中..."}
                   </span>
                 </div>
                 <div className="flex items-center gap-1 mb-4">
                   <span
-                    className="w-2 h-2 rounded-full bg-blue-400 animate-bounce"
+                    className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"
                     style={{ animationDelay: "0ms" }}
                   />
                   <span
-                    className="w-2 h-2 rounded-full bg-blue-400 animate-bounce"
+                    className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"
                     style={{ animationDelay: "150ms" }}
                   />
                   <span
-                    className="w-2 h-2 rounded-full bg-blue-400 animate-bounce"
+                    className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"
                     style={{ animationDelay: "300ms" }}
                   />
                 </div>
@@ -188,7 +188,7 @@ export default function QuizResultPage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center pb-6">
           <button
             onClick={() => navigate("/quiz")}
-            className="cursor-pointer px-8 py-3 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors duration-150"
+            className="cursor-pointer px-8 py-3 rounded-xl font-bold text-black bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 transition-colors duration-150"
           >
             コースを選んで再チャレンジ
           </button>

@@ -106,8 +106,8 @@ function CourseSelectView({
                       cursor-pointer text-left p-4 rounded-xl border-2 transition-all duration-150
                       ${
                         isActive
-                          ? "border-blue-600 bg-blue-50 text-blue-800"
-                          : "border-gray-200 dark:border-white/10 text-gray-800 dark:text-white/70 hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-white/5"
+                          ? "border-cyan-500 bg-cyan-500/10 text-black dark:text-black"
+                          : "border-gray-200 dark:border-white/10 text-gray-800 dark:text-white/70 hover:border-cyan-400 hover:bg-cyan-500/10 dark:hover:bg-white/5"
                       }
                     `}
                   >
@@ -138,8 +138,8 @@ function CourseSelectView({
                     cursor-pointer px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all duration-150
                     ${
                       isActive
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "border-gray-200 dark:border-white/10 text-gray-700 dark:text-white/60 hover:border-blue-400"
+                        ? "bg-cyan-500 text-black border-cyan-500"
+                        : "border-gray-200 dark:border-white/10 text-gray-700 dark:text-white/60 hover:border-cyan-400"
                     }
                   `}
                 >
@@ -164,8 +164,8 @@ function CourseSelectView({
                     cursor-pointer px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all duration-150
                     ${
                       isActive
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "border-gray-200 dark:border-white/10 text-gray-700 dark:text-white/60 hover:border-blue-400"
+                        ? "bg-cyan-500 text-black border-cyan-500"
+                        : "border-gray-200 dark:border-white/10 text-gray-700 dark:text-white/60 hover:border-cyan-400"
                     }
                   `}
                 >
@@ -181,7 +181,7 @@ function CourseSelectView({
           <button
             onClick={() => onStart({ courseId: selectedCourseId, filter: selected })}
             disabled={selectedCourseId.length === 0 || isStarting || isLoading}
-            className="cursor-pointer w-full sm:w-auto px-10 py-3 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-150"
+            className="cursor-pointer w-full sm:w-auto px-10 py-3 rounded-xl font-bold text-black bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-150"
           >
             {isStarting ? "開始中..." : "クイズを始める →"}
           </button>
@@ -321,7 +321,7 @@ function QuizPageInner() {
                 setCurrentIndex(0);
                 setSelectedAnswers({});
               }}
-              className="cursor-pointer w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors duration-150"
+              className="cursor-pointer w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-black bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 transition-colors duration-150"
             >
               条件をリセットして再取得
             </button>
@@ -394,9 +394,9 @@ function QuizPageInner() {
                 key={i}
                 className={`h-2 w-6 rounded-full ${
                   i < currentIndex
-                    ? "bg-blue-500"
+                    ? "bg-cyan-500"
                     : i === currentIndex
-                    ? "bg-blue-300"
+                    ? "bg-cyan-500/40"
                     : "bg-gray-200 dark:bg-white/10"
                 }`}
               />
@@ -421,8 +421,8 @@ function QuizPageInner() {
                   cursor-pointer text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150
                   ${
                     isSelected
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
-                      : "border-gray-200 bg-white text-gray-700 hover:border-blue-300 hover:bg-blue-50 dark:border-white/10 dark:bg-white/3 dark:text-white/80 dark:hover:border-cyan-500/50 dark:hover:bg-white/5"
+                      ? "border-cyan-500 bg-cyan-500/10 text-cyan-400"
+                      : "border-gray-200 bg-white text-gray-700 hover:border-cyan-400/60 hover:bg-cyan-500/10 dark:border-white/10 dark:bg-white/3 dark:text-white/80 dark:hover:border-cyan-500/50 dark:hover:bg-white/5"
                   }
                 `}
               >
@@ -439,8 +439,8 @@ function QuizPageInner() {
               onClick={handleNext}
               disabled={!selectedChoiceId || isSubmitting}
               className="
-                cursor-pointer px-8 py-3 rounded-xl font-bold text-white
-                bg-blue-600 hover:bg-blue-700 active:bg-blue-800
+                cursor-pointer px-8 py-3 rounded-xl font-bold text-black
+                bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600
                 disabled:bg-gray-300 disabled:cursor-not-allowed
                 transition-colors duration-150
               "

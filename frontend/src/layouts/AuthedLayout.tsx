@@ -1,5 +1,6 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "@ai-quiz/shared/hooks";
+import { Mascot } from "../components/Mascot";
 
 export function AuthedLayout() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export function AuthedLayout() {
       <header className="fixed top-0 inset-x-0 z-50 bg-white dark:bg-[#111] border-b border-gray-100 dark:border-white/8 px-4 sm:px-6 py-3 flex items-center justify-between">
         <button
           onClick={() => navigate("/quiz")}
-          className="cursor-pointer font-bold text-gray-800 dark:text-white/70 hover:text-blue-600 dark:hover:text-white transition-colors duration-150"
+          className="cursor-pointer font-bold text-gray-800 dark:text-white/70 hover:text-cyan-500 dark:hover:text-white transition-colors duration-150"
         >
           AI Quiz
         </button>
@@ -25,7 +26,7 @@ export function AuthedLayout() {
             onClick={() => navigate("/ranking")}
             className={`cursor-pointer text-sm transition-colors duration-150 ${
               location.pathname === "/ranking"
-                ? "text-blue-600 font-semibold"
+                ? "text-cyan-500 font-semibold"
                 : "text-gray-500 dark:text-white/40 hover:text-gray-800 dark:hover:text-white"
             }`}
           >
@@ -35,7 +36,7 @@ export function AuthedLayout() {
             onClick={() => navigate("/settings")}
             className={`cursor-pointer text-sm transition-colors duration-150 ${
               location.pathname === "/settings"
-                ? "text-blue-600 font-semibold"
+                ? "text-cyan-500 font-semibold"
                 : "text-gray-500 dark:text-white/40 hover:text-gray-800 dark:hover:text-white"
             }`}
           >
@@ -56,6 +57,14 @@ export function AuthedLayout() {
           </button>
         </div>
       </header>
+      {location.pathname.startsWith("/quiz") && (
+        <div className="fixed right-3 bottom-3 sm:right-6 sm:bottom-6 z-50 pointer-events-none">
+          <Mascot
+            sizePx={112}
+            className="origin-bottom-right scale-75 sm:scale-100"
+          />
+        </div>
+      )}
       <Outlet />
     </>
   );

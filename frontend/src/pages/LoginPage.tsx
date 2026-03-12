@@ -96,7 +96,7 @@ export default function LoginPage() {
                 placeholder={TEST_EMAIL}
                 required
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 dark:bg-[#1a1a1a] dark:text-white dark:placeholder-white/30 text-gray-900 placeholder-gray-400
-                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                  focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent
                   transition-all duration-150"
               />
             </div>
@@ -113,7 +113,7 @@ export default function LoginPage() {
                 placeholder={TEST_PASSWORD}
                 required
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 dark:bg-[#1a1a1a] dark:text-white dark:placeholder-white/30 text-gray-900 placeholder-gray-400
-                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                  focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent
                   transition-all duration-150"
               />
             </div>
@@ -133,8 +133,8 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="cursor-pointer w-full py-3 rounded-xl font-bold text-white
-                bg-blue-600 hover:bg-blue-700 active:bg-blue-800
+              className="cursor-pointer w-full py-3 rounded-xl font-bold text-black
+                bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600
                 disabled:bg-gray-300 disabled:cursor-not-allowed
                 transition-colors duration-150"
             >

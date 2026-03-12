@@ -71,7 +71,7 @@ export default function AdminImportPage() {
               <input
                 value={adminUser}
                 onChange={(e) => setAdminUser(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-2 text-sm text-gray-800 dark:text-white/90 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-2 text-sm text-gray-800 dark:text-white/90 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
               />
             </label>
             <label className="block">
@@ -80,7 +80,7 @@ export default function AdminImportPage() {
                 type="password"
                 value={adminPass}
                 onChange={(e) => setAdminPass(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-2 text-sm text-gray-800 dark:text-white/90 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-2 text-sm text-gray-800 dark:text-white/90 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
               />
             </label>
           </div>
@@ -91,7 +91,7 @@ export default function AdminImportPage() {
             <h2 className="text-lg font-bold text-gray-700 dark:text-white/70">CSV</h2>
             <button
               onClick={() => setCsvText(template)}
-              className="cursor-pointer px-4 py-2 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors duration-150"
+              className="cursor-pointer px-4 py-2 rounded-xl font-bold text-black bg-cyan-400 hover:bg-cyan-300 active:bg-cyan-500 transition-colors duration-150"
             >
               テンプレを貼り付け
             </button>
@@ -100,7 +100,7 @@ export default function AdminImportPage() {
             value={csvText}
             onChange={(e) => setCsvText(e.target.value)}
             rows={12}
-            className="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-3 text-sm font-mono text-gray-800 dark:text-white/80 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-3 text-sm font-mono text-gray-800 dark:text-white/80 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
             placeholder="ここにCSVを貼り付けるか、テンプレを使用してください"
           />
 
@@ -124,7 +124,7 @@ export default function AdminImportPage() {
               <button
                 onClick={() => submit(isDryRun)}
                 disabled={isSubmitting || csvText.trim().length === 0}
-                className="cursor-pointer w-full sm:w-auto px-5 py-3 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
+                className="cursor-pointer w-full sm:w-auto px-5 py-3 rounded-xl font-bold text-black bg-cyan-400 hover:bg-cyan-300 active:bg-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
               >
                 {isSubmitting ? "送信中..." : isDryRun ? "検証する" : "インポートする"}
               </button>

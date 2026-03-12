@@ -83,6 +83,22 @@ if tab:
 - Vite の `node_modules/.vite/deps/` キャッシュが古いと `SyntaxError: does not provide an export named '...'` で白画面になる
 - 型チェックは通っても JS ランタイムエラーが出ることがある
 
+### トラブルシューティング: ファイルを変更しても画面に反映されない
+
+**症状**: ソースコードを変更・保存したのに、ブラウザに古い内容が表示され続ける。
+
+**原因**: `src/` 配下に `.tsx` と同名の `.js` ファイルが残っていると、Vite は `.js` を優先して解決するため、`.tsx` の変更が無視される。
+
+```bash
+# 確認（テストファイルを除いて .js が残っていないか）
+find frontend/src -name "*.js" ! -name "*.test.js" ! -name "*.spec.js"
+
+# 不要な .js を削除
+find frontend/src -name "*.js" ! -name "*.test.js" ! -name "*.spec.js" -delete
+```
+
+**予防**: `src/` 配下に `.js` / `.jsx` ファイルを作成しない。TypeScript ソースは必ず `.ts` / `.tsx` で書く。
+
 ## パッケージ構成
 
 共有パッケージは `frontend/packages/` に配置（ルートには置かない）:

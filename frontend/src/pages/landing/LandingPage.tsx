@@ -2,6 +2,8 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { content, type Locale } from "./content";
 import { Mascot } from "../../components/Mascot";
+import { MascotAnimeGirl } from "../../components/MascotAnimeGirl";
+import { MascotShortHair } from "../../components/MascotShortHair";
 
 interface Props {
   locale: Locale;
@@ -254,11 +256,24 @@ export default function LandingPage({ locale }: Props) {
         </div>
 
         <div className="relative w-full flex flex-col items-center">
-          <Terminal lines={c.terminal} />
-          <Mascot
-            className="pointer-events-none mt-6 sm:mt-0 sm:absolute sm:-right-14 sm:-bottom-12"
-            sizePx={160}
-          />
+          <div className="relative w-full max-w-2xl">
+            {/* Desktop: place both mascots around the terminal (relative to terminal width) */}
+            <MascotAnimeGirl
+              className="pointer-events-none hidden sm:block absolute -left-40 -bottom-14 z-10"
+              sizePx={170}
+            />
+            <Mascot
+              className="pointer-events-none hidden sm:block absolute -right-44 -bottom-14 z-10"
+              sizePx={180}
+            />
+            <Terminal lines={c.terminal} />
+          </div>
+
+          {/* Mobile: show both side-by-side under the terminal */}
+          <div className="sm:hidden mt-6 flex items-end justify-center gap-8">
+            <MascotAnimeGirl sizePx={132} />
+            <Mascot sizePx={120} />
+          </div>
         </div>
       </section>
 
@@ -299,6 +314,13 @@ export default function LandingPage({ locale }: Props) {
               {c.cta.button}
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* Mascot (bottom) */}
+      <section className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 -mt-10 sm:-mt-16 pb-10 sm:pb-14">
+        <div className="flex items-end justify-center sm:justify-end">
+          <MascotShortHair sizePx={220} className="opacity-95" />
         </div>
       </section>
 

@@ -1,3 +1,8 @@
 @import "tailwindcss";
 
 @variant dark (&:is(.dark, .dark *));
+
+@keyframes mascot-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}

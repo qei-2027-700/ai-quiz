@@ -1,210 +1,73 @@
+# ai-quiz
 
-# AI理解力クイズ＋RAG/AI Agent 学習アプリ 計画メモ
+AI literacy quiz app — test your understanding of RAG, AI Agents, LLMs, and modern AI concepts.
 
-このドキュメントは、他セッションでも同じコンテキストを共有するためのメモです。  
-「四択クイズ＋簡単なRAG/AI Agent機能」を持つ学習アプリを、Claude Code で個人開発する前提で整理しています[web:63][web:66][web:69]。
+## Features
 
----
+- Multiple-choice quiz (10 questions per session)
+- Genre and difficulty filters: AI basics, AI services, AI coding
+- Tier ranking: S / A / B / C based on score
+- AI-powered feedback via Claude API (explains weak points, suggests next learning steps)
+- Leaderboard (ranking page)
+- Bilingual UI: Japanese / English
 
-## 1. 目指すエンジニア像（自分自身の方向性）
+## Tech Stack
 
-- 期間: 約2年スパンでスキルとポートフォリオを整える
-- 目標像:
-  - SRE専業というより、「**AI Agent × クラウドインフラ × アプリ開発**」を一通り理解・実装できるエンジニア。
-  - RAG や AI Agent の設計書・アーキテクチャ図を読んで、何をやっているか説明できる。
-  - 小さくてもいいので、自分で RAG / AI Agent 的な構成を実装できる（クイズアプリ、ドキュメント検索アプリなど）[cite:49][web:63]。
-- 既存スキル:
-  - Go（Echo）でのWebアプリ開発経験[cite:44]
-  - React / Nuxt などのフロント経験、型安全なAPI連携への関心[cite:45][cite:46]
-  - AWS SAA取得済み、TerraformやECS Fargateに軽く関与[cite:40][cite:47]
-  - AIや論文、RAG・LangChainなどへの強い興味[cite:43][cite:49]
+| Layer | Technology |
+|-------|-----------|
+| Backend | Go 1.22 / Echo v4 / Connect-RPC / Protocol Buffers |
+| Frontend | React 18 / TypeScript / Vite / TailwindCSS |
+| DB | PostgreSQL 16 + sqlc |
+| AI | Claude API (claude-sonnet-4-6) |
+| Frontend Hosting | Vercel |
+| Backend Infra | AWS ECS Fargate |
 
----
+## Local Setup
 
-## 2. 作りたいサービスの概要
+**Prerequisites**: [mise](https://mise.jdx.dev/), Docker
 
-### ゴールとなるアプリ（今回のプロジェクト）
+```bash
+# Install tools, start DB, run migrations
+mise run setup
 
-- 「AI理解力」をテーマにした四択クイズWebアプリ
-- クイズに加えて、最低限の RAG / AI Agent 的な機能を含める[web:60][web:63][web:64][web:67]。
-- 将来は、ユーザーのAI理解度を tiering / スコアリング / 評価する本格的なサービスに発展させたいが、  
-  今回は **MVPとして「四択＋軽いRAG/Agent」** に絞る。
-
-### 技術スタック（初期案）
-- フロントエンド: React（SPA）
-- バックエンド: Go（REST API） or Node/TypeScript（Claude Codeでやりやすい方）
-- DB: PostgreSQL or SQLite（最初はSQLiteでも可）
-- インフラ:
-  - 初期: ローカル or PaaS（Render/Vercel等）
-  - 後で: AWS（ECS Fargate → 将来的にEKS）＋Terraform[web:54][web:56]
-- AI:
-  - Claude API
-  - RAG的要素: テーマごとのドキュメントをコンテキストとして渡すシンプルな方式から始める[web:60][web:63][web:69]
-
----
-
-## 3. 想定ペルソナ
-
-### ペルソナ1：AIアーキテクチャを「読めて少し書ける」ようになりたいエンジニア
-
-- 状況
-  - ジュニア〜中堅のアプリ／クラウドエンジニア。Go/JS/AWSなどは触れる。
-  - RAGやAI Agentの設計図・構成図を見ても、なんとなくしか理解できない。
-- ゴール
-  - RAG / AI Agent の設計書を読んで、だいたい説明できるようになりたい。
-  - 小さなRAGやAgent的構成（ドキュメント検索＋回答、クイズ結果から次の学習ステップ提案など）を自分で実装できるようになりたい[cite:49][web:63]。
-
-- 課題
-  - WebアプリやAWS構成図は読めるが、「ベクトルDB」「Retriever」「Tool呼び出し」などAI特有の概念で詰まりがち。
-  - 一般的なAI教材はモデル内部や数学に偏っており、「システムとしてどう組み込むか」が見えにくい[web:71]。
-- このアプリに求めること
-  - クイズを通して、RAGの構成要素・AI Agentの基本ブロック（Planner, Tool, Memoryなど）を理解したい。
-  - 結果に応じて、「弱いパート（例: Retriever）」と、「それを補うシンプルな設計例・コード例」をAIが提案してほしい[web:70][web:77][web:78]。
-
-### ペルソナ2：非エンジニアだがAIを体系的に理解したいビジネスパーソン
-
-- 状況
-  - 企画・マーケ・営業・人事など、コードは書かないがAIに強くなりたい人。
-  - ChatGPT/Claudeを触り始めているが、用語や仕組みに自信がない[web:71][web:72][web:73]。
-- ゴール
-  - 「AIで何ができて何ができないか」を、ビジネスレベルで説明できる。
-  - 自分の業務にAIを安全に組み込めるレベルのリテラシーを持ちたい。
-- 課題
-  - 技術用語が多い教材はつらい。
-  - 自分のレベルに合った教材に出会いにくい[web:71][web:75]。
-- このアプリに求めること
-  - 専門用語を抑えた四択クイズで、AIの基本概念・使い道・リスクを理解したい[web:71][web:77]。
-  - クイズ結果をもとに、自分に合った学習ステップ（記事・動画・実践アイデア）をAIに提案してほしい[web:70][web:73]。
-
-### ペルソナ3（将来拡張）：教育者・社内トレーナー
-
-- 受講者のAIリテラシーを測り、レベル別に教材を出し分けたい教育担当者[web:73][web:79]。
-- クラス全体のスコアを見て、AIが「弱点まとめ＋次の講義案」を提案してくれると理想[web:73][web:77]。
-
----
-
-## 4. アプリのMVP機能
-### 4.1 クイズ（必須）
-
-- トピック選択（例：「RAGの基礎」「AI Agentの基本」「ビジネス活用」「リスクと倫理」）[web:71][web:77]
-- 四択問題を10問程度出題
-- 解答 → 正誤判定 → 正解と簡単な解説を表示
-- 結果画面：
-  - 総合正解率
-  - カテゴリ別正解率（例：RAG構成要素、Agentフロー、応用・リスクなど）
-  - 簡易Tier（仮に Tier S/A/B/C など）
-
-### 4.2 AIフィードバック（Agentっぽさ）
-
-- ユーザーの回答履歴（正解/不正解、トピック、解説）をまとめて Claude に送信。
-- プロンプト例：
-  - 「このユーザーの弱点領域」「次の学習ステップを3つ」「おすすめの実装練習案」を返してもらう[web:65][web:68][web:70]。
-- 結果画面に AIフィードバックを表示（これが簡易AI Agentとして機能）。
-
-### 4.3 RAG的な解説生成（最小）
-
-- `docs/` 配下にトピックごとのドキュメント（自作ノートや記事まとめ）を用意。
-- 問題ごとに関連ドキュメントを紐付ける。
-- 解説生成時に、問題＋正解＋関連ドキュメントの内容をプロンプトに含めてClaudeに解説文を生成させる[web:60][web:63][web:64][web:69]。
-- 初期段階では、ベクトルDBなしで「トピックごとのファイルをそのままコンテキストに渡す」だけでもOK。
-
----
-
-## 5. 開発計画（Claude Code 前提）
-### 5.1 ディレクトリ構成（案）
-
-- `backend/`
-  - 言語: Go or Node/TypeScript
-  - API: REST（クイズ取得、回答保存、結果取得、AIフィードバック生成など）
-- `frontend/`
-  - React（SPA）
-  - ページ: トピック一覧、クイズ画面、結果画面
-- `docs/`
-  - RAG用の元ネタドキュメント（Markdownなど）
-- `infra/`
-  - 後でTerraformやデプロイスクリプトを入れる場所
-
-### 5.2 バックエンドMVP
-
-- DBスキーマ例：
-  - `topics`（id, name, description）
-  - `questions`（id, topic_id, text, explanation）
-  - `choices`（id, question_id, text, is_correct）
-  - `user_answers`（id, session_id, question_id, chosen_choice_id, is_correct）
-
-- API:
-  - `GET /topics`
-  - `GET /topics/:id/questions?limit=10`
-  - `POST /answers`（解答送信）
-  - `GET /results?session_id=...`（スコアとカテゴリ別統計）
-  - `POST /ai/feedback`（回答履歴→Claude→フィードバック）
-  - `POST /ai/explanation`（RAG用解説生成）
-
-### 5.3 フロントエンドMVP
-
-- トピック一覧ページ：
-  - APIから一覧取得、クリックでクイズ開始。
-- クイズページ：
-  - 質問と四択を表示。
-  - 解答選択→次の問題へ。
-- 結果ページ：
-  - 正解率・カテゴリ別スコア・Tier表示。
-  - 「AIフィードバックを見る」ボタン → Claudeの結果を表示。
-
----
-
-## 6. 段階的マイルストーン
-1. **マイルストーン1：非AI版クイズMVP**
-   - 四択問題アプリとして成立（手書き問題＋スコアリングのみ）。
-
-2. **マイルストーン2：AIフィードバック追加**
-   - 結果画面で、Claudeが「弱点＋学習ステップ」を返す機能を実装（簡易AI Agent）。
-
-3. **マイルストーン3：RAG風解説**
-   - トピックごとのドキュメントをコンテキストに含めた解説生成を実装（シンプルRAG）。
-
-4. **マイルストーン4（余裕があれば）：AIによる問題生成**
-   - ドキュメントから Claude が四択問題を生成するフローを試す[web:60][web:64][web:67]。
-
-5. **マイルストーン5：AIニュース自動取得 → 問題・正解の自動更新**
-   - Anthropic / OpenAI / Google DeepMind などのブログや arXiv を定期クロール。
-   - 取得したコンテンツを Claude API で解析し、新しい四択問題を自動生成。
-   - 既存の問題・選択肢・正解が最新情報と乖離した場合、自動でバージョンアップ。
-   - 詳細設計: `docs/design/auto-content-update.md` を参照。
-
----
-
-## 7. Claude Codeでの進め方イメージ
-
-- 設計時：
-  - 「このDBスキーマでGoのモデルとRESTハンドラを書いて」と依頼。
-  - 「このAPI仕様に合わせたReactのクイズ画面を書いて」と分割して投げる。
-- AI連携時：
-  - 「この回答履歴JSONをもとにClaude API呼び出しコードを生成して」といった形で、プロンプト駆動で実装[web:66][web:69]。
-  - 「docs/配下のMarkdownを読み込んで、解説生成のコンテキストに含める処理を書いて」と頼む。
-
----
-
-## 8. このメモを他セッションで使うときに伝えたい要点
-
-- 自分は、「AI Agent × クラウドインフラ × アプリ開発」を扱えるエンジニアを目指している（SRE専業ではない）。
-- まずは **四択クイズ＋軽いRAG/AI Agent** のアプリを、Claude Code を使って作りたい。
-- ペルソナ1は「RAG/AI Agentの設計を読めて、簡単に実装もしたいエンジニア」であり、自分自身に近い。
-- 技術スタックや機能要件、マイルストーンは上記のとおりなので、ここからさらに「タスク分解」「設計レビュー」「実装支援」をお願いしたい。
-
-CUI（psql）で確認する方法
-
-```sql
--- Docker 経由（psql インストール不要）:
-docker exec -it ai-quiz-postgres-1 psql -U postgres -d lifecycle_dev
-
--- 接続後、問題数を確認：
--- 問題数確認
-SELECT COUNT(*) FROM questions;
-
--- マイグレーション適用状況
-SELECT * FROM schema_migrations ORDER BY version;
-
--- 問題一覧
-SELECT id, text FROM questions ORDER BY created_at;
+# Start backend + frontend concurrently
+mise run dev
 ```
+
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:8081 |
+
+## Project Structure
+
+```
+proto/          API definitions (source of truth)
+backend/
+  cmd/server/   Entry point
+  DDL/          Migration SQL
+  internal/
+    handler/    Connect-RPC handlers
+    usecase/    Business logic
+    repository/ DB access (sqlc)
+    db/queries/ SQL query files
+frontend/
+  packages/     api-client / shared (TS types + hooks)
+  src/          UI + routing
+infra/          Terraform / AWS infrastructure
+docs/           Architecture and design documents
+```
+
+## Available Commands
+
+```bash
+mise run setup     # First-time setup (tools + DB + migrations)
+mise run dev       # Start backend + frontend
+mise run generate  # Regenerate code from proto + sqlc
+mise run lint      # Run all linters
+mise run test      # Run all tests
+```
+
+## License
+
+MIT

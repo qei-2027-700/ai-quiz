@@ -59,10 +59,7 @@ export function AuthedLayout() {
       </header>
       {location.pathname.startsWith("/quiz") && (
         <div className="fixed right-3 bottom-3 sm:right-6 sm:bottom-6 z-50 pointer-events-none">
-          <Mascot
-            sizePx={112}
-            className="origin-bottom-right scale-75 sm:scale-100"
-          />
+          <Mascot sizePx={112} className="origin-bottom-right scale-75 sm:scale-100" />
         </div>
       )}
       <Outlet />

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { create } from "zustand";
 
 type Theme = "dark" | "light";
 const STORAGE_KEY = "theme";
@@ -20,15 +21,31 @@ function applyTheme(theme: Theme) {
   }
 }
 
-export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(getInitial);
+interface ThemeState {
+  theme: Theme;
+  toggle: () => void;
+}
 
+const useThemeStore = create<ThemeState>((set) => ({
+  theme: getInitial(),
+  toggle: () =>
+    set((state) => {
+      const next: Theme = state.theme === "dark" ? "light" : "dark";
+      applyTheme(next);
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {}
+      return { theme: next };
+    }),
+}));
+
+export function useTheme() {
+  const { theme, toggle } = useThemeStore();
+
+  // 初回マウント時に DOM に適用
   useEffect(() => {
     applyTheme(theme);
-    localStorage.setItem(STORAGE_KEY, theme);
-  }, [theme]);
-
-  const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+  }, []);
 
   return { theme, toggle, isDark: theme === "dark" };
 }

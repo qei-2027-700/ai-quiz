@@ -82,6 +82,39 @@
         ]
       }
     },
+    "/quiz.v2.QuizService/ListGenres": {
+      "post": {
+        "summary": "ジャンル一覧取得（フィルタ UI 用）",
+        "operationId": "QuizService_ListGenres",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListGenresResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListGenresRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
     "/quiz.v2.QuizService/ListQuestions": {
       "post": {
         "summary": "Attempt に紐づく問題一覧を取得",
@@ -308,6 +341,27 @@
         }
       }
     },
+    "quiz.v2.Genre": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "courseId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "quiz.v2.GetAttemptInsightsRequest": {
       "type": "object",
       "properties": {
@@ -358,6 +412,26 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/quiz.v2.Course"
+          }
+        }
+      }
+    },
+    "quiz.v2.ListGenresRequest": {
+      "type": "object",
+      "properties": {
+        "courseId": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.ListGenresResponse": {
+      "type": "object",
+      "properties": {
+        "genres": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.Genre"
           }
         }
       }

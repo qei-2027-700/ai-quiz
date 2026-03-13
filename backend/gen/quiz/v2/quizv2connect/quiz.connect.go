@@ -50,6 +50,8 @@ const (
 	// QuizServiceListRankingsProcedure is the fully-qualified name of the QuizService's ListRankings
 	// RPC.
 	QuizServiceListRankingsProcedure = "/quiz.v2.QuizService/ListRankings"
+	// QuizServiceListGenresProcedure is the fully-qualified name of the QuizService's ListGenres RPC.
+	QuizServiceListGenresProcedure = "/quiz.v2.QuizService/ListGenres"
 )
 
 // QuizServiceClient is a client for the quiz.v2.QuizService service.
@@ -66,6 +68,8 @@ type QuizServiceClient interface {
 	GetAttemptInsights(context.Context, *connect.Request[v2.GetAttemptInsightsRequest]) (*connect.Response[v2.GetAttemptInsightsResponse], error)
 	// ランキング取得（認証不要）
 	ListRankings(context.Context, *connect.Request[v2.ListRankingsRequest]) (*connect.Response[v2.ListRankingsResponse], error)
+	// ジャンル一覧取得（フィルタ UI 用）
+	ListGenres(context.Context, *connect.Request[v2.ListGenresRequest]) (*connect.Response[v2.ListGenresResponse], error)
 }
 
 // NewQuizServiceClient constructs a client for the quiz.v2.QuizService service. By default, it uses
@@ -115,6 +119,12 @@ func NewQuizServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(quizServiceMethods.ByName("ListRankings")),
 			connect.WithClientOptions(opts...),
 		),
+		listGenres: connect.NewClient[v2.ListGenresRequest, v2.ListGenresResponse](
+			httpClient,
+			baseURL+QuizServiceListGenresProcedure,
+			connect.WithSchema(quizServiceMethods.ByName("ListGenres")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -126,6 +136,7 @@ type quizServiceClient struct {
 	submitAnswers      *connect.Client[v2.SubmitAnswersRequest, v2.SubmitAnswersResponse]
 	getAttemptInsights *connect.Client[v2.GetAttemptInsightsRequest, v2.GetAttemptInsightsResponse]
 	listRankings       *connect.Client[v2.ListRankingsRequest, v2.ListRankingsResponse]
+	listGenres         *connect.Client[v2.ListGenresRequest, v2.ListGenresResponse]
 }
 
 // ListCourses calls quiz.v2.QuizService.ListCourses.
@@ -158,6 +169,11 @@ func (c *quizServiceClient) ListRankings(ctx context.Context, req *connect.Reque
 	return c.listRankings.CallUnary(ctx, req)
 }
 
+// ListGenres calls quiz.v2.QuizService.ListGenres.
+func (c *quizServiceClient) ListGenres(ctx context.Context, req *connect.Request[v2.ListGenresRequest]) (*connect.Response[v2.ListGenresResponse], error) {
+	return c.listGenres.CallUnary(ctx, req)
+}
+
 // QuizServiceHandler is an implementation of the quiz.v2.QuizService service.
 type QuizServiceHandler interface {
 	// コース一覧（v1 の topics をコースとして扱う）
@@ -172,6 +188,8 @@ type QuizServiceHandler interface {
 	GetAttemptInsights(context.Context, *connect.Request[v2.GetAttemptInsightsRequest]) (*connect.Response[v2.GetAttemptInsightsResponse], error)
 	// ランキング取得（認証不要）
 	ListRankings(context.Context, *connect.Request[v2.ListRankingsRequest]) (*connect.Response[v2.ListRankingsResponse], error)
+	// ジャンル一覧取得（フィルタ UI 用）
+	ListGenres(context.Context, *connect.Request[v2.ListGenresRequest]) (*connect.Response[v2.ListGenresResponse], error)
 }
 
 // NewQuizServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -217,6 +235,12 @@ func NewQuizServiceHandler(svc QuizServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(quizServiceMethods.ByName("ListRankings")),
 		connect.WithHandlerOptions(opts...),
 	)
+	quizServiceListGenresHandler := connect.NewUnaryHandler(
+		QuizServiceListGenresProcedure,
+		svc.ListGenres,
+		connect.WithSchema(quizServiceMethods.ByName("ListGenres")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quiz.v2.QuizService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case QuizServiceListCoursesProcedure:
@@ -231,6 +255,8 @@ func NewQuizServiceHandler(svc QuizServiceHandler, opts ...connect.HandlerOption
 			quizServiceGetAttemptInsightsHandler.ServeHTTP(w, r)
 		case QuizServiceListRankingsProcedure:
 			quizServiceListRankingsHandler.ServeHTTP(w, r)
+		case QuizServiceListGenresProcedure:
+			quizServiceListGenresHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -262,4 +288,8 @@ func (UnimplementedQuizServiceHandler) GetAttemptInsights(context.Context, *conn
 
 func (UnimplementedQuizServiceHandler) ListRankings(context.Context, *connect.Request[v2.ListRankingsRequest]) (*connect.Response[v2.ListRankingsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.QuizService.ListRankings is not implemented"))
+}
+
+func (UnimplementedQuizServiceHandler) ListGenres(context.Context, *connect.Request[v2.ListGenresRequest]) (*connect.Response[v2.ListGenresResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.QuizService.ListGenres is not implemented"))
 }

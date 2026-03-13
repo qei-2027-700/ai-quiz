@@ -113,3 +113,17 @@ func (h *QuizV2Handler) ListRankings(
 	}
 	return connect.NewResponse(resp), nil
 }
+
+func (h *QuizV2Handler) ListGenres(
+	ctx context.Context,
+	req *connect.Request[quizv2.ListGenresRequest],
+) (*connect.Response[quizv2.ListGenresResponse], error) {
+	h.logger.Info("v2.ListGenres called", zap.String("course_id", req.Msg.CourseId))
+
+	resp, err := h.uc.ListGenres(ctx, req.Msg.CourseId)
+	if err != nil {
+		h.logger.Error("v2.ListGenres failed", zap.Error(err))
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	return connect.NewResponse(resp), nil
+}

@@ -42,6 +42,15 @@ type Explanation struct {
 	DocRef     sql.NullString `json:"doc_ref"`
 }
 
+type Genre struct {
+	ID        uuid.UUID `json:"id"`
+	CourseID  uuid.UUID `json:"course_id"`
+	Name      string    `json:"name"`
+	Label     string    `json:"label"`
+	SortOrder int16     `json:"sort_order"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
 type OauthIdentity struct {
 	ID          uuid.UUID `json:"id"`
 	Provider    string    `json:"provider"`
@@ -82,11 +91,21 @@ type RefreshToken struct {
 	CreatedAt time.Time    `json:"created_at"`
 }
 
+type ScoringTier struct {
+	ID        uuid.UUID `json:"id"`
+	CourseID  uuid.UUID `json:"course_id"`
+	Tier      string    `json:"tier"`
+	MinRatio  string    `json:"min_ratio"`
+	Label     string    `json:"label"`
+	SortOrder int16     `json:"sort_order"`
+}
+
 type Topic struct {
-	ID          uuid.UUID `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	CreatedAt   time.Time `json:"created_at"`
+	ID               uuid.UUID `json:"id"`
+	Name             string    `json:"name"`
+	Description      string    `json:"description"`
+	CreatedAt        time.Time `json:"created_at"`
+	AiPromptTemplate string    `json:"ai_prompt_template"`
 }
 
 type User struct {

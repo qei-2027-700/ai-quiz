@@ -22,6 +22,9 @@ type QuizRepository interface {
 	UpsertAttemptInsights(ctx context.Context, attemptID uuid.UUID, status string, aiFeedback string, errorMessage string) error
 	GetAttemptInsights(ctx context.Context, attemptID uuid.UUID) (db.AttemptInsight, error)
 	ListRankings(ctx context.Context, limit int32) ([]db.ListRankingsRow, error)
+	ListGenresByCourse(ctx context.Context, courseID uuid.UUID) ([]db.ListGenresByCourseRow, error)
+	ListScoringTiersByCourse(ctx context.Context, courseID uuid.UUID) ([]db.ScoringTier, error)
+	GetCourseByID(ctx context.Context, courseID uuid.UUID) (db.GetCourseByIDRow, error)
 }
 
 type postgresQuizRepository struct {
@@ -103,4 +106,16 @@ func (r *postgresQuizRepository) GetAttemptInsights(ctx context.Context, attempt
 
 func (r *postgresQuizRepository) ListRankings(ctx context.Context, limit int32) ([]db.ListRankingsRow, error) {
 	return r.queries.ListRankings(ctx, limit)
+}
+
+func (r *postgresQuizRepository) ListGenresByCourse(ctx context.Context, courseID uuid.UUID) ([]db.ListGenresByCourseRow, error) {
+	return r.queries.ListGenresByCourse(ctx, courseID)
+}
+
+func (r *postgresQuizRepository) ListScoringTiersByCourse(ctx context.Context, courseID uuid.UUID) ([]db.ScoringTier, error) {
+	return r.queries.ListScoringTiersByCourse(ctx, courseID)
+}
+
+func (r *postgresQuizRepository) GetCourseByID(ctx context.Context, courseID uuid.UUID) (db.GetCourseByIDRow, error) {
+	return r.queries.GetCourseByID(ctx, courseID)
 }

@@ -4,11 +4,22 @@ package quiz.v2;
 
 option go_package = "github.com/km/ai-quiz/gen/quiz/v2;quizv2";
 
+import "quiz/v2/quiz.proto";
+
 // Admin API for managing quiz content.
 service AdminService {
   // Import questions from CSV. MVP: add-only.
   // Future: allow updates by specifying question_id column.
   rpc ImportQuestionsCsv(ImportQuestionsCsvRequest) returns (ImportQuestionsCsvResponse);
+
+  // ジャンル作成・更新
+  rpc CreateGenre(CreateGenreRequest) returns (CreateGenreResponse);
+
+  // ティア定義の更新
+  rpc UpsertScoringTiers(UpsertScoringTiersRequest) returns (UpsertScoringTiersResponse);
+
+  // コースの AI フィードバックテンプレート更新
+  rpc UpdateCourseTemplate(UpdateCourseTemplateRequest) returns (UpdateCourseTemplateResponse);
 }
 
 message ImportQuestionsCsvRequest {
@@ -26,4 +37,50 @@ message CsvRowError {
   string field     = 2;
   string message   = 3;
 }
+
+// ─────────────────────────────────────────
+// Genre management
+// ─────────────────────────────────────────
+
+message CreateGenreRequest {
+  string course_id  = 1;
+  string name       = 2;
+  string label      = 3;
+  int32  sort_order = 4;
+}
+
+message CreateGenreResponse {
+  Genre genre = 1;
+}
+
+// ─────────────────────────────────────────
+// Scoring tier management
+// ─────────────────────────────────────────
+
+message ScoringTier {
+  string tier       = 1;
+  double min_ratio  = 2;
+  string label      = 3;
+  int32  sort_order = 4;
+}
+
+message UpsertScoringTiersRequest {
+  string course_id           = 1;
+  repeated ScoringTier tiers = 2;
+}
+
+message UpsertScoringTiersResponse {
+  int32 upserted = 1;
+}
+
+// ─────────────────────────────────────────
+// Course template management
+// ─────────────────────────────────────────
+
+message UpdateCourseTemplateRequest {
+  string course_id          = 1;
+  string ai_prompt_template = 2;
+}
+
+message UpdateCourseTemplateResponse {}
 

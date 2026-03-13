@@ -32,3 +32,51 @@ func (h *AdminHandler) ImportQuestionsCsv(
 	}
 	return connect.NewResponse(resp), nil
 }
+
+func (h *AdminHandler) CreateGenre(
+	ctx context.Context,
+	req *connect.Request[quizv2.CreateGenreRequest],
+) (*connect.Response[quizv2.CreateGenreResponse], error) {
+	h.logger.Info("admin.CreateGenre called",
+		zap.String("course_id", req.Msg.CourseId),
+		zap.String("name", req.Msg.Name),
+	)
+
+	resp, err := h.uc.CreateGenre(ctx, req.Msg.CourseId, req.Msg.Name, req.Msg.Label, req.Msg.SortOrder)
+	if err != nil {
+		h.logger.Error("admin.CreateGenre failed", zap.Error(err))
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *AdminHandler) UpsertScoringTiers(
+	ctx context.Context,
+	req *connect.Request[quizv2.UpsertScoringTiersRequest],
+) (*connect.Response[quizv2.UpsertScoringTiersResponse], error) {
+	h.logger.Info("admin.UpsertScoringTiers called",
+		zap.String("course_id", req.Msg.CourseId),
+		zap.Int("tiers", len(req.Msg.Tiers)),
+	)
+
+	resp, err := h.uc.UpsertScoringTiers(ctx, req.Msg.CourseId, req.Msg.Tiers)
+	if err != nil {
+		h.logger.Error("admin.UpsertScoringTiers failed", zap.Error(err))
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *AdminHandler) UpdateCourseTemplate(
+	ctx context.Context,
+	req *connect.Request[quizv2.UpdateCourseTemplateRequest],
+) (*connect.Response[quizv2.UpdateCourseTemplateResponse], error) {
+	h.logger.Info("admin.UpdateCourseTemplate called", zap.String("course_id", req.Msg.CourseId))
+
+	resp, err := h.uc.UpdateCourseTemplate(ctx, req.Msg.CourseId, req.Msg.AiPromptTemplate)
+	if err != nil {
+		h.logger.Error("admin.UpdateCourseTemplate failed", zap.Error(err))
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	return connect.NewResponse(resp), nil
+}

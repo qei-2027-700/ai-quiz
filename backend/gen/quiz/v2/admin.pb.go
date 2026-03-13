@@ -185,11 +185,375 @@ func (x *CsvRowError) GetMessage() string {
 	return ""
 }
 
+type CreateGenreRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CourseId      string                 `protobuf:"bytes,1,opt,name=course_id,json=courseId,proto3" json:"course_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Label         string                 `protobuf:"bytes,3,opt,name=label,proto3" json:"label,omitempty"`
+	SortOrder     int32                  `protobuf:"varint,4,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateGenreRequest) Reset() {
+	*x = CreateGenreRequest{}
+	mi := &file_quiz_v2_admin_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateGenreRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateGenreRequest) ProtoMessage() {}
+
+func (x *CreateGenreRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_admin_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateGenreRequest.ProtoReflect.Descriptor instead.
+func (*CreateGenreRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_admin_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CreateGenreRequest) GetCourseId() string {
+	if x != nil {
+		return x.CourseId
+	}
+	return ""
+}
+
+func (x *CreateGenreRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateGenreRequest) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+func (x *CreateGenreRequest) GetSortOrder() int32 {
+	if x != nil {
+		return x.SortOrder
+	}
+	return 0
+}
+
+type CreateGenreResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Genre         *Genre                 `protobuf:"bytes,1,opt,name=genre,proto3" json:"genre,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateGenreResponse) Reset() {
+	*x = CreateGenreResponse{}
+	mi := &file_quiz_v2_admin_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateGenreResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateGenreResponse) ProtoMessage() {}
+
+func (x *CreateGenreResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_admin_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateGenreResponse.ProtoReflect.Descriptor instead.
+func (*CreateGenreResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_admin_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CreateGenreResponse) GetGenre() *Genre {
+	if x != nil {
+		return x.Genre
+	}
+	return nil
+}
+
+type ScoringTier struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Tier          string                 `protobuf:"bytes,1,opt,name=tier,proto3" json:"tier,omitempty"`
+	MinRatio      float64                `protobuf:"fixed64,2,opt,name=min_ratio,json=minRatio,proto3" json:"min_ratio,omitempty"`
+	Label         string                 `protobuf:"bytes,3,opt,name=label,proto3" json:"label,omitempty"`
+	SortOrder     int32                  `protobuf:"varint,4,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ScoringTier) Reset() {
+	*x = ScoringTier{}
+	mi := &file_quiz_v2_admin_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ScoringTier) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ScoringTier) ProtoMessage() {}
+
+func (x *ScoringTier) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_admin_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ScoringTier.ProtoReflect.Descriptor instead.
+func (*ScoringTier) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_admin_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ScoringTier) GetTier() string {
+	if x != nil {
+		return x.Tier
+	}
+	return ""
+}
+
+func (x *ScoringTier) GetMinRatio() float64 {
+	if x != nil {
+		return x.MinRatio
+	}
+	return 0
+}
+
+func (x *ScoringTier) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+func (x *ScoringTier) GetSortOrder() int32 {
+	if x != nil {
+		return x.SortOrder
+	}
+	return 0
+}
+
+type UpsertScoringTiersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CourseId      string                 `protobuf:"bytes,1,opt,name=course_id,json=courseId,proto3" json:"course_id,omitempty"`
+	Tiers         []*ScoringTier         `protobuf:"bytes,2,rep,name=tiers,proto3" json:"tiers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertScoringTiersRequest) Reset() {
+	*x = UpsertScoringTiersRequest{}
+	mi := &file_quiz_v2_admin_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertScoringTiersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertScoringTiersRequest) ProtoMessage() {}
+
+func (x *UpsertScoringTiersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_admin_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertScoringTiersRequest.ProtoReflect.Descriptor instead.
+func (*UpsertScoringTiersRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_admin_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpsertScoringTiersRequest) GetCourseId() string {
+	if x != nil {
+		return x.CourseId
+	}
+	return ""
+}
+
+func (x *UpsertScoringTiersRequest) GetTiers() []*ScoringTier {
+	if x != nil {
+		return x.Tiers
+	}
+	return nil
+}
+
+type UpsertScoringTiersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Upserted      int32                  `protobuf:"varint,1,opt,name=upserted,proto3" json:"upserted,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpsertScoringTiersResponse) Reset() {
+	*x = UpsertScoringTiersResponse{}
+	mi := &file_quiz_v2_admin_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpsertScoringTiersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpsertScoringTiersResponse) ProtoMessage() {}
+
+func (x *UpsertScoringTiersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_admin_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpsertScoringTiersResponse.ProtoReflect.Descriptor instead.
+func (*UpsertScoringTiersResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_admin_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpsertScoringTiersResponse) GetUpserted() int32 {
+	if x != nil {
+		return x.Upserted
+	}
+	return 0
+}
+
+type UpdateCourseTemplateRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	CourseId         string                 `protobuf:"bytes,1,opt,name=course_id,json=courseId,proto3" json:"course_id,omitempty"`
+	AiPromptTemplate string                 `protobuf:"bytes,2,opt,name=ai_prompt_template,json=aiPromptTemplate,proto3" json:"ai_prompt_template,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *UpdateCourseTemplateRequest) Reset() {
+	*x = UpdateCourseTemplateRequest{}
+	mi := &file_quiz_v2_admin_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateCourseTemplateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateCourseTemplateRequest) ProtoMessage() {}
+
+func (x *UpdateCourseTemplateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_admin_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateCourseTemplateRequest.ProtoReflect.Descriptor instead.
+func (*UpdateCourseTemplateRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_admin_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *UpdateCourseTemplateRequest) GetCourseId() string {
+	if x != nil {
+		return x.CourseId
+	}
+	return ""
+}
+
+func (x *UpdateCourseTemplateRequest) GetAiPromptTemplate() string {
+	if x != nil {
+		return x.AiPromptTemplate
+	}
+	return ""
+}
+
+type UpdateCourseTemplateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateCourseTemplateResponse) Reset() {
+	*x = UpdateCourseTemplateResponse{}
+	mi := &file_quiz_v2_admin_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateCourseTemplateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateCourseTemplateResponse) ProtoMessage() {}
+
+func (x *UpdateCourseTemplateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_admin_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateCourseTemplateResponse.ProtoReflect.Descriptor instead.
+func (*UpdateCourseTemplateResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_admin_proto_rawDescGZIP(), []int{9}
+}
+
 var File_quiz_v2_admin_proto protoreflect.FileDescriptor
 
 const file_quiz_v2_admin_proto_rawDesc = "" +
 	"\n" +
-	"\x13quiz/v2/admin.proto\x12\aquiz.v2\"F\n" +
+	"\x13quiz/v2/admin.proto\x12\aquiz.v2\x1a\x12quiz/v2/quiz.proto\"F\n" +
 	"\x19ImportQuestionsCsvRequest\x12\x10\n" +
 	"\x03csv\x18\x01 \x01(\fR\x03csv\x12\x17\n" +
 	"\adry_run\x18\x02 \x01(\bR\x06dryRun\"w\n" +
@@ -200,9 +564,35 @@ const file_quiz_v2_admin_proto_rawDesc = "" +
 	"\n" +
 	"row_number\x18\x01 \x01(\x05R\trowNumber\x12\x14\n" +
 	"\x05field\x18\x02 \x01(\tR\x05field\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage2m\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"z\n" +
+	"\x12CreateGenreRequest\x12\x1b\n" +
+	"\tcourse_id\x18\x01 \x01(\tR\bcourseId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
+	"\x05label\x18\x03 \x01(\tR\x05label\x12\x1d\n" +
+	"\n" +
+	"sort_order\x18\x04 \x01(\x05R\tsortOrder\";\n" +
+	"\x13CreateGenreResponse\x12$\n" +
+	"\x05genre\x18\x01 \x01(\v2\x0e.quiz.v2.GenreR\x05genre\"s\n" +
+	"\vScoringTier\x12\x12\n" +
+	"\x04tier\x18\x01 \x01(\tR\x04tier\x12\x1b\n" +
+	"\tmin_ratio\x18\x02 \x01(\x01R\bminRatio\x12\x14\n" +
+	"\x05label\x18\x03 \x01(\tR\x05label\x12\x1d\n" +
+	"\n" +
+	"sort_order\x18\x04 \x01(\x05R\tsortOrder\"d\n" +
+	"\x19UpsertScoringTiersRequest\x12\x1b\n" +
+	"\tcourse_id\x18\x01 \x01(\tR\bcourseId\x12*\n" +
+	"\x05tiers\x18\x02 \x03(\v2\x14.quiz.v2.ScoringTierR\x05tiers\"8\n" +
+	"\x1aUpsertScoringTiersResponse\x12\x1a\n" +
+	"\bupserted\x18\x01 \x01(\x05R\bupserted\"h\n" +
+	"\x1bUpdateCourseTemplateRequest\x12\x1b\n" +
+	"\tcourse_id\x18\x01 \x01(\tR\bcourseId\x12,\n" +
+	"\x12ai_prompt_template\x18\x02 \x01(\tR\x10aiPromptTemplate\"\x1e\n" +
+	"\x1cUpdateCourseTemplateResponse2\xfb\x02\n" +
 	"\fAdminService\x12]\n" +
-	"\x12ImportQuestionsCsv\x12\".quiz.v2.ImportQuestionsCsvRequest\x1a#.quiz.v2.ImportQuestionsCsvResponseB\x80\x01\n" +
+	"\x12ImportQuestionsCsv\x12\".quiz.v2.ImportQuestionsCsvRequest\x1a#.quiz.v2.ImportQuestionsCsvResponse\x12H\n" +
+	"\vCreateGenre\x12\x1b.quiz.v2.CreateGenreRequest\x1a\x1c.quiz.v2.CreateGenreResponse\x12]\n" +
+	"\x12UpsertScoringTiers\x12\".quiz.v2.UpsertScoringTiersRequest\x1a#.quiz.v2.UpsertScoringTiersResponse\x12c\n" +
+	"\x14UpdateCourseTemplate\x12$.quiz.v2.UpdateCourseTemplateRequest\x1a%.quiz.v2.UpdateCourseTemplateResponseB\x80\x01\n" +
 	"\vcom.quiz.v2B\n" +
 	"AdminProtoP\x01Z(github.com/km/ai-quiz/gen/quiz/v2;quizv2\xa2\x02\x03QXX\xaa\x02\aQuiz.V2\xca\x02\aQuiz\\V2\xe2\x02\x13Quiz\\V2\\GPBMetadata\xea\x02\bQuiz::V2b\x06proto3"
 
@@ -218,21 +608,37 @@ func file_quiz_v2_admin_proto_rawDescGZIP() []byte {
 	return file_quiz_v2_admin_proto_rawDescData
 }
 
-var file_quiz_v2_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_quiz_v2_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_quiz_v2_admin_proto_goTypes = []any{
-	(*ImportQuestionsCsvRequest)(nil),  // 0: quiz.v2.ImportQuestionsCsvRequest
-	(*ImportQuestionsCsvResponse)(nil), // 1: quiz.v2.ImportQuestionsCsvResponse
-	(*CsvRowError)(nil),                // 2: quiz.v2.CsvRowError
+	(*ImportQuestionsCsvRequest)(nil),    // 0: quiz.v2.ImportQuestionsCsvRequest
+	(*ImportQuestionsCsvResponse)(nil),   // 1: quiz.v2.ImportQuestionsCsvResponse
+	(*CsvRowError)(nil),                  // 2: quiz.v2.CsvRowError
+	(*CreateGenreRequest)(nil),           // 3: quiz.v2.CreateGenreRequest
+	(*CreateGenreResponse)(nil),          // 4: quiz.v2.CreateGenreResponse
+	(*ScoringTier)(nil),                  // 5: quiz.v2.ScoringTier
+	(*UpsertScoringTiersRequest)(nil),    // 6: quiz.v2.UpsertScoringTiersRequest
+	(*UpsertScoringTiersResponse)(nil),   // 7: quiz.v2.UpsertScoringTiersResponse
+	(*UpdateCourseTemplateRequest)(nil),  // 8: quiz.v2.UpdateCourseTemplateRequest
+	(*UpdateCourseTemplateResponse)(nil), // 9: quiz.v2.UpdateCourseTemplateResponse
+	(*Genre)(nil),                        // 10: quiz.v2.Genre
 }
 var file_quiz_v2_admin_proto_depIdxs = []int32{
-	2, // 0: quiz.v2.ImportQuestionsCsvResponse.errors:type_name -> quiz.v2.CsvRowError
-	0, // 1: quiz.v2.AdminService.ImportQuestionsCsv:input_type -> quiz.v2.ImportQuestionsCsvRequest
-	1, // 2: quiz.v2.AdminService.ImportQuestionsCsv:output_type -> quiz.v2.ImportQuestionsCsvResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2,  // 0: quiz.v2.ImportQuestionsCsvResponse.errors:type_name -> quiz.v2.CsvRowError
+	10, // 1: quiz.v2.CreateGenreResponse.genre:type_name -> quiz.v2.Genre
+	5,  // 2: quiz.v2.UpsertScoringTiersRequest.tiers:type_name -> quiz.v2.ScoringTier
+	0,  // 3: quiz.v2.AdminService.ImportQuestionsCsv:input_type -> quiz.v2.ImportQuestionsCsvRequest
+	3,  // 4: quiz.v2.AdminService.CreateGenre:input_type -> quiz.v2.CreateGenreRequest
+	6,  // 5: quiz.v2.AdminService.UpsertScoringTiers:input_type -> quiz.v2.UpsertScoringTiersRequest
+	8,  // 6: quiz.v2.AdminService.UpdateCourseTemplate:input_type -> quiz.v2.UpdateCourseTemplateRequest
+	1,  // 7: quiz.v2.AdminService.ImportQuestionsCsv:output_type -> quiz.v2.ImportQuestionsCsvResponse
+	4,  // 8: quiz.v2.AdminService.CreateGenre:output_type -> quiz.v2.CreateGenreResponse
+	7,  // 9: quiz.v2.AdminService.UpsertScoringTiers:output_type -> quiz.v2.UpsertScoringTiersResponse
+	9,  // 10: quiz.v2.AdminService.UpdateCourseTemplate:output_type -> quiz.v2.UpdateCourseTemplateResponse
+	7,  // [7:11] is the sub-list for method output_type
+	3,  // [3:7] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_quiz_v2_admin_proto_init() }
@@ -240,13 +646,14 @@ func file_quiz_v2_admin_proto_init() {
 	if File_quiz_v2_admin_proto != nil {
 		return
 	}
+	file_quiz_v2_quiz_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quiz_v2_admin_proto_rawDesc), len(file_quiz_v2_admin_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

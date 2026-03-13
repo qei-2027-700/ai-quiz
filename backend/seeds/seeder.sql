@@ -926,3 +926,28 @@ INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000040',
   'custom commands は `.claude/commands/<command-name>.md`（プロジェクト固有）または `~/.claude/commands/<command-name>.md`（全プロジェクト共通）に Markdown ファイルとして置く。ユーザーが `/command-name` と入力すると、そのファイルの内容がプロンプトとして展開される。skills とは異なりユーザー起動が前提。'
 ) ON CONFLICT (question_id) DO NOTHING;
+
+-- デフォルトジャンル（既存の ai-quiz コースに紐づけ）
+INSERT INTO genres (course_id, name, label, sort_order)
+SELECT id, 'ai_basics',    'AI基礎',         1 FROM topics LIMIT 1
+ON CONFLICT (course_id, name) DO NOTHING;
+INSERT INTO genres (course_id, name, label, sort_order)
+SELECT id, 'ai_services',  'AIサービス',     2 FROM topics LIMIT 1
+ON CONFLICT (course_id, name) DO NOTHING;
+INSERT INTO genres (course_id, name, label, sort_order)
+SELECT id, 'engineering',  'AIコーディング', 3 FROM topics LIMIT 1
+ON CONFLICT (course_id, name) DO NOTHING;
+
+-- デフォルトティア定義
+INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)
+SELECT id, 'S', 0.900, 'S ランク', 1 FROM topics LIMIT 1
+ON CONFLICT (course_id, tier) DO NOTHING;
+INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)
+SELECT id, 'A', 0.700, 'A ランク', 2 FROM topics LIMIT 1
+ON CONFLICT (course_id, tier) DO NOTHING;
+INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)
+SELECT id, 'B', 0.500, 'B ランク', 3 FROM topics LIMIT 1
+ON CONFLICT (course_id, tier) DO NOTHING;
+INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)
+SELECT id, 'C', 0.000, 'C ランク', 4 FROM topics LIMIT 1
+ON CONFLICT (course_id, tier) DO NOTHING;

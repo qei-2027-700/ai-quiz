@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetAttemptInsightsRequest, GetAttemptInsightsResponse, ListCoursesRequest, ListCoursesResponse, ListQuestionsRequest, ListQuestionsResponse, ListRankingsRequest, ListRankingsResponse, StartAttemptRequest, StartAttemptResponse, SubmitAnswersRequest, SubmitAnswersResponse } from "./quiz_pb.js";
+import { GetAttemptInsightsRequest, GetAttemptInsightsResponse, ListCoursesRequest, ListCoursesResponse, ListGenresRequest, ListGenresResponse, ListQuestionsRequest, ListQuestionsResponse, ListRankingsRequest, ListRankingsResponse, StartAttemptRequest, StartAttemptResponse, SubmitAnswersRequest, SubmitAnswersResponse } from "./quiz_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -76,6 +76,17 @@ export const QuizService = {
       name: "ListRankings",
       I: ListRankingsRequest,
       O: ListRankingsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ジャンル一覧取得（フィルタ UI 用）
+     *
+     * @generated from rpc quiz.v2.QuizService.ListGenres
+     */
+    listGenres: {
+      name: "ListGenres",
+      I: ListGenresRequest,
+      O: ListGenresResponse,
       kind: MethodKind.Unary,
     },
   }

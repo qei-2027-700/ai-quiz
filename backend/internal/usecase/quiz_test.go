@@ -70,6 +70,18 @@ func (m *mockQuizRepository) ListRankings(_ context.Context, _ int32) ([]db.List
 	return nil, nil
 }
 
+func (m *mockQuizRepository) ListGenresByCourse(_ context.Context, _ uuid.UUID) ([]db.ListGenresByCourseRow, error) {
+	return nil, nil
+}
+
+func (m *mockQuizRepository) ListScoringTiersByCourse(_ context.Context, _ uuid.UUID) ([]db.ScoringTier, error) {
+	return nil, nil
+}
+
+func (m *mockQuizRepository) GetCourseByID(_ context.Context, _ uuid.UUID) (db.GetCourseByIDRow, error) {
+	return db.GetCourseByIDRow{}, nil
+}
+
 func TestSubmitAnswers(t *testing.T) {
 	topicID := uuid.New()
 

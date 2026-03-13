@@ -860,3 +860,69 @@ INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000037',
   'hooks ログには、コマンド引数・エラーメッセージ・出力などから秘匿情報が混入し得る。したがって、(1) 収集内容の最小化とマスキング、(2) アクセス制御、(3) 保管期間（ローテーション/削除）を設けることが重要。これにより監査性と安全性の両立ができる。'
 ) ON CONFLICT (question_id) DO NOTHING;
+
+-- Q38: Claude Code skills と custom commands の違い（基本）
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000038',
+  '00000000-0000-0000-0000-000000000001',
+  'Claude Code の「skills（スキル）」と「custom commands（カスタムコマンド）」の最大の違いはどれか？',
+  2, 'engineering'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('48000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000038', 'skills はユーザーが `/skill-name` と入力して呼び出し、custom commands は AI が自律的に判断して呼び出す',                        false, 1),
+  ('48000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000038', 'skills は AI（Skill ツール）が状況を判断して呼び出し、custom commands はユーザーが `/command-name` と入力して呼び出す',         true,  2),
+  ('48000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000038', '両者はまったく同じ仕組みで、名前の違いだけである',                                                                                    false, 3),
+  ('48000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000038', 'skills は有料プランのみ、custom commands は無料プランで使える機能の違いである',                                                      false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000038',
+  'skills は AI（Claude）が `Skill` ツールを使って状況を判断し自律的に呼び出すもの。一方 custom commands はユーザーが `/command-name` とスラッシュを付けて明示的に呼び出すもの。前者は「AIが判断して実行」、後者は「ユーザーが指示して実行」という主体の違いがある。'
+) ON CONFLICT (question_id) DO NOTHING;
+
+-- Q39: skills と custom commands の使い所
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000039',
+  '00000000-0000-0000-0000-000000000001',
+  'Claude Code で「特定の条件を満たしたとき AI に自動で実行させたい処理」を定義するのに適切な手段はどれか？',
+  2, 'engineering'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('49000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000039', 'custom commands（`/command-name`）として定義する',                                    false, 1),
+  ('49000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000039', 'skills として定義し、AI がトリガー条件を判断して Skill ツールで呼び出させる',           true,  2),
+  ('49000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000039', 'hooks（PostToolUse 等）として定義し、シェルスクリプトで自動実行させる',                  false, 3),
+  ('49000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000039', 'CLAUDE.md に「常に実行すること」と記述するだけでよい',                                   false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000039',
+  'skills はシステムプロンプトにトリガー条件と説明を持ち、AI が状況を判断して Skill ツールで自律的に呼び出す。「ユーザーが〜と言ったとき」「〜の操作をした後」など条件付き自動実行に向いている。custom commands はユーザーが明示的に呼び出すもの、hooks はシェルレベルのイベントフックで用途が異なる。'
+) ON CONFLICT (question_id) DO NOTHING;
+
+-- Q40: custom commands の定義場所と呼び出し方
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000040',
+  '00000000-0000-0000-0000-000000000001',
+  'Claude Code の custom commands を定義するファイルの置き場所として正しいのはどれか？',
+  1, 'engineering'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('50000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000040', '`CLAUDE.md` にコマンド定義を書く',                                                                                                  false, 1),
+  ('50000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000040', '`.claude/commands/` ディレクトリに Markdown ファイルとして配置する（プロジェクトスコープ）か、`~/.claude/commands/` に配置する（グローバルスコープ）', true, 2),
+  ('50000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000040', '`.mcp.json` にコマンドのシェルスクリプトを記述する',                                                                               false, 3),
+  ('50000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000040', '`package.json` の `scripts` フィールドにコマンドを登録する',                                                                       false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000040',
+  'custom commands は `.claude/commands/<command-name>.md`（プロジェクト固有）または `~/.claude/commands/<command-name>.md`（全プロジェクト共通）に Markdown ファイルとして置く。ユーザーが `/command-name` と入力すると、そのファイルの内容がプロンプトとして展開される。skills とは異なりユーザー起動が前提。'
+) ON CONFLICT (question_id) DO NOTHING;

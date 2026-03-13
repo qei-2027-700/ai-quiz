@@ -722,8 +722,8 @@ const file_quiz_v1_quiz_proto_rawDesc = "" +
 	"\vQuizService\x12N\n" +
 	"\rListQuestions\x12\x1d.quiz.v1.ListQuestionsRequest\x1a\x1e.quiz.v1.ListQuestionsResponse\x12N\n" +
 	"\rSubmitAnswers\x12\x1d.quiz.v1.SubmitAnswersRequest\x1a\x1e.quiz.v1.SubmitAnswersResponse\x12K\n" +
-	"\fListRankings\x12\x1c.quiz.v1.ListRankingsRequest\x1a\x1d.quiz.v1.ListRankingsResponseB\x8b\x01\n" +
-	"\vcom.quiz.v1B\tQuizProtoP\x01Z4github.com/km/ai-quiz/gen/quiz/v1;quizv1\xa2\x02\x03QXX\xaa\x02\aQuiz.V1\xca\x02\aQuiz\\V1\xe2\x02\x13Quiz\\V1\\GPBMetadata\xea\x02\bQuiz::V1b\x06proto3"
+	"\fListRankings\x12\x1c.quiz.v1.ListRankingsRequest\x1a\x1d.quiz.v1.ListRankingsResponseB\x7f\n" +
+	"\vcom.quiz.v1B\tQuizProtoP\x01Z(github.com/km/ai-quiz/gen/quiz/v1;quizv1\xa2\x02\x03QXX\xaa\x02\aQuiz.V1\xca\x02\aQuiz\\V1\xe2\x02\x13Quiz\\V1\\GPBMetadata\xea\x02\bQuiz::V1b\x06proto3"
 
 var (
 	file_quiz_v1_quiz_proto_rawDescOnce sync.Once

@@ -215,6 +215,9 @@ function QuizPageInner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedbackMap, setFeedbackMap] = useState<{
+    [questionId: string]: { isCorrect: boolean; correctChoiceId: string };
+  }>({});
 
   useEffect(() => {
     if (phase === "select") return;
@@ -320,6 +323,7 @@ function QuizPageInner() {
                 setFilter({ genre: "", difficulty: 0 });
                 setCurrentIndex(0);
                 setSelectedAnswers({});
+                setFeedbackMap({});
               }}
               className="cursor-pointer w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-black bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 transition-colors duration-150"
             >
@@ -330,6 +334,7 @@ function QuizPageInner() {
                 setAttemptId("");
                 setCurrentIndex(0);
                 setSelectedAnswers({});
+                setFeedbackMap({});
                 setPhase("select");
               }}
               className="cursor-pointer w-full sm:w-auto px-6 py-3 rounded-xl font-bold border border-gray-300 dark:border-white/20 text-gray-700 dark:text-white/70 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150"
@@ -350,18 +355,30 @@ function QuizPageInner() {
   const currentQuestion = questions[currentIndex];
   const isLastQuestion = currentIndex === total - 1;
   const selectedChoiceId = currentQuestion ? selectedAnswers[currentQuestion.id] : undefined;
+  const currentFeedback = currentQuestion ? feedbackMap[currentQuestion.id] : undefined;
 
   const handleChoiceSelect = (choiceId: string) => {
     if (!currentQuestion) return;
+    // 回答済みの場合は変更不可
+    if (feedbackMap[currentQuestion.id]) return;
+
     const next = { ...selectedAnswers, [currentQuestion.id]: choiceId };
     setSelectedAnswers(next);
 
-    if (autoAdvance) {
-      if (isLastQuestion) {
-        submitAnswers(next);
-      } else {
-        setCurrentIndex((prev) => prev + 1);
-      }
+    // 即時フィードバック: correct_choice_id で正誤を判定
+    const body = currentQuestion.body.case === "multipleChoice" ? currentQuestion.body.value : null;
+    const correctChoiceId = body?.correctChoiceId ?? "";
+const isCorrect = correctChoiceId !== "" && choiceId === correctChoiceId;
+    setFeedbackMap((prev) => ({
+      ...prev,
+      [currentQuestion.id]: { isCorrect, correctChoiceId },
+    }));
+
+    if (autoAdvance && !isLastQuestion) {
+      // フィードバックを少し見せてから自動進行（最終問題はボタンクリックで提出）
+      setTimeout(() => {
+        setCurrentIndex((i) => i + 1);
+      }, 1200);
     }
   };
 
@@ -382,25 +399,45 @@ function QuizPageInner() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#080808] flex items-start justify-center p-4 pt-16">
-      <div className="w-full max-w-2xl bg-white dark:bg-[#111] rounded-2xl shadow-md dark:shadow-none dark:border dark:border-white/8 p-8">
+      <div className="w-full max-w-2xl bg-white dark:bg-[#111] rounded-2xl shadow-md dark:shadow-none dark:border dark:border-white/8 p-8 transition-all duration-200">
         {/* Progress */}
         <div className="flex items-center justify-between mb-6">
           <span className="text-sm font-medium text-gray-500 dark:text-white/40">
             問題 {currentIndex + 1} / {total}
           </span>
-          <div className="flex gap-1">
-            {questions.map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 w-6 rounded-full ${
-                  i < currentIndex
-                    ? "bg-cyan-500"
-                    : i === currentIndex
-                    ? "bg-cyan-500/40"
-                    : "bg-gray-200 dark:bg-white/10"
-                }`}
-              />
-            ))}
+          <div className="flex gap-1 items-center">
+            {questions.map((q, i) => {
+              const isAnswered = !!selectedAnswers[q.id];
+              const isCurrent = i === currentIndex;
+              const isNavigable = isAnswered || isCurrent;
+              const qFeedback = feedbackMap[q.id];
+              const dotColor = qFeedback
+                ? qFeedback.isCorrect
+                  ? "bg-cyan-500"
+                  : "bg-red-500"
+                : isCurrent
+                ? "bg-cyan-500/40"
+                : "bg-gray-200 dark:bg-white/10";
+              return (
+                <button
+                  key={i}
+                  onClick={() => isNavigable && setCurrentIndex(i)}
+                  title={isNavigable ? `問題 ${i + 1}` : undefined}
+                  className={`
+                    py-3 px-1
+                    ${isNavigable ? "cursor-pointer" : "cursor-default"}
+                  `}
+                >
+                  <div
+                    className={`
+                      h-2 w-6 rounded-full transition-all duration-150
+                      ${dotColor}
+                      ${isNavigable ? "hover:opacity-80" : ""}
+                    `}
+                  />
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -410,34 +447,73 @@ function QuizPageInner() {
         </h2>
 
         {/* Choices */}
-        <div className="flex flex-col gap-3 mb-8">
+        <div className="flex flex-col gap-3 mb-6">
           {choices.map((choice) => {
             const isSelected = selectedChoiceId === choice.id;
+            const isCorrectChoice = !!currentFeedback && choice.id === currentFeedback.correctChoiceId;
+            const isWrongSelected = !!currentFeedback && isSelected && !currentFeedback.isCorrect;
+
+            let choiceStyle: string;
+            if (currentFeedback) {
+              if (isCorrectChoice) {
+                choiceStyle = "border-green-500 bg-green-500/10 text-green-400 dark:text-green-400";
+              } else if (isWrongSelected) {
+                choiceStyle = "border-red-500 bg-red-500/10 text-red-400 dark:text-red-400";
+              } else {
+                choiceStyle = "border-gray-200 bg-white text-gray-400 dark:border-white/10 dark:bg-white/3 dark:text-white/30";
+              }
+            } else if (isSelected) {
+              choiceStyle = "border-cyan-500 bg-cyan-500/10 text-cyan-400";
+            } else {
+              choiceStyle = "border-gray-200 bg-white text-gray-700 hover:border-cyan-400/60 hover:bg-cyan-500/10 dark:border-white/10 dark:bg-white/3 dark:text-white/80 dark:hover:border-cyan-500/50 dark:hover:bg-white/5";
+            }
+
             return (
               <button
                 key={choice.id}
                 onClick={() => handleChoiceSelect(choice.id)}
+                disabled={!!currentFeedback}
                 className={`
-                  cursor-pointer text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-150
-                  ${
-                    isSelected
-                      ? "border-cyan-500 bg-cyan-500/10 text-cyan-400"
-                      : "border-gray-200 bg-white text-gray-700 hover:border-cyan-400/60 hover:bg-cyan-500/10 dark:border-white/10 dark:bg-white/3 dark:text-white/80 dark:hover:border-cyan-500/50 dark:hover:bg-white/5"
-                  }
+                  text-left px-5 py-4 rounded-xl border-2 font-medium transition-all duration-200
+                  ${currentFeedback ? "cursor-default" : "cursor-pointer"}
+                  ${choiceStyle}
                 `}
               >
-                {choice.text}
+                <span className="flex items-center justify-between gap-3">
+                  <span>{choice.text}</span>
+                  {currentFeedback && isCorrectChoice && (
+                    <span className="shrink-0 text-green-400 font-bold">✓</span>
+                  )}
+                  {currentFeedback && isWrongSelected && (
+                    <span className="shrink-0 text-red-400 font-bold">✗</span>
+                  )}
+                </span>
               </button>
             );
           })}
         </div>
 
-        {/* Next / Submit button — hidden when autoAdvance is ON */}
-        {(!autoAdvance || isSubmitting) && (
+        {/* フィードバックメッセージ */}
+        {currentFeedback && (
+          <div
+            className={`mb-6 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+              currentFeedback.isCorrect
+                ? "bg-green-500/10 border border-green-500/30 text-green-400"
+                : "bg-red-500/10 border border-red-500/30 text-red-400"
+            }`}
+          >
+            {currentFeedback.isCorrect ? "正解です！" : "不正解です。正解は緑色の選択肢です。"}
+          </div>
+        )}
+
+        {/* Next / Submit button */}
+        {/* フィードバックあり（回答済みに戻った場合も含む）または送信中は常に表示 */}
+        {/* autoAdvance ON の未回答問題: タイマーが自動進行するためボタン非表示（最終問題のみ例外） */}
+        {(isSubmitting || !!currentFeedback) && (
           <div className="flex justify-end">
             <button
               onClick={handleNext}
-              disabled={!selectedChoiceId || isSubmitting}
+              disabled={isSubmitting}
               className="
                 cursor-pointer px-8 py-3 rounded-xl font-bold text-black
                 bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600

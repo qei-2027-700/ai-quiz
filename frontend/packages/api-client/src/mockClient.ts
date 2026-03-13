@@ -96,21 +96,25 @@ export function createMockQuizClient(): MockQuizClient {
         [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
       }
 
-      const questions = filtered.slice(0, 10).map((q) => ({
-        id: q.id,
-        prompt: q.text,
-        attributes: { genre: q.genre, difficulty: String(q.difficulty) },
-        body: {
-          case: "multipleChoice" as const,
-          value: {
-            choices: q.choices.map((c) => ({
-              id: c.id,
-              text: c.text,
-              sortOrder: c.sortOrder,
-            })),
+      const questions = filtered.slice(0, 10).map((q) => {
+        const correctChoice = q.choices.find((c) => c.isCorrect);
+        return {
+          id: q.id,
+          prompt: q.text,
+          attributes: { genre: q.genre, difficulty: String(q.difficulty) },
+          body: {
+            case: "multipleChoice" as const,
+            value: {
+              choices: q.choices.map((c) => ({
+                id: c.id,
+                text: c.text,
+                sortOrder: c.sortOrder,
+              })),
+              correctChoiceId: correctChoice?.id ?? "",
+            },
           },
-        },
-      }));
+        };
+      });
 
       return { questions };
     },

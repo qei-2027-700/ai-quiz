@@ -202,9 +202,9 @@ const file_quiz_v2_admin_proto_rawDesc = "" +
 	"\x05field\x18\x02 \x01(\tR\x05field\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage2m\n" +
 	"\fAdminService\x12]\n" +
-	"\x12ImportQuestionsCsv\x12\".quiz.v2.ImportQuestionsCsvRequest\x1a#.quiz.v2.ImportQuestionsCsvResponseB\x8c\x01\n" +
+	"\x12ImportQuestionsCsv\x12\".quiz.v2.ImportQuestionsCsvRequest\x1a#.quiz.v2.ImportQuestionsCsvResponseB\x80\x01\n" +
 	"\vcom.quiz.v2B\n" +
-	"AdminProtoP\x01Z4github.com/km/ai-quiz/gen/quiz/v2;quizv2\xa2\x02\x03QXX\xaa\x02\aQuiz.V2\xca\x02\aQuiz\\V2\xe2\x02\x13Quiz\\V2\\GPBMetadata\xea\x02\bQuiz::V2b\x06proto3"
+	"AdminProtoP\x01Z(github.com/km/ai-quiz/gen/quiz/v2;quizv2\xa2\x02\x03QXX\xaa\x02\aQuiz.V2\xca\x02\aQuiz\\V2\xe2\x02\x13Quiz\\V2\\GPBMetadata\xea\x02\bQuiz::V2b\x06proto3"
 
 var (
 	file_quiz_v2_admin_proto_rawDescOnce sync.Once

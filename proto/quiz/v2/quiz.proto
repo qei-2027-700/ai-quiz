@@ -94,6 +94,7 @@ message Choice {
 
 message MultipleChoiceBody {
   repeated Choice choices = 1;
+  string correct_choice_id = 2; // 即時フィードバック用（学習アプリのため正答をクライアントに返す）
 }
 
 message MultiSelectBody {

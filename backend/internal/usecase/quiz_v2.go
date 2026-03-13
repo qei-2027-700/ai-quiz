@@ -122,12 +122,16 @@ func (u *quizV2Usecase) ListQuestions(ctx context.Context, attemptID string, gen
 	}
 
 	choicesByQuestion := make(map[uuid.UUID][]*quizv2.Choice)
+	correctChoiceIDByQuestion := make(map[uuid.UUID]string)
 	for _, c := range choices {
 		choicesByQuestion[c.QuestionID] = append(choicesByQuestion[c.QuestionID], &quizv2.Choice{
 			Id:        c.ID.String(),
 			Text:      c.Text,
 			SortOrder: int32(c.SortOrder),
 		})
+		if c.IsCorrect {
+			correctChoiceIDByQuestion[c.QuestionID] = c.ID.String()
+		}
 	}
 
 	questions := make([]*quizv2.Question, len(filtered))
@@ -141,7 +145,8 @@ func (u *quizV2Usecase) ListQuestions(ctx context.Context, attemptID string, gen
 			},
 			Body: &quizv2.Question_MultipleChoice{
 				MultipleChoice: &quizv2.MultipleChoiceBody{
-					Choices: choicesByQuestion[r.ID],
+					Choices:         choicesByQuestion[r.ID],
+					CorrectChoiceId: correctChoiceIDByQuestion[r.ID],
 				},
 			},
 		}

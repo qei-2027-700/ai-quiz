@@ -454,6 +454,10 @@
             "type": "object",
             "$ref": "#/definitions/quiz.v2.Choice"
           }
+        },
+        "correctChoiceId": {
+          "type": "string",
+          "title": "即時フィードバック用（学習アプリのため正答をクライアントに返す）"
         }
       }
     },

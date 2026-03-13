@@ -598,10 +598,11 @@ func (x *Choice) GetSortOrder() int32 {
 }
 
 type MultipleChoiceBody struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Choices       []*Choice              `protobuf:"bytes,1,rep,name=choices,proto3" json:"choices,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Choices         []*Choice              `protobuf:"bytes,1,rep,name=choices,proto3" json:"choices,omitempty"`
+	CorrectChoiceId string                 `protobuf:"bytes,2,opt,name=correct_choice_id,json=correctChoiceId,proto3" json:"correct_choice_id,omitempty"` // 即時フィードバック用（学習アプリのため正答をクライアントに返す）
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *MultipleChoiceBody) Reset() {
@@ -639,6 +640,13 @@ func (x *MultipleChoiceBody) GetChoices() []*Choice {
 		return x.Choices
 	}
 	return nil
+}
+
+func (x *MultipleChoiceBody) GetCorrectChoiceId() string {
+	if x != nil {
+		return x.CorrectChoiceId
+	}
+	return ""
 }
 
 type MultiSelectBody struct {
@@ -1835,9 +1843,10 @@ const file_quiz_v2_quiz_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1d\n" +
 	"\n" +
-	"sort_order\x18\x03 \x01(\x05R\tsortOrder\"?\n" +
+	"sort_order\x18\x03 \x01(\x05R\tsortOrder\"k\n" +
 	"\x12MultipleChoiceBody\x12)\n" +
-	"\achoices\x18\x01 \x03(\v2\x0f.quiz.v2.ChoiceR\achoices\"<\n" +
+	"\achoices\x18\x01 \x03(\v2\x0f.quiz.v2.ChoiceR\achoices\x12*\n" +
+	"\x11correct_choice_id\x18\x02 \x01(\tR\x0fcorrectChoiceId\"<\n" +
 	"\x0fMultiSelectBody\x12)\n" +
 	"\achoices\x18\x01 \x03(\v2\x0f.quiz.v2.ChoiceR\achoices\"Q\n" +
 	"\fOrderingItem\x12\x0e\n" +
@@ -1930,8 +1939,8 @@ const file_quiz_v2_quiz_proto_rawDesc = "" +
 	"\rListQuestions\x12\x1d.quiz.v2.ListQuestionsRequest\x1a\x1e.quiz.v2.ListQuestionsResponse\x12N\n" +
 	"\rSubmitAnswers\x12\x1d.quiz.v2.SubmitAnswersRequest\x1a\x1e.quiz.v2.SubmitAnswersResponse\x12]\n" +
 	"\x12GetAttemptInsights\x12\".quiz.v2.GetAttemptInsightsRequest\x1a#.quiz.v2.GetAttemptInsightsResponse\x12K\n" +
-	"\fListRankings\x12\x1c.quiz.v2.ListRankingsRequest\x1a\x1d.quiz.v2.ListRankingsResponseB\x8b\x01\n" +
-	"\vcom.quiz.v2B\tQuizProtoP\x01Z4github.com/km/ai-quiz/gen/quiz/v2;quizv2\xa2\x02\x03QXX\xaa\x02\aQuiz.V2\xca\x02\aQuiz\\V2\xe2\x02\x13Quiz\\V2\\GPBMetadata\xea\x02\bQuiz::V2b\x06proto3"
+	"\fListRankings\x12\x1c.quiz.v2.ListRankingsRequest\x1a\x1d.quiz.v2.ListRankingsResponseB\x7f\n" +
+	"\vcom.quiz.v2B\tQuizProtoP\x01Z(github.com/km/ai-quiz/gen/quiz/v2;quizv2\xa2\x02\x03QXX\xaa\x02\aQuiz.V2\xca\x02\aQuiz\\V2\xe2\x02\x13Quiz\\V2\\GPBMetadata\xea\x02\bQuiz::V2b\x06proto3"
 
 var (
 	file_quiz_v2_quiz_proto_rawDescOnce sync.Once

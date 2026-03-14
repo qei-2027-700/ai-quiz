@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useCourses, useQuiz, useQuizSettings } from "@ai-quiz/shared/hooks";
-import type { QuizFilter } from "@ai-quiz/shared/hooks";
+import { useCourses, useQuiz, useQuizSettings, useCourseGenres } from "@ai-quiz/shared/hooks";
+import type { QuizFilter, Genre } from "@ai-quiz/shared/hooks";
 import { quizClient } from "@ai-quiz/api-client";
 import type { Course, UserAnswer } from "@ai-quiz/api-client";
 
@@ -35,13 +35,7 @@ interface SelectedAnswers {
   [questionId: string]: string;
 }
 
-const GENRES = [
-  { value: "", label: "すべて" },
-  { value: "ai_basics", label: "AI基礎" },
-  { value: "ai_services", label: "AIサービス" },
-  { value: "engineering", label: "AIコーディング" },
-];
-
+// TODO: DIFFICULTIES も将来的には useCourseGenres 同様の hook で動的取得に移行する
 const DIFFICULTIES = [
   { value: 0, label: "すべて" },
   { value: 1, label: "初級" },
@@ -53,6 +47,7 @@ const DIFFICULTIES = [
 
 interface CourseSelectViewProps {
   courses: Course[];
+  genres: Genre[];
   isLoading: boolean;
   errorMessage?: string | null;
   selectedCourseId: string;
@@ -63,6 +58,7 @@ interface CourseSelectViewProps {
 
 function CourseSelectView({
   courses,
+  genres,
   isLoading,
   errorMessage,
   selectedCourseId,
@@ -128,12 +124,12 @@ function CourseSelectView({
         <div className="mb-6">
           <p className="text-sm font-semibold text-gray-500 dark:text-white/40 mb-3">ジャンル</p>
           <div className="flex flex-wrap gap-2">
-            {GENRES.map((g) => {
-              const isActive = selected.genre === g.value;
+            {genres.map((g) => {
+              const isActive = selected.genre === g.name;
               return (
                 <button
-                  key={g.value}
-                  onClick={() => setSelected((prev) => ({ ...prev, genre: g.value }))}
+                  key={g.id || "all"}
+                  onClick={() => setSelected((prev) => ({ ...prev, genre: g.name }))}
                   className={`
                     cursor-pointer px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all duration-150
                     ${
@@ -202,6 +198,7 @@ function QuizPageInner() {
   const [isStarting, setIsStarting] = useState<boolean>(false);
 
   const { courses, isLoading: coursesLoading, error: coursesError } = useCourses({ enabled: phase === "select" });
+  const { genres } = useCourseGenres(selectedCourseId);
 
   useEffect(() => {
     if (selectedCourseId.length > 0) return;
@@ -257,6 +254,7 @@ function QuizPageInner() {
     return (
       <CourseSelectView
         courses={courses}
+        genres={genres}
         isLoading={coursesLoading}
         errorMessage={coursesError ? "コースの取得に失敗しました。時間をおいて再度お試しください。" : null}
         selectedCourseId={selectedCourseId}
@@ -298,7 +296,7 @@ function QuizPageInner() {
 
   const total = questions.length;
   if (total === 0) {
-    const genreLabel = GENRES.find((g) => g.value === filter.genre)?.label ?? "不明";
+    const genreLabel = genres.find((g) => g.name === filter.genre)?.label ?? "不明";
     const difficultyLabel = DIFFICULTIES.find((d) => d.value === filter.difficulty)?.label ?? "不明";
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-[#080808] flex items-start justify-center p-4 pt-16">

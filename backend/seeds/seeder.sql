@@ -927,6 +927,75 @@ INSERT INTO explanations (question_id, text) VALUES (
   'custom commands は `.claude/commands/<command-name>.md`（プロジェクト固有）または `~/.claude/commands/<command-name>.md`（全プロジェクト共通）に Markdown ファイルとして置く。ユーザーが `/command-name` と入力すると、そのファイルの内容がプロンプトとして展開される。skills とは異なりユーザー起動が前提。'
 ) ON CONFLICT (question_id) DO NOTHING;
 
+-- ── Q41: Claude Cowork の概要（ai_services / 初級）──
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000041',
+  '00000000-0000-0000-0000-000000000001',
+  '2026年1月にAnthropicがリリースしたClaude Coworkの説明として正しいものはどれか？',
+  1, 'ai_services'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('51000000-0000-0000-0000-000000000005', '10000000-0000-0000-0000-000000000041', 'VS Code上で動作するコーディング補助拡張機能で、Claude Codeのブラウザ版に相当する',                                                              false, 1),
+  ('51000000-0000-0000-0000-000000000006', '10000000-0000-0000-0000-000000000041', 'Claude Codeのエージェント機能をコーディング以外のナレッジワークに拡張したデスクトップAIエージェントで、ローカルファイルへのアクセスやマルチステップタスクの自動実行ができる', true,  2),
+  ('51000000-0000-0000-0000-000000000007', '10000000-0000-0000-0000-000000000041', 'チームメンバー間でClaudeのチャット履歴をリアルタイム共有できるコラボレーション向けWebアプリ',                                                false, 3),
+  ('51000000-0000-0000-0000-000000000008', '10000000-0000-0000-0000-000000000041', 'Claudeを組み込んだ画像生成・動画編集に特化したクリエイティブ向けツール',                                                                         false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000041',
+  'Claude Coworkは2026年1月にAnthropicが研究プレビューとしてリリースしたデスクトップAIエージェント。「コーディング不要のClaude Code」とも表現され、Claude Codeのエージェント機能をナレッジワーク全般に拡張している。ローカルファイルの読み書き、マルチステップタスクの自動実行、スケジュール実行などが可能で、有料プラン（Pro・Max・Team・Enterprise）向けに提供された。その後MicrosoftがMicrosoft 365向けにCopilot Coworkとして統合することも発表された。'
+) ON CONFLICT (question_id) DO NOTHING;
+
+
+-- ── Q42: Apple × Gemini 提携の理由（ai_services / 中級）──
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000042',
+  '00000000-0000-0000-0000-000000000001',
+  'AppleがiPhoneのSiri刷新にあたり、2026年1月にGoogleのGeminiとの提携を選んだ主な理由はどれか？',
+  2, 'ai_services'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('52000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000042', 'AppleがGoogleを買収し、Geminiの独占利用権を取得したため',                                                                        false, 1),
+  ('52000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000042', '自社のAIモデル開発が競合に追いつけず、Siriが複雑なクエリの約33%を処理できないなど能力差が顕在化したため',                    true,  2),
+  ('52000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000042', 'EU規制によりApple独自のAIが欧州で禁止され、代替としてGeminiを義務採用したため',                                             false, 3),
+  ('52000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000042', 'Google DeepMindとAppleが共同でApple Siliconに最適化した新チップを開発するため',                                            false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000042',
+  'Appleの自社AIモデルは競合（Google・OpenAI・Anthropic）の急速な進歩に追いつけず、内部評価でSiriが複雑なクエリを約33%処理できないことが判明した。AppleはOpenAIやAnthropicも候補として検討したが、「最も優れた基盤を提供する」としてGoogleのGeminiを選択し、マルチイヤー契約を締結した（2026年1月）。これによりApple Foundation ModelsはGeminiモデルとGoogleのクラウド技術をベースとするものに刷新された。'
+) ON CONFLICT (question_id) DO NOTHING;
+
+
+-- ── Q43: Microsoft 365 × Claude Cowork 統合の理由（ai_services / 中級）──
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000043',
+  '00000000-0000-0000-0000-000000000001',
+  '2026年3月にMicrosoftがMicrosoft 365にAnthropicのClaudeを統合した「Copilot Cowork」を発表した理由として最も適切なものはどれか？',
+  2, 'ai_services'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('53000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000043', 'MicrosoftがAnthropicを買収したことで、ClaudeをCopilotに統合する義務が生じたため',                                         false, 1),
+  ('53000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000043', 'OpenAIとの契約が終了し、その代替としてAnthropicのClaudeを採用したため',                                                   false, 2),
+  ('53000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000043', '単一AIに依存しないマルチモデル戦略のもと、ClaudeのエージェントをM365のデータ基盤（Outlook・Teams・SharePoint等）と統合し企業向けのタスク自動化を実現するため', true,  3),
+  ('53000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000043', 'EU AI法の規制を回避するため、GPT-4の代わりにAnthropicのClaudeをEU圏向けに採用したため',                               false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000043',
+  'Microsoftは2026年3月、Anthropicと共同開発した「Copilot Cowork」をMicrosoft 365に統合すると発表した。MicrosoftはCopilotを特定のAIモデルに縛られないマルチモデルプラットフォームと位置づけており、「業界全体のベストなイノベーションを取り込み、タスクに応じて最適なモデルを選ぶ」戦略をとっている。Copilot CoworkはOutlook・Teams・SharePoint・Excel等のM365データをフルに活用し、プレゼン作成・データ集計・メール送信などのマルチステップタスクをエージェントが自律実行する。新しいE7ライセンスティアと同時に提供された。'
+) ON CONFLICT (question_id) DO NOTHING;
+
+
 -- デフォルトジャンル（既存の ai-quiz コースに紐づけ）
 INSERT INTO genres (course_id, name, label, sort_order)
 SELECT id, 'ai_basics',    'AI基礎',         1 FROM topics LIMIT 1

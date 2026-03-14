@@ -11,6 +11,25 @@ GitHub Issue を起票してください。
 7. `gh issue create` で起票する
 8. 起票した Issue の URL をユーザーに報告する
 
+## 自動起票トリガー（指示なしでも起票する条件）
+
+以下を発見したら、その場での修正が困難・スコープ外であれば**即座に起票**する:
+
+| 発見パターン | ラベル |
+|------------|-------|
+| TypeScript 型と実データの不整合（union に存在するが実装がない等） | `ai-detected,fix` |
+| セキュリティ問題（認証漏れ・XSS・SQL injection 等） | `ai-detected,fix,priority:high` |
+| クラッシュ・データ損失につながるバグ | `ai-detected,fix` |
+| N+1 クエリ・明らかなパフォーマンス問題 | `ai-detected,tech-debt` |
+| TODO/FIXME コメントが残存している | `ai-detected,tech-debt` |
+| Playwright 自己テストで再現性のある UI バグ | `ai-detected,fix` |
+| docs/sterring/ の設計と実装の乖離 | `ai-detected,tech-debt` |
+| 削除すべき `.js` ファイルが `.ts` と重複して残存 | `ai-detected,tech-debt` |
+
+**その場で修正できる場合（起票不要）:**
+- 変更が 1〜2 ファイル以内で完結する小さな修正
+- 現在の作業スコープに明確に含まれる変更
+
 ## ラベルの選び方
 
 | 内容 | ラベル |

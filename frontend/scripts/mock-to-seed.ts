@@ -100,9 +100,9 @@ for (const q of MOCK_QUESTIONS) {
 // ── ジャンル（DB設定）────────────────────────────────────────────
 lines.push("-- ── ジャンル（DB設定） ─────────────────────────────────────────────");
 for (const g of GENRES) {
-  lines.push(`INSERT INTO genres (course_id, name, label, sort_order)`);
-  lines.push(`SELECT id, '${g.name}', '${escapeSql(g.label)}', ${g.sortOrder} FROM topics LIMIT 1`);
-  lines.push(`ON CONFLICT (course_id, name) DO NOTHING;`);
+  lines.push(`INSERT INTO genres (course_id, name, label, sort_order) VALUES (`);
+  lines.push(`  '${TOPIC.id}', '${g.name}', '${escapeSql(g.label)}', ${g.sortOrder}`);
+  lines.push(`) ON CONFLICT (course_id, name) DO NOTHING;`);
 }
 lines.push("");
 lines.push("");
@@ -110,9 +110,9 @@ lines.push("");
 // ── スコアティア（DB設定）────────────────────────────────────────
 lines.push("-- ── スコアティア（DB設定） ─────────────────────────────────────────");
 for (const t of SCORING_TIERS) {
-  lines.push(`INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)`);
-  lines.push(`SELECT id, '${t.tier}', ${t.minRatio}, '${escapeSql(t.label)}', ${t.sortOrder} FROM topics LIMIT 1`);
-  lines.push(`ON CONFLICT (course_id, tier) DO NOTHING;`);
+  lines.push(`INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order) VALUES (`);
+  lines.push(`  '${TOPIC.id}', '${t.tier}', ${t.minRatio}, '${escapeSql(t.label)}', ${t.sortOrder}`);
+  lines.push(`) ON CONFLICT (course_id, tier) DO NOTHING;`);
 }
 lines.push("");
 

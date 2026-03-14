@@ -1,4 +1,6 @@
 -- ジャンルをDBで管理（コースごとに定義可能）
+-- NOTE: course_id は topics テーブルを参照する。topics テーブルが "コース" の概念として機能しており、
+--       将来 topics → courses にリネームする際はこの外部キー参照も合わせて変更すること。
 CREATE TABLE genres (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     course_id   UUID NOT NULL REFERENCES topics(id) ON DELETE CASCADE,
@@ -10,6 +12,7 @@ CREATE TABLE genres (
 );
 
 -- ティア定義をDBで管理（コースごとに閾値を変更可能）
+-- NOTE: course_id は topics テーブルを参照（genres テーブルと同様）
 CREATE TABLE scoring_tiers (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     course_id   UUID NOT NULL REFERENCES topics(id) ON DELETE CASCADE,

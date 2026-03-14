@@ -2,8 +2,10 @@ package handler
 
 import (
 	"context"
+	"errors"
 
 	"connectrpc.com/connect"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 
 	quizv2 "github.com/km/ai-quiz/gen/quiz/v2"
@@ -118,6 +120,9 @@ func (h *QuizV2Handler) ListGenres(
 	ctx context.Context,
 	req *connect.Request[quizv2.ListGenresRequest],
 ) (*connect.Response[quizv2.ListGenresResponse], error) {
+	if _, err := uuid.Parse(req.Msg.CourseId); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("course_id must be a valid UUID"))
+	}
 	h.logger.Info("v2.ListGenres called", zap.String("course_id", req.Msg.CourseId))
 
 	resp, err := h.uc.ListGenres(ctx, req.Msg.CourseId)

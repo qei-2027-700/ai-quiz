@@ -16,6 +16,8 @@ export function useCourseGenres(courseId: string) {
     queryKey: ["genres", courseId],
     queryFn: async () => {
       if (!courseId) return { genres: [] };
+      // TODO: buf generate で quiz_connect.ts に listGenres が追加された後、この as unknown キャストを除去する
+      // 現状は Connect クライアントの型定義に listGenres が未反映のため一時的に回避
       return (quizClient as unknown as { listGenres: (params: { courseId: string }) => Promise<{ genres: Genre[] }> }).listGenres({ courseId });
     },
     enabled: !!courseId,

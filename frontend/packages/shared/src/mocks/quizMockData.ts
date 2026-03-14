@@ -1,6 +1,6 @@
-// このファイルは自動生成です。直接編集しないでください。
-// 生成元: backend/seeds/seeder.sql
-// 再生成: cd frontend && pnpm seed-to-mock
+// クイズ問題のソースオブトゥルース（問題・選択肢・解説）
+// このファイルを直接編集して問題を追加・修正してください。
+// 編集後: cd frontend && pnpm mock-to-seed  → backend/seeds/seeder.sql を再生成
 
 export interface MockChoice {
   id: string;
@@ -19,7 +19,7 @@ export interface MockQuestion {
   explanation: string;
 }
 
-export const TOPIC_ID = '';
+export const TOPIC_ID = '00000000-0000-0000-0000-000000000001';
 
 export const MOCK_QUESTIONS: MockQuestion[] = [
   {

@@ -6,21 +6,22 @@
 - 「問題を追加して」「選択肢を直して」「解説を更新して」などの依頼が来たとき
 
 ## ルール（このプロジェクト固有）
-- クイズコンテンツの一次ソースは `backend/seeds/seeder.sql`
-- `frontend/packages/shared/src/mocks/quizMockData.ts` は自動生成（直接編集しない）
-  - 再生成: `cd frontend && pnpm seed-to-mock`
+- クイズコンテンツの一次ソースは `frontend/packages/shared/src/mocks/quizMockData.ts`
+- `backend/seeds/seeder.sql` は自動生成（直接編集しない）
+  - 再生成: `cd frontend && pnpm mock-to-seed`
+- genres / scoring_tiers（DB設定系）は `frontend/scripts/mock-to-seed.ts` の定数で管理
 
 ## 追加/修正手順（最短）
-1) `backend/seeds/seeder.sql` に問題を追加/修正
-   - `questions` に 1 行追加（`genre` / `difficulty` を設定）
-   - `choices` を 4 つ追加（`sort_order` 1..4）
-   - `explanations` を追加（短くてもよいが、誤解しない説明にする）
-   - すべて `ON CONFLICT ... DO NOTHING`（idempotent）にする
+1) `frontend/packages/shared/src/mocks/quizMockData.ts` に問題を追加/修正
+   - `MOCK_QUESTIONS` 配列に 1 オブジェクトを追加
+   - `genre` / `difficulty` を設定
+   - `choices` を 4 つ追加（`isCorrect: true` は必ず 1 つ）
+   - `explanation` を追加（短くてもよいが、誤解しない説明にする）
 
-2) モックを再生成
+2) seeder を再生成
 ```bash
 cd frontend
-pnpm seed-to-mock
+pnpm mock-to-seed
 ```
 
 3) 最低限の検証

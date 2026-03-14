@@ -25,6 +25,9 @@ service QuizService {
 
   // ランキング取得（認証不要）
   rpc ListRankings(ListRankingsRequest) returns (ListRankingsResponse);
+
+  // ジャンル一覧取得（フィルタ UI 用）
+  rpc ListGenres(ListGenresRequest) returns (ListGenresResponse);
 }
 
 // ─────────────────────────────────────────
@@ -226,5 +229,25 @@ message RankingEntry {
   int32  total_count   = 4;
   string tier          = 5;
   string created_at    = 6;
+}
+
+// ─────────────────────────────────────────
+// Genres
+// ─────────────────────────────────────────
+
+message ListGenresRequest {
+  string course_id = 1;
+}
+
+message Genre {
+  string id         = 1;
+  string course_id  = 2;
+  string name       = 3;
+  string label      = 4;
+  int32  sort_order = 5;
+}
+
+message ListGenresResponse {
+  repeated Genre genres = 1;
 }
 

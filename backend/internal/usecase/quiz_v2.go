@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/google/uuid"
 	quizv2 "github.com/km/ai-quiz/gen/quiz/v2"
@@ -18,6 +20,7 @@ type QuizV2Usecase interface {
 	SubmitAnswers(ctx context.Context, attemptID string, answers []*quizv2.UserAnswer) (*quizv2.SubmitAnswersResponse, error)
 	GetAttemptInsights(ctx context.Context, attemptID string) (*quizv2.GetAttemptInsightsResponse, error)
 	ListRankings(ctx context.Context, limit int32) (*quizv2.ListRankingsResponse, error)
+	ListGenres(ctx context.Context, courseID string) (*quizv2.ListGenresResponse, error)
 }
 
 type quizV2Usecase struct {
@@ -241,11 +244,11 @@ func (u *quizV2Usecase) SubmitAnswers(ctx context.Context, attemptID string, ans
 
 	total := int32(len(answers))
 	ratio := float64(correctCount) / float64(total)
-	tier := computeTier(ratio)
+	tier := u.computeTierFromDB(ctx, attempt.CourseID, ratio)
 
 	_ = u.repo.InsertQuizResultV2(ctx, aID, attempt.Username, correctCount, total, tier)
 
-	aiFeedback := generateMockAIFeedback(correctCount, total, tier)
+	aiFeedback := u.generateFeedback(ctx, attempt.CourseID, correctCount, total, tier)
 	insightsStatus := quizv2.InsightsStatus_INSIGHTS_STATUS_READY
 	if err := u.repo.UpsertAttemptInsights(ctx, aID, insightsStatusReady, aiFeedback, ""); err != nil {
 		insightsStatus = quizv2.InsightsStatus_INSIGHTS_STATUS_FAILED
@@ -321,4 +324,78 @@ func (u *quizV2Usecase) ListRankings(ctx context.Context, limit int32) (*quizv2.
 	}
 
 	return &quizv2.ListRankingsResponse{Entries: entries}, nil
+}
+
+func (u *quizV2Usecase) ListGenres(ctx context.Context, courseID string) (*quizv2.ListGenresResponse, error) {
+	cID, err := uuid.Parse(courseID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid course_id %q: %w", courseID, err)
+	}
+	rows, err := u.repo.ListGenresByCourse(ctx, cID)
+	if err != nil {
+		return nil, fmt.Errorf("list genres: %w", err)
+	}
+	genres := make([]*quizv2.Genre, len(rows))
+	for i, r := range rows {
+		genres[i] = &quizv2.Genre{
+			Id:        r.ID.String(),
+			CourseId:  r.CourseID.String(),
+			Name:      r.Name,
+			Label:     r.Label,
+			SortOrder: int32(r.SortOrder),
+		}
+	}
+	return &quizv2.ListGenresResponse{Genres: genres}, nil
+}
+
+func (u *quizV2Usecase) computeTierFromDB(ctx context.Context, courseID uuid.UUID, ratio float64) string {
+	tiers, err := u.repo.ListScoringTiersByCourse(ctx, courseID)
+	if err != nil || len(tiers) == 0 {
+		return computeTierDefault(ratio)
+	}
+	// min_ratio 降順でソートされているので最初にマッチしたものを返す
+	for _, t := range tiers {
+		minRatio, parseErr := strconv.ParseFloat(t.MinRatio, 64)
+		if parseErr != nil {
+			continue
+		}
+		if ratio >= minRatio {
+			return t.Tier
+		}
+	}
+	// 全部 miss した場合は最後のティアを返す
+	return tiers[len(tiers)-1].Tier
+}
+
+func computeTierDefault(ratio float64) string {
+	switch {
+	case ratio >= 0.9:
+		return "S"
+	case ratio >= 0.7:
+		return "A"
+	case ratio >= 0.5:
+		return "B"
+	default:
+		return "C"
+	}
+}
+
+func (u *quizV2Usecase) generateFeedback(ctx context.Context, courseID uuid.UUID, correctCount, totalCount int32, tier string) string {
+	pct := int32(0)
+	if totalCount > 0 {
+		pct = correctCount * 100 / totalCount
+	}
+
+	course, err := u.repo.GetCourseByID(ctx, courseID)
+	if err != nil || course.AiPromptTemplate == "" {
+		return fmt.Sprintf("正解数: %d / %d問（正答率: %d%%）\nティア: %s", correctCount, totalCount, pct, tier)
+	}
+
+	result := course.AiPromptTemplate
+	result = strings.ReplaceAll(result, "{correct}", fmt.Sprintf("%d", correctCount))
+	result = strings.ReplaceAll(result, "{total}", fmt.Sprintf("%d", totalCount))
+	result = strings.ReplaceAll(result, "{pct}", fmt.Sprintf("%d", pct))
+	result = strings.ReplaceAll(result, "{tier}", tier)
+	result = strings.ReplaceAll(result, "{course_name}", course.Name)
+	return result
 }

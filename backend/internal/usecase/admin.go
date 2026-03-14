@@ -19,6 +19,9 @@ import (
 
 type AdminUsecase interface {
 	ImportQuestionsCsv(ctx context.Context, csvBytes []byte, dryRun bool) (*quizv2.ImportQuestionsCsvResponse, error)
+	CreateGenre(ctx context.Context, courseID, name, label string, sortOrder int32) (*quizv2.CreateGenreResponse, error)
+	UpsertScoringTiers(ctx context.Context, courseID string, tiers []*quizv2.ScoringTier) (*quizv2.UpsertScoringTiersResponse, error)
+	UpdateCourseTemplate(ctx context.Context, courseID, template string) (*quizv2.UpdateCourseTemplateResponse, error)
 }
 
 type adminUsecase struct {
@@ -315,4 +318,51 @@ func isAllEmpty(record []string) bool {
 		}
 	}
 	return true
+}
+
+func (u *adminUsecase) CreateGenre(ctx context.Context, courseID, name, label string, sortOrder int32) (*quizv2.CreateGenreResponse, error) {
+	cID, err := uuid.Parse(courseID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid course_id %q: %w", courseID, err)
+	}
+	genre, err := u.repo.CreateGenre(ctx, cID, name, label, int16(sortOrder))
+	if err != nil {
+		return nil, fmt.Errorf("create genre: %w", err)
+	}
+	return &quizv2.CreateGenreResponse{
+		Genre: &quizv2.Genre{
+			Id:        genre.ID.String(),
+			CourseId:  genre.CourseID.String(),
+			Name:      genre.Name,
+			Label:     genre.Label,
+			SortOrder: int32(genre.SortOrder),
+		},
+	}, nil
+}
+
+func (u *adminUsecase) UpsertScoringTiers(ctx context.Context, courseID string, tiers []*quizv2.ScoringTier) (*quizv2.UpsertScoringTiersResponse, error) {
+	cID, err := uuid.Parse(courseID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid course_id %q: %w", courseID, err)
+	}
+	var upserted int32
+	for _, t := range tiers {
+		minRatioStr := strconv.FormatFloat(t.MinRatio, 'f', 3, 64)
+		if _, err := u.repo.UpsertScoringTier(ctx, cID, t.Tier, minRatioStr, t.Label, int16(t.SortOrder)); err != nil {
+			return nil, fmt.Errorf("upsert scoring tier %q: %w", t.Tier, err)
+		}
+		upserted++
+	}
+	return &quizv2.UpsertScoringTiersResponse{Upserted: upserted}, nil
+}
+
+func (u *adminUsecase) UpdateCourseTemplate(ctx context.Context, courseID, template string) (*quizv2.UpdateCourseTemplateResponse, error) {
+	cID, err := uuid.Parse(courseID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid course_id %q: %w", courseID, err)
+	}
+	if err := u.repo.UpdateCourseTemplate(ctx, cID, template); err != nil {
+		return nil, fmt.Errorf("update course template: %w", err)
+	}
+	return &quizv2.UpdateCourseTemplateResponse{}, nil
 }

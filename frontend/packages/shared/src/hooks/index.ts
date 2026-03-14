@@ -6,3 +6,5 @@ export type { QuizFilter } from "./useQuiz";
 export { useCourses } from "./useCourses";
 export { useQuizSettings } from "./useQuizSettings";
 export { useTheme } from "./useTheme";
+export { useCourseGenres } from "./useCourseGenres";
+export type { Genre } from "./useCourseGenres";

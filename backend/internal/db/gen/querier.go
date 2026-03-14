@@ -13,9 +13,11 @@ import (
 type Querier interface {
 	CourseExists(ctx context.Context, id uuid.UUID) (bool, error)
 	CreateAttempt(ctx context.Context, arg CreateAttemptParams) (uuid.UUID, error)
+	CreateGenre(ctx context.Context, arg CreateGenreParams) (Genre, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	GetAttempt(ctx context.Context, id uuid.UUID) (Attempt, error)
 	GetAttemptInsights(ctx context.Context, attemptID uuid.UUID) (AttemptInsight, error)
+	GetCourseByID(ctx context.Context, id uuid.UUID) (GetCourseByIDRow, error)
 	GetExplanationsByQuestionIDs(ctx context.Context, dollar_1 []uuid.UUID) ([]GetExplanationsByQuestionIDsRow, error)
 	GetFirstTopicID(ctx context.Context) (uuid.UUID, error)
 	GetRefreshTokenByHash(ctx context.Context, tokenHash string) (RefreshToken, error)
@@ -29,11 +31,15 @@ type Querier interface {
 	InsertRefreshToken(ctx context.Context, arg InsertRefreshTokenParams) error
 	ListChoicesByQuestionIDs(ctx context.Context, dollar_1 []uuid.UUID) ([]Choice, error)
 	ListCourses(ctx context.Context) ([]ListCoursesRow, error)
+	ListGenresByCourse(ctx context.Context, courseID uuid.UUID) ([]ListGenresByCourseRow, error)
 	ListQuestionsByTopic(ctx context.Context, arg ListQuestionsByTopicParams) ([]ListQuestionsByTopicRow, error)
 	ListRankings(ctx context.Context, limit int32) ([]ListRankingsRow, error)
+	ListScoringTiersByCourse(ctx context.Context, courseID uuid.UUID) ([]ScoringTier, error)
 	RevokeRefreshToken(ctx context.Context, id uuid.UUID) error
+	UpdateCoursePromptTemplate(ctx context.Context, arg UpdateCoursePromptTemplateParams) error
 	UpsertAttemptInsights(ctx context.Context, arg UpsertAttemptInsightsParams) error
 	UpsertOAuthIdentity(ctx context.Context, arg UpsertOAuthIdentityParams) error
+	UpsertScoringTier(ctx context.Context, arg UpsertScoringTierParams) (ScoringTier, error)
 }
 
 var _ Querier = (*Queries)(nil)

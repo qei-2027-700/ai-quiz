@@ -4,13 +4,15 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { Genre } from "./quiz_pb";
+import { file_quiz_v2_quiz } from "./quiz_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file quiz/v2/admin.proto.
  */
 export const file_quiz_v2_admin: GenFile = /*@__PURE__*/
-  fileDesc("ChNxdWl6L3YyL2FkbWluLnByb3RvEgdxdWl6LnYyIjkKGUltcG9ydFF1ZXN0aW9uc0NzdlJlcXVlc3QSCwoDY3N2GAEgASgMEg8KB2RyeV9ydW4YAiABKAgiXQoaSW1wb3J0UXVlc3Rpb25zQ3N2UmVzcG9uc2USGQoRY3JlYXRlZF9xdWVzdGlvbnMYASABKAUSJAoGZXJyb3JzGAIgAygLMhQucXVpei52Mi5Dc3ZSb3dFcnJvciJBCgtDc3ZSb3dFcnJvchISCgpyb3dfbnVtYmVyGAEgASgFEg0KBWZpZWxkGAIgASgJEg8KB21lc3NhZ2UYAyABKAkybQoMQWRtaW5TZXJ2aWNlEl0KEkltcG9ydFF1ZXN0aW9uc0NzdhIiLnF1aXoudjIuSW1wb3J0UXVlc3Rpb25zQ3N2UmVxdWVzdBojLnF1aXoudjIuSW1wb3J0UXVlc3Rpb25zQ3N2UmVzcG9uc2VCgAEKC2NvbS5xdWl6LnYyQgpBZG1pblByb3RvUAFaKGdpdGh1Yi5jb20va20vYWktcXVpei9nZW4vcXVpei92MjtxdWl6djKiAgNRWFiqAgdRdWl6LlYyygIHUXVpelxWMuICE1F1aXpcVjJcR1BCTWV0YWRhdGHqAghRdWl6OjpWMmIGcHJvdG8z");
+  fileDesc("ChNxdWl6L3YyL2FkbWluLnByb3RvEgdxdWl6LnYyIjkKGUltcG9ydFF1ZXN0aW9uc0NzdlJlcXVlc3QSCwoDY3N2GAEgASgMEg8KB2RyeV9ydW4YAiABKAgiXQoaSW1wb3J0UXVlc3Rpb25zQ3N2UmVzcG9uc2USGQoRY3JlYXRlZF9xdWVzdGlvbnMYASABKAUSJAoGZXJyb3JzGAIgAygLMhQucXVpei52Mi5Dc3ZSb3dFcnJvciJBCgtDc3ZSb3dFcnJvchISCgpyb3dfbnVtYmVyGAEgASgFEg0KBWZpZWxkGAIgASgJEg8KB21lc3NhZ2UYAyABKAkiWAoSQ3JlYXRlR2VucmVSZXF1ZXN0EhEKCWNvdXJzZV9pZBgBIAEoCRIMCgRuYW1lGAIgASgJEg0KBWxhYmVsGAMgASgJEhIKCnNvcnRfb3JkZXIYBCABKAUiNAoTQ3JlYXRlR2VucmVSZXNwb25zZRIdCgVnZW5yZRgBIAEoCzIOLnF1aXoudjIuR2VucmUiUQoLU2NvcmluZ1RpZXISDAoEdGllchgBIAEoCRIRCgltaW5fcmF0aW8YAiABKAESDQoFbGFiZWwYAyABKAkSEgoKc29ydF9vcmRlchgEIAEoBSJTChlVcHNlcnRTY29yaW5nVGllcnNSZXF1ZXN0EhEKCWNvdXJzZV9pZBgBIAEoCRIjCgV0aWVycxgCIAMoCzIULnF1aXoudjIuU2NvcmluZ1RpZXIiLgoaVXBzZXJ0U2NvcmluZ1RpZXJzUmVzcG9uc2USEAoIdXBzZXJ0ZWQYASABKAUiTAobVXBkYXRlQ291cnNlVGVtcGxhdGVSZXF1ZXN0EhEKCWNvdXJzZV9pZBgBIAEoCRIaChJhaV9wcm9tcHRfdGVtcGxhdGUYAiABKAkiHgocVXBkYXRlQ291cnNlVGVtcGxhdGVSZXNwb25zZTL7AgoMQWRtaW5TZXJ2aWNlEl0KEkltcG9ydFF1ZXN0aW9uc0NzdhIiLnF1aXoudjIuSW1wb3J0UXVlc3Rpb25zQ3N2UmVxdWVzdBojLnF1aXoudjIuSW1wb3J0UXVlc3Rpb25zQ3N2UmVzcG9uc2USSAoLQ3JlYXRlR2VucmUSGy5xdWl6LnYyLkNyZWF0ZUdlbnJlUmVxdWVzdBocLnF1aXoudjIuQ3JlYXRlR2VucmVSZXNwb25zZRJdChJVcHNlcnRTY29yaW5nVGllcnMSIi5xdWl6LnYyLlVwc2VydFNjb3JpbmdUaWVyc1JlcXVlc3QaIy5xdWl6LnYyLlVwc2VydFNjb3JpbmdUaWVyc1Jlc3BvbnNlEmMKFFVwZGF0ZUNvdXJzZVRlbXBsYXRlEiQucXVpei52Mi5VcGRhdGVDb3Vyc2VUZW1wbGF0ZVJlcXVlc3QaJS5xdWl6LnYyLlVwZGF0ZUNvdXJzZVRlbXBsYXRlUmVzcG9uc2VCgAEKC2NvbS5xdWl6LnYyQgpBZG1pblByb3RvUAFaKGdpdGh1Yi5jb20va20vYWktcXVpei9nZW4vcXVpei92MjtxdWl6djKiAgNRWFiqAgdRdWl6LlYyygIHUXVpelxWMuICE1F1aXpcVjJcR1BCTWV0YWRhdGHqAghRdWl6OjpWMmIGcHJvdG8z", [file_quiz_v2_quiz]);
 
 /**
  * @generated from message quiz.v2.ImportQuestionsCsvRequest
@@ -86,6 +88,161 @@ export const CsvRowErrorSchema: GenMessage<CsvRowError> = /*@__PURE__*/
   messageDesc(file_quiz_v2_admin, 2);
 
 /**
+ * @generated from message quiz.v2.CreateGenreRequest
+ */
+export type CreateGenreRequest = Message<"quiz.v2.CreateGenreRequest"> & {
+  /**
+   * @generated from field: string course_id = 1;
+   */
+  courseId: string;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string label = 3;
+   */
+  label: string;
+
+  /**
+   * @generated from field: int32 sort_order = 4;
+   */
+  sortOrder: number;
+};
+
+/**
+ * Describes the message quiz.v2.CreateGenreRequest.
+ * Use `create(CreateGenreRequestSchema)` to create a new message.
+ */
+export const CreateGenreRequestSchema: GenMessage<CreateGenreRequest> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_admin, 3);
+
+/**
+ * @generated from message quiz.v2.CreateGenreResponse
+ */
+export type CreateGenreResponse = Message<"quiz.v2.CreateGenreResponse"> & {
+  /**
+   * @generated from field: quiz.v2.Genre genre = 1;
+   */
+  genre?: Genre;
+};
+
+/**
+ * Describes the message quiz.v2.CreateGenreResponse.
+ * Use `create(CreateGenreResponseSchema)` to create a new message.
+ */
+export const CreateGenreResponseSchema: GenMessage<CreateGenreResponse> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_admin, 4);
+
+/**
+ * @generated from message quiz.v2.ScoringTier
+ */
+export type ScoringTier = Message<"quiz.v2.ScoringTier"> & {
+  /**
+   * @generated from field: string tier = 1;
+   */
+  tier: string;
+
+  /**
+   * @generated from field: double min_ratio = 2;
+   */
+  minRatio: number;
+
+  /**
+   * @generated from field: string label = 3;
+   */
+  label: string;
+
+  /**
+   * @generated from field: int32 sort_order = 4;
+   */
+  sortOrder: number;
+};
+
+/**
+ * Describes the message quiz.v2.ScoringTier.
+ * Use `create(ScoringTierSchema)` to create a new message.
+ */
+export const ScoringTierSchema: GenMessage<ScoringTier> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_admin, 5);
+
+/**
+ * @generated from message quiz.v2.UpsertScoringTiersRequest
+ */
+export type UpsertScoringTiersRequest = Message<"quiz.v2.UpsertScoringTiersRequest"> & {
+  /**
+   * @generated from field: string course_id = 1;
+   */
+  courseId: string;
+
+  /**
+   * @generated from field: repeated quiz.v2.ScoringTier tiers = 2;
+   */
+  tiers: ScoringTier[];
+};
+
+/**
+ * Describes the message quiz.v2.UpsertScoringTiersRequest.
+ * Use `create(UpsertScoringTiersRequestSchema)` to create a new message.
+ */
+export const UpsertScoringTiersRequestSchema: GenMessage<UpsertScoringTiersRequest> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_admin, 6);
+
+/**
+ * @generated from message quiz.v2.UpsertScoringTiersResponse
+ */
+export type UpsertScoringTiersResponse = Message<"quiz.v2.UpsertScoringTiersResponse"> & {
+  /**
+   * @generated from field: int32 upserted = 1;
+   */
+  upserted: number;
+};
+
+/**
+ * Describes the message quiz.v2.UpsertScoringTiersResponse.
+ * Use `create(UpsertScoringTiersResponseSchema)` to create a new message.
+ */
+export const UpsertScoringTiersResponseSchema: GenMessage<UpsertScoringTiersResponse> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_admin, 7);
+
+/**
+ * @generated from message quiz.v2.UpdateCourseTemplateRequest
+ */
+export type UpdateCourseTemplateRequest = Message<"quiz.v2.UpdateCourseTemplateRequest"> & {
+  /**
+   * @generated from field: string course_id = 1;
+   */
+  courseId: string;
+
+  /**
+   * @generated from field: string ai_prompt_template = 2;
+   */
+  aiPromptTemplate: string;
+};
+
+/**
+ * Describes the message quiz.v2.UpdateCourseTemplateRequest.
+ * Use `create(UpdateCourseTemplateRequestSchema)` to create a new message.
+ */
+export const UpdateCourseTemplateRequestSchema: GenMessage<UpdateCourseTemplateRequest> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_admin, 8);
+
+/**
+ * @generated from message quiz.v2.UpdateCourseTemplateResponse
+ */
+export type UpdateCourseTemplateResponse = Message<"quiz.v2.UpdateCourseTemplateResponse"> & {
+};
+
+/**
+ * Describes the message quiz.v2.UpdateCourseTemplateResponse.
+ * Use `create(UpdateCourseTemplateResponseSchema)` to create a new message.
+ */
+export const UpdateCourseTemplateResponseSchema: GenMessage<UpdateCourseTemplateResponse> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_admin, 9);
+
+/**
  * Admin API for managing quiz content.
  *
  * @generated from service quiz.v2.AdminService
@@ -101,6 +258,36 @@ export const AdminService: GenService<{
     methodKind: "unary";
     input: typeof ImportQuestionsCsvRequestSchema;
     output: typeof ImportQuestionsCsvResponseSchema;
+  },
+  /**
+   * ジャンル作成・更新
+   *
+   * @generated from rpc quiz.v2.AdminService.CreateGenre
+   */
+  createGenre: {
+    methodKind: "unary";
+    input: typeof CreateGenreRequestSchema;
+    output: typeof CreateGenreResponseSchema;
+  },
+  /**
+   * ティア定義の更新
+   *
+   * @generated from rpc quiz.v2.AdminService.UpsertScoringTiers
+   */
+  upsertScoringTiers: {
+    methodKind: "unary";
+    input: typeof UpsertScoringTiersRequestSchema;
+    output: typeof UpsertScoringTiersResponseSchema;
+  },
+  /**
+   * コースの AI フィードバックテンプレート更新
+   *
+   * @generated from rpc quiz.v2.AdminService.UpdateCourseTemplate
+   */
+  updateCourseTemplate: {
+    methodKind: "unary";
+    input: typeof UpdateCourseTemplateRequestSchema;
+    output: typeof UpdateCourseTemplateResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_quiz_v2_admin, 0);

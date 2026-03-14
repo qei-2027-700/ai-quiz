@@ -36,6 +36,15 @@ const (
 	// AdminServiceImportQuestionsCsvProcedure is the fully-qualified name of the AdminService's
 	// ImportQuestionsCsv RPC.
 	AdminServiceImportQuestionsCsvProcedure = "/quiz.v2.AdminService/ImportQuestionsCsv"
+	// AdminServiceCreateGenreProcedure is the fully-qualified name of the AdminService's CreateGenre
+	// RPC.
+	AdminServiceCreateGenreProcedure = "/quiz.v2.AdminService/CreateGenre"
+	// AdminServiceUpsertScoringTiersProcedure is the fully-qualified name of the AdminService's
+	// UpsertScoringTiers RPC.
+	AdminServiceUpsertScoringTiersProcedure = "/quiz.v2.AdminService/UpsertScoringTiers"
+	// AdminServiceUpdateCourseTemplateProcedure is the fully-qualified name of the AdminService's
+	// UpdateCourseTemplate RPC.
+	AdminServiceUpdateCourseTemplateProcedure = "/quiz.v2.AdminService/UpdateCourseTemplate"
 )
 
 // AdminServiceClient is a client for the quiz.v2.AdminService service.
@@ -43,6 +52,12 @@ type AdminServiceClient interface {
 	// Import questions from CSV. MVP: add-only.
 	// Future: allow updates by specifying question_id column.
 	ImportQuestionsCsv(context.Context, *connect.Request[v2.ImportQuestionsCsvRequest]) (*connect.Response[v2.ImportQuestionsCsvResponse], error)
+	// ジャンル作成・更新
+	CreateGenre(context.Context, *connect.Request[v2.CreateGenreRequest]) (*connect.Response[v2.CreateGenreResponse], error)
+	// ティア定義の更新
+	UpsertScoringTiers(context.Context, *connect.Request[v2.UpsertScoringTiersRequest]) (*connect.Response[v2.UpsertScoringTiersResponse], error)
+	// コースの AI フィードバックテンプレート更新
+	UpdateCourseTemplate(context.Context, *connect.Request[v2.UpdateCourseTemplateRequest]) (*connect.Response[v2.UpdateCourseTemplateResponse], error)
 }
 
 // NewAdminServiceClient constructs a client for the quiz.v2.AdminService service. By default, it
@@ -62,12 +77,33 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(adminServiceMethods.ByName("ImportQuestionsCsv")),
 			connect.WithClientOptions(opts...),
 		),
+		createGenre: connect.NewClient[v2.CreateGenreRequest, v2.CreateGenreResponse](
+			httpClient,
+			baseURL+AdminServiceCreateGenreProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("CreateGenre")),
+			connect.WithClientOptions(opts...),
+		),
+		upsertScoringTiers: connect.NewClient[v2.UpsertScoringTiersRequest, v2.UpsertScoringTiersResponse](
+			httpClient,
+			baseURL+AdminServiceUpsertScoringTiersProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("UpsertScoringTiers")),
+			connect.WithClientOptions(opts...),
+		),
+		updateCourseTemplate: connect.NewClient[v2.UpdateCourseTemplateRequest, v2.UpdateCourseTemplateResponse](
+			httpClient,
+			baseURL+AdminServiceUpdateCourseTemplateProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("UpdateCourseTemplate")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // adminServiceClient implements AdminServiceClient.
 type adminServiceClient struct {
-	importQuestionsCsv *connect.Client[v2.ImportQuestionsCsvRequest, v2.ImportQuestionsCsvResponse]
+	importQuestionsCsv   *connect.Client[v2.ImportQuestionsCsvRequest, v2.ImportQuestionsCsvResponse]
+	createGenre          *connect.Client[v2.CreateGenreRequest, v2.CreateGenreResponse]
+	upsertScoringTiers   *connect.Client[v2.UpsertScoringTiersRequest, v2.UpsertScoringTiersResponse]
+	updateCourseTemplate *connect.Client[v2.UpdateCourseTemplateRequest, v2.UpdateCourseTemplateResponse]
 }
 
 // ImportQuestionsCsv calls quiz.v2.AdminService.ImportQuestionsCsv.
@@ -75,11 +111,32 @@ func (c *adminServiceClient) ImportQuestionsCsv(ctx context.Context, req *connec
 	return c.importQuestionsCsv.CallUnary(ctx, req)
 }
 
+// CreateGenre calls quiz.v2.AdminService.CreateGenre.
+func (c *adminServiceClient) CreateGenre(ctx context.Context, req *connect.Request[v2.CreateGenreRequest]) (*connect.Response[v2.CreateGenreResponse], error) {
+	return c.createGenre.CallUnary(ctx, req)
+}
+
+// UpsertScoringTiers calls quiz.v2.AdminService.UpsertScoringTiers.
+func (c *adminServiceClient) UpsertScoringTiers(ctx context.Context, req *connect.Request[v2.UpsertScoringTiersRequest]) (*connect.Response[v2.UpsertScoringTiersResponse], error) {
+	return c.upsertScoringTiers.CallUnary(ctx, req)
+}
+
+// UpdateCourseTemplate calls quiz.v2.AdminService.UpdateCourseTemplate.
+func (c *adminServiceClient) UpdateCourseTemplate(ctx context.Context, req *connect.Request[v2.UpdateCourseTemplateRequest]) (*connect.Response[v2.UpdateCourseTemplateResponse], error) {
+	return c.updateCourseTemplate.CallUnary(ctx, req)
+}
+
 // AdminServiceHandler is an implementation of the quiz.v2.AdminService service.
 type AdminServiceHandler interface {
 	// Import questions from CSV. MVP: add-only.
 	// Future: allow updates by specifying question_id column.
 	ImportQuestionsCsv(context.Context, *connect.Request[v2.ImportQuestionsCsvRequest]) (*connect.Response[v2.ImportQuestionsCsvResponse], error)
+	// ジャンル作成・更新
+	CreateGenre(context.Context, *connect.Request[v2.CreateGenreRequest]) (*connect.Response[v2.CreateGenreResponse], error)
+	// ティア定義の更新
+	UpsertScoringTiers(context.Context, *connect.Request[v2.UpsertScoringTiersRequest]) (*connect.Response[v2.UpsertScoringTiersResponse], error)
+	// コースの AI フィードバックテンプレート更新
+	UpdateCourseTemplate(context.Context, *connect.Request[v2.UpdateCourseTemplateRequest]) (*connect.Response[v2.UpdateCourseTemplateResponse], error)
 }
 
 // NewAdminServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -95,10 +152,34 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(adminServiceMethods.ByName("ImportQuestionsCsv")),
 		connect.WithHandlerOptions(opts...),
 	)
+	adminServiceCreateGenreHandler := connect.NewUnaryHandler(
+		AdminServiceCreateGenreProcedure,
+		svc.CreateGenre,
+		connect.WithSchema(adminServiceMethods.ByName("CreateGenre")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceUpsertScoringTiersHandler := connect.NewUnaryHandler(
+		AdminServiceUpsertScoringTiersProcedure,
+		svc.UpsertScoringTiers,
+		connect.WithSchema(adminServiceMethods.ByName("UpsertScoringTiers")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceUpdateCourseTemplateHandler := connect.NewUnaryHandler(
+		AdminServiceUpdateCourseTemplateProcedure,
+		svc.UpdateCourseTemplate,
+		connect.WithSchema(adminServiceMethods.ByName("UpdateCourseTemplate")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quiz.v2.AdminService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AdminServiceImportQuestionsCsvProcedure:
 			adminServiceImportQuestionsCsvHandler.ServeHTTP(w, r)
+		case AdminServiceCreateGenreProcedure:
+			adminServiceCreateGenreHandler.ServeHTTP(w, r)
+		case AdminServiceUpsertScoringTiersProcedure:
+			adminServiceUpsertScoringTiersHandler.ServeHTTP(w, r)
+		case AdminServiceUpdateCourseTemplateProcedure:
+			adminServiceUpdateCourseTemplateHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -110,4 +191,16 @@ type UnimplementedAdminServiceHandler struct{}
 
 func (UnimplementedAdminServiceHandler) ImportQuestionsCsv(context.Context, *connect.Request[v2.ImportQuestionsCsvRequest]) (*connect.Response[v2.ImportQuestionsCsvResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.AdminService.ImportQuestionsCsv is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) CreateGenre(context.Context, *connect.Request[v2.CreateGenreRequest]) (*connect.Response[v2.CreateGenreResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.AdminService.CreateGenre is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) UpsertScoringTiers(context.Context, *connect.Request[v2.UpsertScoringTiersRequest]) (*connect.Response[v2.UpsertScoringTiersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.AdminService.UpsertScoringTiers is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) UpdateCourseTemplate(context.Context, *connect.Request[v2.UpdateCourseTemplateRequest]) (*connect.Response[v2.UpdateCourseTemplateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.AdminService.UpdateCourseTemplate is not implemented"))
 }

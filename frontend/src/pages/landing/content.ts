@@ -35,6 +35,12 @@ export interface LandingContent {
   terminal: Array<{ type: string; text: string }>;
 }
 
+const brandName = import.meta.env.VITE_APP_BRAND_NAME ?? "ai-quiz";
+const tagline = import.meta.env.VITE_APP_TAGLINE ?? "生成AIの理解度を試そう";
+const description =
+  import.meta.env.VITE_APP_DESCRIPTION ??
+  "RAG・Agent・LLMの知識を10問で確認。4段階ランクで実力を測ろう。";
+
 export const content: Record<Locale, LandingContent> = {
   ja: {
     nav: {
@@ -46,10 +52,10 @@ export const content: Record<Locale, LandingContent> = {
     },
     hero: {
       badge: "RAG搭載 · オープンソース · セルフホスト可能",
-      headline1: "あなたの AI 理解度を、",
+      headline1: tagline,
       headlineAccent: "数値で証明する。",
       headline2: "",
-      sub: "RAG と Claude AI を搭載したオープンソースのクイズプラットフォーム。関連ドキュメントを自動検索し、解説を生成して、あなたの AI 理解力をリアルタイムにスコアリングします。",
+      sub: description,
       ctaPrimary: "クイズを始める →",
       ctaSecondary: "GitHub で見る",
     },
@@ -104,7 +110,7 @@ export const content: Record<Locale, LandingContent> = {
       docs: "Docs",
     },
     terminal: [
-      { type: "prompt", text: "$ ai-quiz start --topic ai-fundamentals" },
+      { type: "prompt", text: `$ ${brandName} start --topic ai-fundamentals` },
       { type: "info",   text: "→ RAGパイプラインで10問を読み込み中..." },
       { type: "blank",  text: "" },
       { type: "q",      text: "Q1  RAGとは何の略ですか？" },
@@ -191,7 +197,7 @@ export const content: Record<Locale, LandingContent> = {
       docs: "Docs",
     },
     terminal: [
-      { type: "prompt", text: "$ ai-quiz start --topic ai-fundamentals" },
+      { type: "prompt", text: `$ ${brandName} start --topic ai-fundamentals` },
       { type: "info",   text: "→ Loading 10 questions via RAG pipeline..." },
       { type: "blank",  text: "" },
       { type: "q",      text: "Q1  What does RAG stand for?" },

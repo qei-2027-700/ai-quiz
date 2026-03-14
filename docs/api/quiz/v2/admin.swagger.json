@@ -16,6 +16,39 @@
     "application/json"
   ],
   "paths": {
+    "/quiz.v2.AdminService/CreateGenre": {
+      "post": {
+        "summary": "ジャンル作成・更新",
+        "operationId": "AdminService_CreateGenre",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.CreateGenreResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.CreateGenreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
     "/quiz.v2.AdminService/ImportQuestionsCsv": {
       "post": {
         "summary": "Import questions from CSV. MVP: add-only.\nFuture: allow updates by specifying question_id column.",
@@ -41,6 +74,72 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/quiz.v2.ImportQuestionsCsvRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/quiz.v2.AdminService/UpdateCourseTemplate": {
+      "post": {
+        "summary": "コースの AI フィードバックテンプレート更新",
+        "operationId": "AdminService_UpdateCourseTemplate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.UpdateCourseTemplateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.UpdateCourseTemplateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/quiz.v2.AdminService/UpsertScoringTiers": {
+      "post": {
+        "summary": "ティア定義の更新",
+        "operationId": "AdminService_UpsertScoringTiers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.UpsertScoringTiersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.UpsertScoringTiersRequest"
             }
           }
         ],
@@ -79,6 +178,32 @@
         }
       }
     },
+    "quiz.v2.CreateGenreRequest": {
+      "type": "object",
+      "properties": {
+        "courseId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v2.CreateGenreResponse": {
+      "type": "object",
+      "properties": {
+        "genre": {
+          "$ref": "#/definitions/quiz.v2.Genre"
+        }
+      }
+    },
     "quiz.v2.CsvRowError": {
       "type": "object",
       "properties": {
@@ -92,6 +217,27 @@
         },
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "quiz.v2.Genre": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "courseId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -120,6 +266,63 @@
             "type": "object",
             "$ref": "#/definitions/quiz.v2.CsvRowError"
           }
+        }
+      }
+    },
+    "quiz.v2.ScoringTier": {
+      "type": "object",
+      "properties": {
+        "tier": {
+          "type": "string"
+        },
+        "minRatio": {
+          "type": "number",
+          "format": "double"
+        },
+        "label": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v2.UpdateCourseTemplateRequest": {
+      "type": "object",
+      "properties": {
+        "courseId": {
+          "type": "string"
+        },
+        "aiPromptTemplate": {
+          "type": "string"
+        }
+      }
+    },
+    "quiz.v2.UpdateCourseTemplateResponse": {
+      "type": "object"
+    },
+    "quiz.v2.UpsertScoringTiersRequest": {
+      "type": "object",
+      "properties": {
+        "courseId": {
+          "type": "string"
+        },
+        "tiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.ScoringTier"
+          }
+        }
+      }
+    },
+    "quiz.v2.UpsertScoringTiersResponse": {
+      "type": "object",
+      "properties": {
+        "upserted": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     }

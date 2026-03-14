@@ -1798,6 +1798,170 @@ func (x *RankingEntry) GetCreatedAt() string {
 	return ""
 }
 
+type ListGenresRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CourseId      string                 `protobuf:"bytes,1,opt,name=course_id,json=courseId,proto3" json:"course_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGenresRequest) Reset() {
+	*x = ListGenresRequest{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGenresRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGenresRequest) ProtoMessage() {}
+
+func (x *ListGenresRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGenresRequest.ProtoReflect.Descriptor instead.
+func (*ListGenresRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *ListGenresRequest) GetCourseId() string {
+	if x != nil {
+		return x.CourseId
+	}
+	return ""
+}
+
+type Genre struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	CourseId      string                 `protobuf:"bytes,2,opt,name=course_id,json=courseId,proto3" json:"course_id,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Label         string                 `protobuf:"bytes,4,opt,name=label,proto3" json:"label,omitempty"`
+	SortOrder     int32                  `protobuf:"varint,5,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Genre) Reset() {
+	*x = Genre{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Genre) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Genre) ProtoMessage() {}
+
+func (x *Genre) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Genre.ProtoReflect.Descriptor instead.
+func (*Genre) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *Genre) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Genre) GetCourseId() string {
+	if x != nil {
+		return x.CourseId
+	}
+	return ""
+}
+
+func (x *Genre) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Genre) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+func (x *Genre) GetSortOrder() int32 {
+	if x != nil {
+		return x.SortOrder
+	}
+	return 0
+}
+
+type ListGenresResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Genres        []*Genre               `protobuf:"bytes,1,rep,name=genres,proto3" json:"genres,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGenresResponse) Reset() {
+	*x = ListGenresResponse{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGenresResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGenresResponse) ProtoMessage() {}
+
+func (x *ListGenresResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGenresResponse.ProtoReflect.Descriptor instead.
+func (*ListGenresResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *ListGenresResponse) GetGenres() []*Genre {
+	if x != nil {
+		return x.Genres
+	}
+	return nil
+}
+
 var File_quiz_v2_quiz_proto protoreflect.FileDescriptor
 
 const file_quiz_v2_quiz_proto_rawDesc = "" +
@@ -1927,19 +2091,32 @@ const file_quiz_v2_quiz_proto_rawDesc = "" +
 	"totalCount\x12\x12\n" +
 	"\x04tier\x18\x05 \x01(\tR\x04tier\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x06 \x01(\tR\tcreatedAt*\x85\x01\n" +
+	"created_at\x18\x06 \x01(\tR\tcreatedAt\"0\n" +
+	"\x11ListGenresRequest\x12\x1b\n" +
+	"\tcourse_id\x18\x01 \x01(\tR\bcourseId\"}\n" +
+	"\x05Genre\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
+	"\tcourse_id\x18\x02 \x01(\tR\bcourseId\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x14\n" +
+	"\x05label\x18\x04 \x01(\tR\x05label\x12\x1d\n" +
+	"\n" +
+	"sort_order\x18\x05 \x01(\x05R\tsortOrder\"<\n" +
+	"\x12ListGenresResponse\x12&\n" +
+	"\x06genres\x18\x01 \x03(\v2\x0e.quiz.v2.GenreR\x06genres*\x85\x01\n" +
 	"\x0eInsightsStatus\x12\x1f\n" +
 	"\x1bINSIGHTS_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17INSIGHTS_STATUS_PENDING\x10\x01\x12\x19\n" +
 	"\x15INSIGHTS_STATUS_READY\x10\x02\x12\x1a\n" +
-	"\x16INSIGHTS_STATUS_FAILED\x10\x032\xf0\x03\n" +
+	"\x16INSIGHTS_STATUS_FAILED\x10\x032\xb7\x04\n" +
 	"\vQuizService\x12H\n" +
 	"\vListCourses\x12\x1b.quiz.v2.ListCoursesRequest\x1a\x1c.quiz.v2.ListCoursesResponse\x12K\n" +
 	"\fStartAttempt\x12\x1c.quiz.v2.StartAttemptRequest\x1a\x1d.quiz.v2.StartAttemptResponse\x12N\n" +
 	"\rListQuestions\x12\x1d.quiz.v2.ListQuestionsRequest\x1a\x1e.quiz.v2.ListQuestionsResponse\x12N\n" +
 	"\rSubmitAnswers\x12\x1d.quiz.v2.SubmitAnswersRequest\x1a\x1e.quiz.v2.SubmitAnswersResponse\x12]\n" +
 	"\x12GetAttemptInsights\x12\".quiz.v2.GetAttemptInsightsRequest\x1a#.quiz.v2.GetAttemptInsightsResponse\x12K\n" +
-	"\fListRankings\x12\x1c.quiz.v2.ListRankingsRequest\x1a\x1d.quiz.v2.ListRankingsResponseB\x7f\n" +
+	"\fListRankings\x12\x1c.quiz.v2.ListRankingsRequest\x1a\x1d.quiz.v2.ListRankingsResponse\x12E\n" +
+	"\n" +
+	"ListGenres\x12\x1a.quiz.v2.ListGenresRequest\x1a\x1b.quiz.v2.ListGenresResponseB\x7f\n" +
 	"\vcom.quiz.v2B\tQuizProtoP\x01Z(github.com/km/ai-quiz/gen/quiz/v2;quizv2\xa2\x02\x03QXX\xaa\x02\aQuiz.V2\xca\x02\aQuiz\\V2\xe2\x02\x13Quiz\\V2\\GPBMetadata\xea\x02\bQuiz::V2b\x06proto3"
 
 var (
@@ -1955,7 +2132,7 @@ func file_quiz_v2_quiz_proto_rawDescGZIP() []byte {
 }
 
 var file_quiz_v2_quiz_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_quiz_v2_quiz_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
+var file_quiz_v2_quiz_proto_msgTypes = make([]protoimpl.MessageInfo, 34)
 var file_quiz_v2_quiz_proto_goTypes = []any{
 	(InsightsStatus)(0),                // 0: quiz.v2.InsightsStatus
 	(*Course)(nil),                     // 1: quiz.v2.Course
@@ -1988,12 +2165,15 @@ var file_quiz_v2_quiz_proto_goTypes = []any{
 	(*ListRankingsRequest)(nil),        // 28: quiz.v2.ListRankingsRequest
 	(*ListRankingsResponse)(nil),       // 29: quiz.v2.ListRankingsResponse
 	(*RankingEntry)(nil),               // 30: quiz.v2.RankingEntry
-	nil,                                // 31: quiz.v2.Question.AttributesEntry
+	(*ListGenresRequest)(nil),          // 31: quiz.v2.ListGenresRequest
+	(*Genre)(nil),                      // 32: quiz.v2.Genre
+	(*ListGenresResponse)(nil),         // 33: quiz.v2.ListGenresResponse
+	nil,                                // 34: quiz.v2.Question.AttributesEntry
 }
 var file_quiz_v2_quiz_proto_depIdxs = []int32{
 	1,  // 0: quiz.v2.ListCoursesResponse.courses:type_name -> quiz.v2.Course
 	8,  // 1: quiz.v2.ListQuestionsResponse.questions:type_name -> quiz.v2.Question
-	31, // 2: quiz.v2.Question.attributes:type_name -> quiz.v2.Question.AttributesEntry
+	34, // 2: quiz.v2.Question.attributes:type_name -> quiz.v2.Question.AttributesEntry
 	10, // 3: quiz.v2.Question.multiple_choice:type_name -> quiz.v2.MultipleChoiceBody
 	11, // 4: quiz.v2.Question.multi_select:type_name -> quiz.v2.MultiSelectBody
 	13, // 5: quiz.v2.Question.ordering:type_name -> quiz.v2.OrderingBody
@@ -2013,23 +2193,26 @@ var file_quiz_v2_quiz_proto_depIdxs = []int32{
 	0,  // 19: quiz.v2.GetAttemptInsightsResponse.status:type_name -> quiz.v2.InsightsStatus
 	27, // 20: quiz.v2.GetAttemptInsightsResponse.citations:type_name -> quiz.v2.Citation
 	30, // 21: quiz.v2.ListRankingsResponse.entries:type_name -> quiz.v2.RankingEntry
-	2,  // 22: quiz.v2.QuizService.ListCourses:input_type -> quiz.v2.ListCoursesRequest
-	4,  // 23: quiz.v2.QuizService.StartAttempt:input_type -> quiz.v2.StartAttemptRequest
-	6,  // 24: quiz.v2.QuizService.ListQuestions:input_type -> quiz.v2.ListQuestionsRequest
-	18, // 25: quiz.v2.QuizService.SubmitAnswers:input_type -> quiz.v2.SubmitAnswersRequest
-	25, // 26: quiz.v2.QuizService.GetAttemptInsights:input_type -> quiz.v2.GetAttemptInsightsRequest
-	28, // 27: quiz.v2.QuizService.ListRankings:input_type -> quiz.v2.ListRankingsRequest
-	3,  // 28: quiz.v2.QuizService.ListCourses:output_type -> quiz.v2.ListCoursesResponse
-	5,  // 29: quiz.v2.QuizService.StartAttempt:output_type -> quiz.v2.StartAttemptResponse
-	7,  // 30: quiz.v2.QuizService.ListQuestions:output_type -> quiz.v2.ListQuestionsResponse
-	19, // 31: quiz.v2.QuizService.SubmitAnswers:output_type -> quiz.v2.SubmitAnswersResponse
-	26, // 32: quiz.v2.QuizService.GetAttemptInsights:output_type -> quiz.v2.GetAttemptInsightsResponse
-	29, // 33: quiz.v2.QuizService.ListRankings:output_type -> quiz.v2.ListRankingsResponse
-	28, // [28:34] is the sub-list for method output_type
-	22, // [22:28] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	32, // 22: quiz.v2.ListGenresResponse.genres:type_name -> quiz.v2.Genre
+	2,  // 23: quiz.v2.QuizService.ListCourses:input_type -> quiz.v2.ListCoursesRequest
+	4,  // 24: quiz.v2.QuizService.StartAttempt:input_type -> quiz.v2.StartAttemptRequest
+	6,  // 25: quiz.v2.QuizService.ListQuestions:input_type -> quiz.v2.ListQuestionsRequest
+	18, // 26: quiz.v2.QuizService.SubmitAnswers:input_type -> quiz.v2.SubmitAnswersRequest
+	25, // 27: quiz.v2.QuizService.GetAttemptInsights:input_type -> quiz.v2.GetAttemptInsightsRequest
+	28, // 28: quiz.v2.QuizService.ListRankings:input_type -> quiz.v2.ListRankingsRequest
+	31, // 29: quiz.v2.QuizService.ListGenres:input_type -> quiz.v2.ListGenresRequest
+	3,  // 30: quiz.v2.QuizService.ListCourses:output_type -> quiz.v2.ListCoursesResponse
+	5,  // 31: quiz.v2.QuizService.StartAttempt:output_type -> quiz.v2.StartAttemptResponse
+	7,  // 32: quiz.v2.QuizService.ListQuestions:output_type -> quiz.v2.ListQuestionsResponse
+	19, // 33: quiz.v2.QuizService.SubmitAnswers:output_type -> quiz.v2.SubmitAnswersResponse
+	26, // 34: quiz.v2.QuizService.GetAttemptInsights:output_type -> quiz.v2.GetAttemptInsightsResponse
+	29, // 35: quiz.v2.QuizService.ListRankings:output_type -> quiz.v2.ListRankingsResponse
+	33, // 36: quiz.v2.QuizService.ListGenres:output_type -> quiz.v2.ListGenresResponse
+	30, // [30:37] is the sub-list for method output_type
+	23, // [23:30] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_quiz_v2_quiz_proto_init() }
@@ -2058,7 +2241,7 @@ func file_quiz_v2_quiz_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quiz_v2_quiz_proto_rawDesc), len(file_quiz_v2_quiz_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   31,
+			NumMessages:   34,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

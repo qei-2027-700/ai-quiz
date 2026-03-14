@@ -701,26 +701,26 @@ INSERT INTO explanations (question_id, text) VALUES (
 ) ON CONFLICT (question_id) DO NOTHING;
 
 
--- ── Q31: AnthropicとPalantir・国防省の対立（ai_services / 中級）──
+-- ── Q31: AnthropicとPalantir・国防省の契約をめぐる議論（ai_services / 中級）──
 INSERT INTO questions (id, topic_id, text, difficulty, genre)
 VALUES (
   '10000000-0000-0000-0000-000000000031',
   '00000000-0000-0000-0000-000000000001',
-  'PalantirのAIプラットフォームを通じて米国防省にClaudeを提供していたAnthropicが、2026年に国防省との関係で問題となった主な理由はどれか？',
+  'PalantirのAIプラットフォームを通じて米国防省にClaudeを提供するAnthropicの契約が批判・議論を呼んだ主な理由はどれか？',
   2, 'ai_services'
 )
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
-  ('41000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000031', '国防省の要求をすべて受け入れ、軍事AI利用を無制限に許可したため批判を受けた',                       false, 1),
-  ('41000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000031', '大量監視と自律型兵器への利用制限を求め国防省と対立した結果、Claudeの使用が禁止された',              true,  2),
-  ('41000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000031', 'Palantirとの契約を一方的に解消し、国防省への関与を完全に撤退した',                                   false, 3),
-  ('41000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000031', 'OpenAIと合弁会社を設立して軍事AI開発を別法人で継続することを発表したため',                             false, 4)
+  ('41000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000031', '国防省の要求をすべて受け入れ、軍事AI利用を無制限に許可したとして批判を受けた',                                                                    false, 1),
+  ('41000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000031', 'AnthropicのAI利用ポリシーが自律型兵器開発や大量監視への使用を制限しており、AIの安全性を掲げる企業が軍事・諜報機関に技術提供することへの整合性が問われた', true,  2),
+  ('41000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000031', 'Palantirとの契約を一方的に解消し、国防省への関与を完全に撤退した',                                                                               false, 3),
+  ('41000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000031', 'OpenAIと合弁会社を設立して軍事AI開発を別法人で継続することを発表したため',                                                                           false, 4)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000031',
-  'AnthropicはPalantirを通じて米国防省の機密ネットワークにClaudeを提供していたが、大量監視と自律型兵器への利用制限を求める姿勢を示した。2026年3月、国防省（トランプ政権が「戦争省」と改称）はAnthropicの技術を公式に使用禁止とした。軍が自ら選定したAIモデルを最も機密性の高い環境で運用できなくなるという異例の事態となり、防衛テック企業のClaudeへの依存にも影響が波及した。'
+  'Anthropicは2024年7月、Palantirを通じて米国防省・諜報機関の機密ネットワーク（IL5/IL6環境）にClaudeを提供する契約を発表した。しかしAnthropicの利用規約（AUP）は自律型兵器の開発・運用支援や大量監視システムへの使用を明示的に禁じており、「AI安全性を掲げる企業が軍事・諜報機関に技術提供することは自社の理念と矛盾しないか」という批判と議論を呼んだ。Anthropic側は安全なAI開発を推進するためには政府・防衛機関との関与が必要と主張した。'
 ) ON CONFLICT (question_id) DO NOTHING;
 
 
@@ -926,3 +926,97 @@ INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000040',
   'custom commands は `.claude/commands/<command-name>.md`（プロジェクト固有）または `~/.claude/commands/<command-name>.md`（全プロジェクト共通）に Markdown ファイルとして置く。ユーザーが `/command-name` と入力すると、そのファイルの内容がプロンプトとして展開される。skills とは異なりユーザー起動が前提。'
 ) ON CONFLICT (question_id) DO NOTHING;
+
+-- ── Q41: Claude Cowork の概要（ai_services / 初級）──
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000041',
+  '00000000-0000-0000-0000-000000000001',
+  '2026年1月にAnthropicがリリースしたClaude Coworkの説明として正しいものはどれか？',
+  1, 'ai_services'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('51000000-0000-0000-0000-000000000005', '10000000-0000-0000-0000-000000000041', 'VS Code上で動作するコーディング補助拡張機能で、Claude Codeのブラウザ版に相当する',                                                              false, 1),
+  ('51000000-0000-0000-0000-000000000006', '10000000-0000-0000-0000-000000000041', 'Claude Codeのエージェント機能をコーディング以外のナレッジワークに拡張したデスクトップAIエージェントで、ローカルファイルへのアクセスやマルチステップタスクの自動実行ができる', true,  2),
+  ('51000000-0000-0000-0000-000000000007', '10000000-0000-0000-0000-000000000041', 'チームメンバー間でClaudeのチャット履歴をリアルタイム共有できるコラボレーション向けWebアプリ',                                                false, 3),
+  ('51000000-0000-0000-0000-000000000008', '10000000-0000-0000-0000-000000000041', 'Claudeを組み込んだ画像生成・動画編集に特化したクリエイティブ向けツール',                                                                         false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000041',
+  'Claude Coworkは2026年1月にAnthropicが研究プレビューとしてリリースしたデスクトップAIエージェント。「コーディング不要のClaude Code」とも表現され、Claude Codeのエージェント機能をナレッジワーク全般に拡張している。ローカルファイルの読み書き、マルチステップタスクの自動実行、スケジュール実行などが可能で、有料プラン（Pro・Max・Team・Enterprise）向けに提供された。その後MicrosoftがMicrosoft 365向けにCopilot Coworkとして統合することも発表された。'
+) ON CONFLICT (question_id) DO NOTHING;
+
+
+-- ── Q42: Apple × Gemini 提携の理由（ai_services / 中級）──
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000042',
+  '00000000-0000-0000-0000-000000000001',
+  'AppleがiPhoneのSiri刷新にあたり、2026年1月にGoogleのGeminiとの提携を選んだ主な理由はどれか？',
+  2, 'ai_services'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('52000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000042', 'AppleがGoogleを買収し、Geminiの独占利用権を取得したため',                                                                        false, 1),
+  ('52000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000042', '自社のAIモデル開発が競合に追いつけず、Siriが複雑なクエリの約33%を処理できないなど能力差が顕在化したため',                    true,  2),
+  ('52000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000042', 'EU規制によりApple独自のAIが欧州で禁止され、代替としてGeminiを義務採用したため',                                             false, 3),
+  ('52000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000042', 'Google DeepMindとAppleが共同でApple Siliconに最適化した新チップを開発するため',                                            false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000042',
+  'Appleの自社AIモデルは競合（Google・OpenAI・Anthropic）の急速な進歩に追いつけず、内部評価でSiriが複雑なクエリを約33%処理できないことが判明した。AppleはOpenAIやAnthropicも候補として検討したが、「最も優れた基盤を提供する」としてGoogleのGeminiを選択し、マルチイヤー契約を締結した（2026年1月）。これによりApple Foundation ModelsはGeminiモデルとGoogleのクラウド技術をベースとするものに刷新された。'
+) ON CONFLICT (question_id) DO NOTHING;
+
+
+-- ── Q43: Microsoft 365 × Claude Cowork 統合の理由（ai_services / 中級）──
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000043',
+  '00000000-0000-0000-0000-000000000001',
+  '2026年3月にMicrosoftがMicrosoft 365にAnthropicのClaudeを統合した「Copilot Cowork」を発表した理由として最も適切なものはどれか？',
+  2, 'ai_services'
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('53000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000043', 'MicrosoftがAnthropicを買収したことで、ClaudeをCopilotに統合する義務が生じたため',                                         false, 1),
+  ('53000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000043', 'OpenAIとの契約が終了し、その代替としてAnthropicのClaudeを採用したため',                                                   false, 2),
+  ('53000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000043', '単一AIに依存しないマルチモデル戦略のもと、ClaudeのエージェントをM365のデータ基盤（Outlook・Teams・SharePoint等）と統合し企業向けのタスク自動化を実現するため', true,  3),
+  ('53000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000043', 'EU AI法の規制を回避するため、GPT-4の代わりにAnthropicのClaudeをEU圏向けに採用したため',                               false, 4)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000043',
+  'Microsoftは2026年3月、Anthropicと共同開発した「Copilot Cowork」をMicrosoft 365に統合すると発表した。MicrosoftはCopilotを特定のAIモデルに縛られないマルチモデルプラットフォームと位置づけており、「業界全体のベストなイノベーションを取り込み、タスクに応じて最適なモデルを選ぶ」戦略をとっている。Copilot CoworkはOutlook・Teams・SharePoint・Excel等のM365データをフルに活用し、プレゼン作成・データ集計・メール送信などのマルチステップタスクをエージェントが自律実行する。新しいE7ライセンスティアと同時に提供された。'
+) ON CONFLICT (question_id) DO NOTHING;
+
+
+-- デフォルトジャンル（既存の ai-quiz コースに紐づけ）
+INSERT INTO genres (course_id, name, label, sort_order)
+SELECT id, 'ai_basics',    'AI基礎',         1 FROM topics LIMIT 1
+ON CONFLICT (course_id, name) DO NOTHING;
+INSERT INTO genres (course_id, name, label, sort_order)
+SELECT id, 'ai_services',  'AIサービス',     2 FROM topics LIMIT 1
+ON CONFLICT (course_id, name) DO NOTHING;
+INSERT INTO genres (course_id, name, label, sort_order)
+SELECT id, 'engineering',  'AIコーディング', 3 FROM topics LIMIT 1
+ON CONFLICT (course_id, name) DO NOTHING;
+
+-- デフォルトティア定義
+INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)
+SELECT id, 'S', 0.900, 'S ランク', 1 FROM topics LIMIT 1
+ON CONFLICT (course_id, tier) DO NOTHING;
+INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)
+SELECT id, 'A', 0.700, 'A ランク', 2 FROM topics LIMIT 1
+ON CONFLICT (course_id, tier) DO NOTHING;
+INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)
+SELECT id, 'B', 0.500, 'B ランク', 3 FROM topics LIMIT 1
+ON CONFLICT (course_id, tier) DO NOTHING;
+INSERT INTO scoring_tiers (course_id, tier, min_ratio, label, sort_order)
+SELECT id, 'C', 0.000, 'C ランク', 4 FROM topics LIMIT 1
+ON CONFLICT (course_id, tier) DO NOTHING;

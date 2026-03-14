@@ -2,8 +2,11 @@ package handler
 
 import (
 	"context"
+	"errors"
+	"strings"
 
 	"connectrpc.com/connect"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 
 	quizv2 "github.com/km/ai-quiz/gen/quiz/v2"
@@ -28,6 +31,66 @@ func (h *AdminHandler) ImportQuestionsCsv(
 	resp, err := h.uc.ImportQuestionsCsv(ctx, req.Msg.Csv, req.Msg.DryRun)
 	if err != nil {
 		h.logger.Error("admin.ImportQuestionsCsv failed", zap.Error(err))
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *AdminHandler) CreateGenre(
+	ctx context.Context,
+	req *connect.Request[quizv2.CreateGenreRequest],
+) (*connect.Response[quizv2.CreateGenreResponse], error) {
+	if _, err := uuid.Parse(req.Msg.CourseId); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("course_id must be a valid UUID"))
+	}
+	if strings.TrimSpace(req.Msg.Name) == "" || strings.TrimSpace(req.Msg.Label) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name and label are required"))
+	}
+	h.logger.Info("admin.CreateGenre called",
+		zap.String("course_id", req.Msg.CourseId),
+		zap.String("name", req.Msg.Name),
+	)
+
+	resp, err := h.uc.CreateGenre(ctx, req.Msg.CourseId, req.Msg.Name, req.Msg.Label, req.Msg.SortOrder)
+	if err != nil {
+		h.logger.Error("admin.CreateGenre failed", zap.Error(err))
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *AdminHandler) UpsertScoringTiers(
+	ctx context.Context,
+	req *connect.Request[quizv2.UpsertScoringTiersRequest],
+) (*connect.Response[quizv2.UpsertScoringTiersResponse], error) {
+	if _, err := uuid.Parse(req.Msg.CourseId); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("course_id must be a valid UUID"))
+	}
+	h.logger.Info("admin.UpsertScoringTiers called",
+		zap.String("course_id", req.Msg.CourseId),
+		zap.Int("tiers", len(req.Msg.Tiers)),
+	)
+
+	resp, err := h.uc.UpsertScoringTiers(ctx, req.Msg.CourseId, req.Msg.Tiers)
+	if err != nil {
+		h.logger.Error("admin.UpsertScoringTiers failed", zap.Error(err))
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (h *AdminHandler) UpdateCourseTemplate(
+	ctx context.Context,
+	req *connect.Request[quizv2.UpdateCourseTemplateRequest],
+) (*connect.Response[quizv2.UpdateCourseTemplateResponse], error) {
+	if _, err := uuid.Parse(req.Msg.CourseId); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("course_id must be a valid UUID"))
+	}
+	h.logger.Info("admin.UpdateCourseTemplate called", zap.String("course_id", req.Msg.CourseId))
+
+	resp, err := h.uc.UpdateCourseTemplate(ctx, req.Msg.CourseId, req.Msg.AiPromptTemplate)
+	if err != nil {
+		h.logger.Error("admin.UpdateCourseTemplate failed", zap.Error(err))
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	return connect.NewResponse(resp), nil

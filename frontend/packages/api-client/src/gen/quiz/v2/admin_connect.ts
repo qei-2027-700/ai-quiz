@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ImportQuestionsCsvRequest, ImportQuestionsCsvResponse } from "./admin_pb.js";
+import { CreateGenreRequest, CreateGenreResponse, ImportQuestionsCsvRequest, ImportQuestionsCsvResponse, UpdateCourseTemplateRequest, UpdateCourseTemplateResponse, UpsertScoringTiersRequest, UpsertScoringTiersResponse } from "./admin_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -24,6 +24,39 @@ export const AdminService = {
       name: "ImportQuestionsCsv",
       I: ImportQuestionsCsvRequest,
       O: ImportQuestionsCsvResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ジャンル作成・更新
+     *
+     * @generated from rpc quiz.v2.AdminService.CreateGenre
+     */
+    createGenre: {
+      name: "CreateGenre",
+      I: CreateGenreRequest,
+      O: CreateGenreResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ティア定義の更新
+     *
+     * @generated from rpc quiz.v2.AdminService.UpsertScoringTiers
+     */
+    upsertScoringTiers: {
+      name: "UpsertScoringTiers",
+      I: UpsertScoringTiersRequest,
+      O: UpsertScoringTiersResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * コースの AI フィードバックテンプレート更新
+     *
+     * @generated from rpc quiz.v2.AdminService.UpdateCourseTemplate
+     */
+    updateCourseTemplate: {
+      name: "UpdateCourseTemplate",
+      I: UpdateCourseTemplateRequest,
+      O: UpdateCourseTemplateResponse,
       kind: MethodKind.Unary,
     },
   }

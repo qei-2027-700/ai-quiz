@@ -33,6 +33,7 @@ type MockQuizClient = {
   submitAnswers: (params: SubmitAnswersParams) => Promise<unknown>;
   getAttemptInsights: (params: { attemptId: string }) => Promise<unknown>;
   listRankings: (params: { limit?: number }) => Promise<unknown>;
+  listGenres: (params: { courseId: string }) => Promise<unknown>;
 };
 
 function generateMockAIFeedback(tier: string, correctCount: number, totalCount: number): string {
@@ -184,6 +185,16 @@ export function createMockQuizClient(): MockQuizClient {
         { rank: 5, username: "transformer", correctCount: 6, totalCount: 10, tier: "B", createdAt: "2025-03-05T11:00:00Z" },
       ];
       return { entries };
+    },
+
+    async listGenres({ courseId: _courseId }: { courseId: string }) {
+      return {
+        genres: [
+          { id: "genre-1", courseId: _courseId, name: "ai_basics",   label: "AI基礎",       sortOrder: 1 },
+          { id: "genre-2", courseId: _courseId, name: "ai_services", label: "AIサービス",   sortOrder: 2 },
+          { id: "genre-3", courseId: _courseId, name: "engineering", label: "AIコーディング", sortOrder: 3 },
+        ],
+      };
     },
   };
 }

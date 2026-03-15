@@ -91,6 +91,7 @@ Thumbs.db
 .claude/scheduled_tasks.lock
 .claude/ctx-export*.md
 .claude/handoff*.md
+.claude/current.md
 
 # ========================
 # Misc

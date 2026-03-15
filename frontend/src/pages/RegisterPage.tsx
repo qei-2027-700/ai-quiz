@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { authClient } from "@ai-quiz/api-client";
+import { useAuthStore } from "@ai-quiz/shared/stores";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +34,8 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      const { displayName } = await authClient.register({ email, password, name });
+      const { accessToken, displayName } = await authClient.register({ email, password, name });
+      setAccessToken(accessToken);
       sessionStorage.setItem("authed", "1");
       sessionStorage.setItem("username", displayName || name || email);
       navigate("/quiz");

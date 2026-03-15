@@ -7,14 +7,18 @@
 3. ブランチが remote に push されていなければ `git push -u origin <branch>` する
 4. **Playwright MCP でスクリーンショットを撮影していた場合**、以下を実行する:
    ```bash
-   # PR番号は gh pr create 後に取得するため、先に仮番号でコミットし後で rename してよい
-   # または gh pr create 後に git commit --amend で修正する
-   PR_NUM=$(gh pr list --head $(git branch --show-current) --json number -q '.[0].number' 2>/dev/null || echo "XX")
-   mkdir -p docs/screenshots/pr-${PR_NUM}
-   cp .playwright-mcp/*.png docs/screenshots/pr-${PR_NUM}/
-   git add docs/screenshots/pr-${PR_NUM}/
+   # スクショは .claude/screenshots/ に main ブランチへ直接コミット
+   # （コードに影響しない検証成果物のため PR 不要）
+   PR_NUM=<gh pr create 後に確定した番号>
+   git stash                                      # 作業中変更を退避（必要な場合）
+   git checkout main && git pull origin main
+   mkdir -p .claude/screenshots/pr-${PR_NUM}
+   cp .playwright-mcp/*.png .claude/screenshots/pr-${PR_NUM}/
+   git add .claude/screenshots/pr-${PR_NUM}/
    git commit -m "docs: PR #${PR_NUM} 検証スクリーンショット"
-   git push origin HEAD
+   git push origin main
+   git checkout -                                 # 元のブランチに戻る
+   git stash pop                                  # 退避した変更を復元（必要な場合）
    ```
 5. 以下のフォーマットで `gh pr create` を実行する
 
@@ -45,7 +49,7 @@ Playwright MCP でスクリーンショットを撮影した場合は **必ず**
 - <観点2（例: 正解・不正解で背景色が変わる）>
 - <観点3（例: ボタンが disabled 時に薄くなる）>
 
-![<画面名のalt>](https://raw.githubusercontent.com/<owner>/<repo>/<branch>/docs/screenshots/pr-<number>/<filename>.png)
+![<画面名のalt>](https://raw.githubusercontent.com/<owner>/<repo>/main/.claude/screenshots/pr-<number>/<filename>.png)
 
 ---
 
@@ -55,7 +59,7 @@ Playwright MCP でスクリーンショットを撮影した場合は **必ず**
 **確認観点**:
 - ...
 
-![<alt>](https://raw.githubusercontent.com/<owner>/<repo>/<branch>/docs/screenshots/pr-<number>/<filename>.png)
+![<alt>](https://raw.githubusercontent.com/<owner>/<repo>/main/.claude/screenshots/pr-<number>/<filename>.png)
 ```
 
 > **Note**: `raw.githubusercontent.com` の URL はブランチが remote に push されていれば即座に有効になる。PR マージ後は `main` ブランチの URL に変わるが、どちらも同一ファイルを参照する。

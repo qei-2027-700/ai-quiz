@@ -181,7 +181,7 @@ func (u *AuthUsecase) ParseAccessToken(ctx context.Context, token string) (*MeRe
 		return nil, errors.New("JWT_SECRET is required")
 	}
 
-	parsed, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+	parsed, err := jwt.Parse(token, func(t *jwt.Token) (any, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS256.Alg() {
 			return nil, fmt.Errorf("unexpected signing method: %s", t.Method.Alg())
 		}

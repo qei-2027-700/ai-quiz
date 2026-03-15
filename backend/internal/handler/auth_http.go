@@ -169,7 +169,12 @@ func (h *AuthHTTPHandler) registerWithPassword(w http.ResponseWriter, r *http.Re
 			http.Error(w, "email already registered", http.StatusConflict)
 			return
 		}
-		http.Error(w, "registration failed", http.StatusBadRequest)
+		var valErr *usecase.ValidationError
+		if errors.As(err, &valErr) {
+			http.Error(w, valErr.Error(), http.StatusBadRequest)
+			return
+		}
+		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
 

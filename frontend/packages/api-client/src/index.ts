@@ -121,7 +121,7 @@ function createRealAuthClient(): AuthClient {
 
 export const authClient: AuthClient = isMockMode()
   ? {
-      register: (p) => _mockInst!.register(p) as Promise<{ accessToken: string; displayName: string }>,
-      login: (p) => _mockInst!.login(p) as Promise<{ accessToken: string; displayName: string }>,
+      register: (p) => _mockInst!.register(p),
+      login: (p) => _mockInst!.login(p),
     }
   : createRealAuthClient();

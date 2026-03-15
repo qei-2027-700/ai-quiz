@@ -31,6 +31,14 @@ import (
 var ErrEmailAlreadyRegistered = errors.New("email already registered")
 var ErrInvalidCredentials = errors.New("invalid credentials")
 
+// ValidationError はユーザー起因の入力エラーを表す。ハンドラーはこの型を
+// errors.As で検出してメッセージをそのままレスポンスに載せる。
+type ValidationError struct{ msg string }
+
+func (e *ValidationError) Error() string { return e.msg }
+
+func validationError(msg string) error { return &ValidationError{msg: msg} }
+
 type AuthUsecase struct {
 	queries *db.Queries
 }
@@ -357,7 +365,7 @@ func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email st
 		return db.User{}, fmt.Errorf("upsert oauth identity: %w", err)
 	}
 
-	return db.User{ID: created.ID, Email: created.Email, Role: created.Role, DisplayName: name, CreatedAt: created.CreatedAt, UpdatedAt: created.UpdatedAt}, nil
+	return db.User{ID: created.ID, Email: created.Email, Role: created.Role, DisplayName: created.DisplayName, CreatedAt: created.CreatedAt, UpdatedAt: created.UpdatedAt}, nil
 }
 
 func newRefreshToken() (plain string, hash string, err error) {
@@ -378,13 +386,13 @@ type RegisterWithPasswordResult struct {
 
 func (u *AuthUsecase) RegisterWithPassword(ctx context.Context, email, password, name string) (*RegisterWithPasswordResult, error) {
 	if email == "" || password == "" || name == "" {
-		return nil, errors.New("email, password and name are required")
+		return nil, validationError("email, password and name are required")
 	}
 	if _, err := mail.ParseAddress(email); err != nil {
-		return nil, errors.New("invalid email address")
+		return nil, validationError("invalid email address")
 	}
 	if len(password) < 8 {
-		return nil, errors.New("password must be at least 8 characters")
+		return nil, validationError("password must be at least 8 characters")
 	}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)

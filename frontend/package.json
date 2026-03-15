@@ -9,8 +9,7 @@
     "type-check": "tsc --noEmit",
     "lint": "oxlint src",
     "test": "vitest run",
-    "generate-seed": "tsx scripts/generate-seed.ts",
-    "seed-to-mock": "tsx scripts/seed-to-mock.ts"
+    "mock-to-seed": "tsx scripts/mock-to-seed.ts"
   },
   "dependencies": {
     "@ai-quiz/api-client": "file:./packages/api-client",

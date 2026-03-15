@@ -7,6 +7,7 @@ import QuizPage from "./pages/QuizPage";
 import QuizResultPage from "./pages/QuizResultPage";
 import SettingsPage from "./pages/SettingsPage";
 import RankingPage from "./pages/RankingPage";
+import ProfilePage from "./pages/ProfilePage";
 import { AuthedLayout } from "./layouts/AuthedLayout";
 
 // ── Auth helpers ─────────────────────────────────────────────
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
       { path: "/quiz",        element: <QuizPage /> },
       { path: "/quiz/result", element: <QuizResultPage /> },
       { path: "/settings",    element: <SettingsPage /> },
+      { path: "/profile",     element: <ProfilePage /> },
     ],
   },
 

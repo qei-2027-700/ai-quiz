@@ -52,6 +52,12 @@ const (
 	QuizServiceListRankingsProcedure = "/quiz.v2.QuizService/ListRankings"
 	// QuizServiceListGenresProcedure is the fully-qualified name of the QuizService's ListGenres RPC.
 	QuizServiceListGenresProcedure = "/quiz.v2.QuizService/ListGenres"
+	// QuizServiceGetMyProfileProcedure is the fully-qualified name of the QuizService's GetMyProfile
+	// RPC.
+	QuizServiceGetMyProfileProcedure = "/quiz.v2.QuizService/GetMyProfile"
+	// QuizServiceListMyAttemptsProcedure is the fully-qualified name of the QuizService's
+	// ListMyAttempts RPC.
+	QuizServiceListMyAttemptsProcedure = "/quiz.v2.QuizService/ListMyAttempts"
 )
 
 // QuizServiceClient is a client for the quiz.v2.QuizService service.
@@ -70,6 +76,10 @@ type QuizServiceClient interface {
 	ListRankings(context.Context, *connect.Request[v2.ListRankingsRequest]) (*connect.Response[v2.ListRankingsResponse], error)
 	// ジャンル一覧取得（フィルタ UI 用）
 	ListGenres(context.Context, *connect.Request[v2.ListGenresRequest]) (*connect.Response[v2.ListGenresResponse], error)
+	// マイプロフィール取得（要認証: Authorization: Bearer <token>）
+	GetMyProfile(context.Context, *connect.Request[v2.GetMyProfileRequest]) (*connect.Response[v2.GetMyProfileResponse], error)
+	// 自分の受験履歴一覧（要認証: Authorization: Bearer <token>）
+	ListMyAttempts(context.Context, *connect.Request[v2.ListMyAttemptsRequest]) (*connect.Response[v2.ListMyAttemptsResponse], error)
 }
 
 // NewQuizServiceClient constructs a client for the quiz.v2.QuizService service. By default, it uses
@@ -125,6 +135,18 @@ func NewQuizServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(quizServiceMethods.ByName("ListGenres")),
 			connect.WithClientOptions(opts...),
 		),
+		getMyProfile: connect.NewClient[v2.GetMyProfileRequest, v2.GetMyProfileResponse](
+			httpClient,
+			baseURL+QuizServiceGetMyProfileProcedure,
+			connect.WithSchema(quizServiceMethods.ByName("GetMyProfile")),
+			connect.WithClientOptions(opts...),
+		),
+		listMyAttempts: connect.NewClient[v2.ListMyAttemptsRequest, v2.ListMyAttemptsResponse](
+			httpClient,
+			baseURL+QuizServiceListMyAttemptsProcedure,
+			connect.WithSchema(quizServiceMethods.ByName("ListMyAttempts")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -137,6 +159,8 @@ type quizServiceClient struct {
 	getAttemptInsights *connect.Client[v2.GetAttemptInsightsRequest, v2.GetAttemptInsightsResponse]
 	listRankings       *connect.Client[v2.ListRankingsRequest, v2.ListRankingsResponse]
 	listGenres         *connect.Client[v2.ListGenresRequest, v2.ListGenresResponse]
+	getMyProfile       *connect.Client[v2.GetMyProfileRequest, v2.GetMyProfileResponse]
+	listMyAttempts     *connect.Client[v2.ListMyAttemptsRequest, v2.ListMyAttemptsResponse]
 }
 
 // ListCourses calls quiz.v2.QuizService.ListCourses.
@@ -174,6 +198,16 @@ func (c *quizServiceClient) ListGenres(ctx context.Context, req *connect.Request
 	return c.listGenres.CallUnary(ctx, req)
 }
 
+// GetMyProfile calls quiz.v2.QuizService.GetMyProfile.
+func (c *quizServiceClient) GetMyProfile(ctx context.Context, req *connect.Request[v2.GetMyProfileRequest]) (*connect.Response[v2.GetMyProfileResponse], error) {
+	return c.getMyProfile.CallUnary(ctx, req)
+}
+
+// ListMyAttempts calls quiz.v2.QuizService.ListMyAttempts.
+func (c *quizServiceClient) ListMyAttempts(ctx context.Context, req *connect.Request[v2.ListMyAttemptsRequest]) (*connect.Response[v2.ListMyAttemptsResponse], error) {
+	return c.listMyAttempts.CallUnary(ctx, req)
+}
+
 // QuizServiceHandler is an implementation of the quiz.v2.QuizService service.
 type QuizServiceHandler interface {
 	// コース一覧（v1 の topics をコースとして扱う）
@@ -190,6 +224,10 @@ type QuizServiceHandler interface {
 	ListRankings(context.Context, *connect.Request[v2.ListRankingsRequest]) (*connect.Response[v2.ListRankingsResponse], error)
 	// ジャンル一覧取得（フィルタ UI 用）
 	ListGenres(context.Context, *connect.Request[v2.ListGenresRequest]) (*connect.Response[v2.ListGenresResponse], error)
+	// マイプロフィール取得（要認証: Authorization: Bearer <token>）
+	GetMyProfile(context.Context, *connect.Request[v2.GetMyProfileRequest]) (*connect.Response[v2.GetMyProfileResponse], error)
+	// 自分の受験履歴一覧（要認証: Authorization: Bearer <token>）
+	ListMyAttempts(context.Context, *connect.Request[v2.ListMyAttemptsRequest]) (*connect.Response[v2.ListMyAttemptsResponse], error)
 }
 
 // NewQuizServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -241,6 +279,18 @@ func NewQuizServiceHandler(svc QuizServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(quizServiceMethods.ByName("ListGenres")),
 		connect.WithHandlerOptions(opts...),
 	)
+	quizServiceGetMyProfileHandler := connect.NewUnaryHandler(
+		QuizServiceGetMyProfileProcedure,
+		svc.GetMyProfile,
+		connect.WithSchema(quizServiceMethods.ByName("GetMyProfile")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizServiceListMyAttemptsHandler := connect.NewUnaryHandler(
+		QuizServiceListMyAttemptsProcedure,
+		svc.ListMyAttempts,
+		connect.WithSchema(quizServiceMethods.ByName("ListMyAttempts")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quiz.v2.QuizService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case QuizServiceListCoursesProcedure:
@@ -257,6 +307,10 @@ func NewQuizServiceHandler(svc QuizServiceHandler, opts ...connect.HandlerOption
 			quizServiceListRankingsHandler.ServeHTTP(w, r)
 		case QuizServiceListGenresProcedure:
 			quizServiceListGenresHandler.ServeHTTP(w, r)
+		case QuizServiceGetMyProfileProcedure:
+			quizServiceGetMyProfileHandler.ServeHTTP(w, r)
+		case QuizServiceListMyAttemptsProcedure:
+			quizServiceListMyAttemptsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -292,4 +346,12 @@ func (UnimplementedQuizServiceHandler) ListRankings(context.Context, *connect.Re
 
 func (UnimplementedQuizServiceHandler) ListGenres(context.Context, *connect.Request[v2.ListGenresRequest]) (*connect.Response[v2.ListGenresResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.QuizService.ListGenres is not implemented"))
+}
+
+func (UnimplementedQuizServiceHandler) GetMyProfile(context.Context, *connect.Request[v2.GetMyProfileRequest]) (*connect.Response[v2.GetMyProfileResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.QuizService.GetMyProfile is not implemented"))
+}
+
+func (UnimplementedQuizServiceHandler) ListMyAttempts(context.Context, *connect.Request[v2.ListMyAttemptsRequest]) (*connect.Response[v2.ListMyAttemptsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz.v2.QuizService.ListMyAttempts is not implemented"))
 }

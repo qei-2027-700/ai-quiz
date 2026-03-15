@@ -60,9 +60,11 @@ type GoogleCallbackResult struct {
 }
 
 type MeResult struct {
-	UserID uuid.UUID
-	Email  string
-	Role   string
+	UserID      uuid.UUID
+	Email       string
+	Role        string
+	DisplayName string
+	CreatedAt   time.Time
 }
 
 func (u *AuthUsecase) GoogleStart(returnTo string) (*GoogleStartResult, *http.Cookie, error) {
@@ -218,9 +220,11 @@ func (u *AuthUsecase) ParseAccessToken(ctx context.Context, token string) (*MeRe
 	}
 
 	return &MeResult{
-		UserID: user.ID,
-		Email:  user.Email,
-		Role:   role,
+		UserID:      user.ID,
+		Email:       user.Email,
+		Role:        role,
+		DisplayName: user.DisplayName,
+		CreatedAt:   user.CreatedAt,
 	}, nil
 }
 

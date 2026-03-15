@@ -35,6 +35,7 @@ type Querier interface {
 	ListCourses(ctx context.Context) ([]ListCoursesRow, error)
 	ListGenresByCourse(ctx context.Context, courseID uuid.UUID) ([]ListGenresByCourseRow, error)
 	ListQuestionsByTopic(ctx context.Context, arg ListQuestionsByTopicParams) ([]ListQuestionsByTopicRow, error)
+	ListQuizResultsByUsername(ctx context.Context, arg ListQuizResultsByUsernameParams) ([]ListQuizResultsByUsernameRow, error)
 	ListRankings(ctx context.Context, limit int32) ([]ListRankingsRow, error)
 	ListScoringTiersByCourse(ctx context.Context, courseID uuid.UUID) ([]ScoringTier, error)
 	RevokeRefreshToken(ctx context.Context, id uuid.UUID) error

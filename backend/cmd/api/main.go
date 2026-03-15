@@ -40,18 +40,19 @@ func main() {
 		logger.Fatal("failed to ping database", zap.Error(err))
 	}
 
+	queries := db.New(sqlDB)
+	authUc := usecase.NewAuthUsecase(queries)
+	profileUc := usecase.NewProfileUsecase(queries, authUc)
+	authHTTP := handler.NewAuthHTTPHandler(authUc, logger)
+
 	repo := repository.NewPostgresQuizRepository(sqlDB)
 	uc := usecase.NewQuizUsecase(repo)
 	quizHandler := handler.NewQuizHandler(uc, logger)
 	v2uc := usecase.NewQuizV2Usecase(repo)
-	quizV2Handler := handler.NewQuizV2Handler(v2uc, logger)
+	quizV2Handler := handler.NewQuizV2Handler(v2uc, profileUc, logger)
 	adminRepo := repository.NewPostgresAdminRepository(sqlDB)
 	adminUc := usecase.NewAdminUsecase(sqlDB, adminRepo)
 	adminHandler := handler.NewAdminHandler(adminUc, logger)
-
-	queries := db.New(sqlDB)
-	authUc := usecase.NewAuthUsecase(queries)
-	authHTTP := handler.NewAuthHTTPHandler(authUc, logger)
 
 	mux := http.NewServeMux()
 	authHTTP.Register(mux)

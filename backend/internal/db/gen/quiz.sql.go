@@ -309,6 +309,63 @@ func (q *Queries) ListQuestionsByTopic(ctx context.Context, arg ListQuestionsByT
 	return items, nil
 }
 
+const listQuizResultsByUsername = `-- name: ListQuizResultsByUsername :many
+SELECT
+    qr.correct_count,
+    qr.total_count,
+    qr.tier,
+    qr.created_at,
+    COALESCE(t.name, '') AS course_name
+FROM quiz_results qr
+LEFT JOIN attempts a ON a.id = qr.attempt_id
+LEFT JOIN topics t ON t.id = a.course_id
+WHERE qr.username = $1
+ORDER BY qr.created_at DESC
+LIMIT $2
+`
+
+type ListQuizResultsByUsernameParams struct {
+	Username string `json:"username"`
+	Limit    int32  `json:"limit"`
+}
+
+type ListQuizResultsByUsernameRow struct {
+	CorrectCount int32     `json:"correct_count"`
+	TotalCount   int32     `json:"total_count"`
+	Tier         string    `json:"tier"`
+	CreatedAt    time.Time `json:"created_at"`
+	CourseName   string    `json:"course_name"`
+}
+
+func (q *Queries) ListQuizResultsByUsername(ctx context.Context, arg ListQuizResultsByUsernameParams) ([]ListQuizResultsByUsernameRow, error) {
+	rows, err := q.db.QueryContext(ctx, listQuizResultsByUsername, arg.Username, arg.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []ListQuizResultsByUsernameRow
+	for rows.Next() {
+		var i ListQuizResultsByUsernameRow
+		if err := rows.Scan(
+			&i.CorrectCount,
+			&i.TotalCount,
+			&i.Tier,
+			&i.CreatedAt,
+			&i.CourseName,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listRankings = `-- name: ListRankings :many
 SELECT
     ROW_NUMBER() OVER (ORDER BY correct_count DESC, created_at ASC)::int AS rank,

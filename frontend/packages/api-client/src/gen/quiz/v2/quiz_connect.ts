@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetAttemptInsightsRequest, GetAttemptInsightsResponse, ListCoursesRequest, ListCoursesResponse, ListGenresRequest, ListGenresResponse, ListQuestionsRequest, ListQuestionsResponse, ListRankingsRequest, ListRankingsResponse, StartAttemptRequest, StartAttemptResponse, SubmitAnswersRequest, SubmitAnswersResponse } from "./quiz_pb.js";
+import { GetAttemptInsightsRequest, GetAttemptInsightsResponse, GetMyProfileRequest, GetMyProfileResponse, ListCoursesRequest, ListCoursesResponse, ListGenresRequest, ListGenresResponse, ListMyAttemptsRequest, ListMyAttemptsResponse, ListQuestionsRequest, ListQuestionsResponse, ListRankingsRequest, ListRankingsResponse, StartAttemptRequest, StartAttemptResponse, SubmitAnswersRequest, SubmitAnswersResponse } from "./quiz_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -87,6 +87,28 @@ export const QuizService = {
       name: "ListGenres",
       I: ListGenresRequest,
       O: ListGenresResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * マイプロフィール取得（要認証: Authorization: Bearer <token>）
+     *
+     * @generated from rpc quiz.v2.QuizService.GetMyProfile
+     */
+    getMyProfile: {
+      name: "GetMyProfile",
+      I: GetMyProfileRequest,
+      O: GetMyProfileResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 自分の受験履歴一覧（要認証: Authorization: Bearer <token>）
+     *
+     * @generated from rpc quiz.v2.QuizService.ListMyAttempts
+     */
+    listMyAttempts: {
+      name: "ListMyAttempts",
+      I: ListMyAttemptsRequest,
+      O: ListMyAttemptsResponse,
       kind: MethodKind.Unary,
     },
   }

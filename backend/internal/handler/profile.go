@@ -12,9 +12,8 @@ import (
 )
 
 func extractBearerToken(authHeader string) string {
-	const prefix = "Bearer "
-	if strings.HasPrefix(authHeader, prefix) {
-		return strings.TrimPrefix(authHeader, prefix)
+	if token, ok := strings.CutPrefix(authHeader, "Bearer "); ok {
+		return token
 	}
 	return ""
 }

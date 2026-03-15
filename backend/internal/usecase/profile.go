@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"time"
 
 	db "github.com/km/ai-quiz/internal/db/gen"
 )
@@ -34,23 +35,15 @@ func (u *ProfileUsecase) GetMyProfile(ctx context.Context, tokenStr string) (*Pr
 	if err != nil {
 		return nil, err
 	}
-	user, err := u.queries.GetUserByID(ctx, me.UserID)
-	if err != nil {
-		return nil, err
-	}
 	return &ProfileResult{
-		DisplayName: user.DisplayName,
-		Email:       user.Email,
-		CreatedAt:   user.CreatedAt.Format("2006-01-02"),
+		DisplayName: me.DisplayName,
+		Email:       me.Email,
+		CreatedAt:   me.CreatedAt.Format(time.RFC3339),
 	}, nil
 }
 
 func (u *ProfileUsecase) ListMyAttempts(ctx context.Context, tokenStr string, limit int32) ([]AttemptHistoryEntry, error) {
 	me, err := u.auth.ParseAccessToken(ctx, tokenStr)
-	if err != nil {
-		return nil, err
-	}
-	user, err := u.queries.GetUserByID(ctx, me.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +53,7 @@ func (u *ProfileUsecase) ListMyAttempts(ctx context.Context, tokenStr string, li
 	}
 
 	rows, err := u.queries.ListQuizResultsByUsername(ctx, db.ListQuizResultsByUsernameParams{
-		Username: user.DisplayName,
+		Username: me.DisplayName,
 		Limit:    limit,
 	})
 	if err != nil {
@@ -74,7 +67,7 @@ func (u *ProfileUsecase) ListMyAttempts(ctx context.Context, tokenStr string, li
 			CorrectCount: r.CorrectCount,
 			TotalCount:   r.TotalCount,
 			Tier:         r.Tier,
-			CreatedAt:    r.CreatedAt.Format("2006-01-02 15:04"),
+			CreatedAt:    r.CreatedAt.Format(time.RFC3339),
 		})
 	}
 	return entries, nil

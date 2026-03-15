@@ -64,6 +64,7 @@ type MeResult struct {
 	Email       string
 	Role        string
 	DisplayName string
+	CreatedAt   time.Time
 }
 
 func (u *AuthUsecase) GoogleStart(returnTo string) (*GoogleStartResult, *http.Cookie, error) {
@@ -223,6 +224,7 @@ func (u *AuthUsecase) ParseAccessToken(ctx context.Context, token string) (*MeRe
 		Email:       user.Email,
 		Role:        role,
 		DisplayName: user.DisplayName,
+		CreatedAt:   user.CreatedAt,
 	}, nil
 }
 

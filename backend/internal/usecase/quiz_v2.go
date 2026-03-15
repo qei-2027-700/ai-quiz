@@ -124,6 +124,11 @@ func (u *quizV2Usecase) ListQuestions(ctx context.Context, attemptID string, gen
 		return nil, fmt.Errorf("list choices: %w", err)
 	}
 
+	explanations, err := u.repo.GetExplanationsByQuestionIDs(ctx, questionIDs)
+	if err != nil {
+		return nil, fmt.Errorf("get explanations: %w", err)
+	}
+
 	choicesByQuestion := make(map[uuid.UUID][]*quizv2.Choice)
 	correctChoiceIDByQuestion := make(map[uuid.UUID]string)
 	for _, c := range choices {
@@ -137,11 +142,17 @@ func (u *quizV2Usecase) ListQuestions(ctx context.Context, attemptID string, gen
 		}
 	}
 
+	explanationByQuestion := make(map[uuid.UUID]string)
+	for _, e := range explanations {
+		explanationByQuestion[e.QuestionID] = e.Text
+	}
+
 	questions := make([]*quizv2.Question, len(filtered))
 	for i, r := range filtered {
 		questions[i] = &quizv2.Question{
-			Id:     r.ID.String(),
-			Prompt: r.Text,
+			Id:          r.ID.String(),
+			Prompt:      r.Text,
+			Explanation: explanationByQuestion[r.ID],
 			Attributes: map[string]string{
 				"genre":      r.Genre,
 				"difficulty": fmt.Sprintf("%d", r.Difficulty),

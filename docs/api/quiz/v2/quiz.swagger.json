@@ -600,6 +600,10 @@
           },
           "title": "汎用メタデータ（例: genre, difficulty, tags 等）"
         },
+        "explanation": {
+          "type": "string",
+          "title": "問題ごとの解説テキスト（即時フィードバック表示用）"
+        },
         "multipleChoice": {
           "$ref": "#/definitions/quiz.v2.MultipleChoiceBody"
         },

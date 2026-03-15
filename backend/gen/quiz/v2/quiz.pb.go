@@ -420,6 +420,8 @@ type Question struct {
 	Prompt string                 `protobuf:"bytes,2,opt,name=prompt,proto3" json:"prompt,omitempty"`
 	// 汎用メタデータ（例: genre, difficulty, tags 等）
 	Attributes map[string]string `protobuf:"bytes,3,rep,name=attributes,proto3" json:"attributes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// 問題ごとの解説テキスト（即時フィードバック表示用）
+	Explanation string `protobuf:"bytes,4,opt,name=explanation,proto3" json:"explanation,omitempty"`
 	// Types that are valid to be assigned to Body:
 	//
 	//	*Question_MultipleChoice
@@ -479,6 +481,13 @@ func (x *Question) GetAttributes() map[string]string {
 		return x.Attributes
 	}
 	return nil
+}
+
+func (x *Question) GetExplanation() string {
+	if x != nil {
+		return x.Explanation
+	}
+	return ""
 }
 
 func (x *Question) GetBody() isQuestion_Body {
@@ -1988,13 +1997,14 @@ const file_quiz_v2_quiz_proto_rawDesc = "" +
 	"difficulty\x18\x03 \x01(\x05R\n" +
 	"difficulty\"H\n" +
 	"\x15ListQuestionsResponse\x12/\n" +
-	"\tquestions\x18\x01 \x03(\v2\x11.quiz.v2.QuestionR\tquestions\"\xf8\x02\n" +
+	"\tquestions\x18\x01 \x03(\v2\x11.quiz.v2.QuestionR\tquestions\"\x9a\x03\n" +
 	"\bQuestion\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
 	"\x06prompt\x18\x02 \x01(\tR\x06prompt\x12A\n" +
 	"\n" +
 	"attributes\x18\x03 \x03(\v2!.quiz.v2.Question.AttributesEntryR\n" +
-	"attributes\x12F\n" +
+	"attributes\x12 \n" +
+	"\vexplanation\x18\x04 \x01(\tR\vexplanation\x12F\n" +
 	"\x0fmultiple_choice\x18\n" +
 	" \x01(\v2\x1b.quiz.v2.MultipleChoiceBodyH\x00R\x0emultipleChoice\x12=\n" +
 	"\fmulti_select\x18\v \x01(\v2\x18.quiz.v2.MultiSelectBodyH\x00R\vmultiSelect\x123\n" +

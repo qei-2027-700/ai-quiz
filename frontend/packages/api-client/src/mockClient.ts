@@ -102,6 +102,7 @@ export function createMockQuizClient(): MockQuizClient {
         return {
           id: q.id,
           prompt: q.text,
+          explanation: q.explanation,
           attributes: { genre: q.genre, difficulty: String(q.difficulty) },
           body: {
             case: "multipleChoice" as const,

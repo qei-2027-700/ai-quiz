@@ -493,14 +493,22 @@ const isCorrect = correctChoiceId !== "" && choiceId === correctChoiceId;
 
         {/* フィードバックメッセージ */}
         {currentFeedback && (
-          <div
-            className={`mb-6 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-              currentFeedback.isCorrect
-                ? "bg-green-500/10 border border-green-500/30 text-green-400"
-                : "bg-red-500/10 border border-red-500/30 text-red-400"
-            }`}
-          >
-            {currentFeedback.isCorrect ? "正解です！" : "不正解です。正解は緑色の選択肢です。"}
+          <div className="mb-6 space-y-2">
+            <div
+              className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+                currentFeedback.isCorrect
+                  ? "bg-green-500/10 border border-green-500/30 text-green-400"
+                  : "bg-red-500/10 border border-red-500/30 text-red-400"
+              }`}
+            >
+              {currentFeedback.isCorrect ? "正解です！" : "不正解です。正解は緑色の選択肢です。"}
+            </div>
+            {currentQuestion.explanation && (
+              <div className="px-4 py-3 rounded-xl text-sm text-gray-600 dark:text-white/55 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 leading-relaxed">
+                <span className="font-semibold text-gray-500 dark:text-white/40 mr-1">解説:</span>
+                {currentQuestion.explanation}
+              </div>
+            )}
           </div>
         )}
 

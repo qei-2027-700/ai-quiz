@@ -82,6 +82,9 @@ message Question {
   // 汎用メタデータ（例: genre, difficulty, tags 等）
   map<string, string> attributes = 3;
 
+  // 問題ごとの解説テキスト（即時フィードバック表示用）
+  string explanation = 4;
+
   oneof body {
     MultipleChoiceBody multiple_choice = 10;
     MultiSelectBody    multi_select    = 11;

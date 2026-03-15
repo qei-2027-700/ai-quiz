@@ -49,6 +49,39 @@
         ]
       }
     },
+    "/quiz.v2.QuizService/GetMyProfile": {
+      "post": {
+        "summary": "マイプロフィール取得（要認証: Authorization: Bearer \u003ctoken\u003e）",
+        "operationId": "QuizService_GetMyProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.GetMyProfileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.GetMyProfileRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
     "/quiz.v2.QuizService/ListCourses": {
       "post": {
         "summary": "コース一覧（v1 の topics をコースとして扱う）",
@@ -107,6 +140,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/quiz.v2.ListGenresRequest"
+            }
+          }
+        ],
+        "tags": [
+          "QuizService"
+        ]
+      }
+    },
+    "/quiz.v2.QuizService/ListMyAttempts": {
+      "post": {
+        "summary": "自分の受験履歴一覧（要認証: Authorization: Bearer \u003ctoken\u003e）",
+        "operationId": "QuizService_ListMyAttempts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListMyAttemptsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/google.rpc.Status"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/quiz.v2.ListMyAttemptsRequest"
             }
           }
         ],
@@ -277,6 +343,28 @@
         }
       }
     },
+    "quiz.v2.AttemptEntry": {
+      "type": "object",
+      "properties": {
+        "courseName": {
+          "type": "string"
+        },
+        "correctCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tier": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      }
+    },
     "quiz.v2.AttemptResult": {
       "type": "object",
       "properties": {
@@ -391,6 +479,17 @@
         }
       }
     },
+    "quiz.v2.GetMyProfileRequest": {
+      "type": "object"
+    },
+    "quiz.v2.GetMyProfileResponse": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "#/definitions/quiz.v2.MyProfile"
+        }
+      }
+    },
     "quiz.v2.InsightsStatus": {
       "type": "string",
       "enum": [
@@ -432,6 +531,27 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/quiz.v2.Genre"
+          }
+        }
+      }
+    },
+    "quiz.v2.ListMyAttemptsRequest": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "quiz.v2.ListMyAttemptsResponse": {
+      "type": "object",
+      "properties": {
+        "attempts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/quiz.v2.AttemptEntry"
           }
         }
       }
@@ -532,6 +652,20 @@
         "correctChoiceId": {
           "type": "string",
           "title": "即時フィードバック用（学習アプリのため正答をクライアントに返す）"
+        }
+      }
+    },
+    "quiz.v2.MyProfile": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
         }
       }
     },

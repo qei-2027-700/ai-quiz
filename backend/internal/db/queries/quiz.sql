@@ -83,6 +83,20 @@ SELECT
 FROM attempt_insights
 WHERE attempt_id = $1;
 
+-- name: ListQuizResultsByUsername :many
+SELECT
+    qr.correct_count,
+    qr.total_count,
+    qr.tier,
+    qr.created_at,
+    COALESCE(t.name, '') AS course_name
+FROM quiz_results qr
+LEFT JOIN attempts a ON a.id = qr.attempt_id
+LEFT JOIN topics t ON t.id = a.course_id
+WHERE qr.username = $1
+ORDER BY qr.created_at DESC
+LIMIT $2;
+
 -- name: ListRankings :many
 SELECT
     ROW_NUMBER() OVER (ORDER BY correct_count DESC, created_at ASC)::int AS rank,

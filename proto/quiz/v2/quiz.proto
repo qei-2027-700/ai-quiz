@@ -28,6 +28,12 @@ service QuizService {
 
   // ジャンル一覧取得（フィルタ UI 用）
   rpc ListGenres(ListGenresRequest) returns (ListGenresResponse);
+
+  // マイプロフィール取得（要認証: Authorization: Bearer <token>）
+  rpc GetMyProfile(GetMyProfileRequest) returns (GetMyProfileResponse);
+
+  // 自分の受験履歴一覧（要認証: Authorization: Bearer <token>）
+  rpc ListMyAttempts(ListMyAttemptsRequest) returns (ListMyAttemptsResponse);
 }
 
 // ─────────────────────────────────────────
@@ -252,5 +258,37 @@ message Genre {
 
 message ListGenresResponse {
   repeated Genre genres = 1;
+}
+
+// ─────────────────────────────────────────
+// Profile
+// ─────────────────────────────────────────
+
+message GetMyProfileRequest {}
+
+message MyProfile {
+  string display_name = 1;
+  string email        = 2;
+  string created_at   = 3;
+}
+
+message GetMyProfileResponse {
+  MyProfile profile = 1;
+}
+
+message ListMyAttemptsRequest {
+  int32 limit = 1;
+}
+
+message AttemptEntry {
+  string course_name    = 1;
+  int32  correct_count  = 2;
+  int32  total_count    = 3;
+  string tier           = 4;
+  string created_at     = 5;
+}
+
+message ListMyAttemptsResponse {
+  repeated AttemptEntry attempts = 1;
 }
 

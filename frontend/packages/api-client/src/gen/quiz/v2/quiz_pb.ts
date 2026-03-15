@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file quiz/v2/quiz.proto.
  */
 export const file_quiz_v2_quiz: GenFile = /*@__PURE__*/
-  fileDesc("ChJxdWl6L3YyL3F1aXoucHJvdG8SB3F1aXoudjIiNwoGQ291cnNlEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkiFAoSTGlzdENvdXJzZXNSZXF1ZXN0IjcKE0xpc3RDb3Vyc2VzUmVzcG9uc2USIAoHY291cnNlcxgBIAMoCzIPLnF1aXoudjIuQ291cnNlIjoKE1N0YXJ0QXR0ZW1wdFJlcXVlc3QSEQoJY291cnNlX2lkGAEgASgJEhAKCHVzZXJuYW1lGAIgASgJIioKFFN0YXJ0QXR0ZW1wdFJlc3BvbnNlEhIKCmF0dGVtcHRfaWQYASABKAkiTQoUTGlzdFF1ZXN0aW9uc1JlcXVlc3QSEgoKYXR0ZW1wdF9pZBgBIAEoCRINCgVnZW5yZRgCIAEoCRISCgpkaWZmaWN1bHR5GAMgASgFIj0KFUxpc3RRdWVzdGlvbnNSZXNwb25zZRIkCglxdWVzdGlvbnMYASADKAsyES5xdWl6LnYyLlF1ZXN0aW9uIsICCghRdWVzdGlvbhIKCgJpZBgBIAEoCRIOCgZwcm9tcHQYAiABKAkSNQoKYXR0cmlidXRlcxgDIAMoCzIhLnF1aXoudjIuUXVlc3Rpb24uQXR0cmlidXRlc0VudHJ5EhMKC2V4cGxhbmF0aW9uGAQgASgJEjYKD211bHRpcGxlX2Nob2ljZRgKIAEoCzIbLnF1aXoudjIuTXVsdGlwbGVDaG9pY2VCb2R5SAASMAoMbXVsdGlfc2VsZWN0GAsgASgLMhgucXVpei52Mi5NdWx0aVNlbGVjdEJvZHlIABIpCghvcmRlcmluZxgMIAEoCzIVLnF1aXoudjIuT3JkZXJpbmdCb2R5SAAaMQoPQXR0cmlidXRlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCBgoEYm9keSI2CgZDaG9pY2USCgoCaWQYASABKAkSDAoEdGV4dBgCIAEoCRISCgpzb3J0X29yZGVyGAMgASgFIlEKEk11bHRpcGxlQ2hvaWNlQm9keRIgCgdjaG9pY2VzGAEgAygLMg8ucXVpei52Mi5DaG9pY2USGQoRY29ycmVjdF9jaG9pY2VfaWQYAiABKAkiMwoPTXVsdGlTZWxlY3RCb2R5EiAKB2Nob2ljZXMYASADKAsyDy5xdWl6LnYyLkNob2ljZSI8CgxPcmRlcmluZ0l0ZW0SCgoCaWQYASABKAkSDAoEdGV4dBgCIAEoCRISCgpzb3J0X29yZGVyGAMgASgFIjQKDE9yZGVyaW5nQm9keRIkCgVpdGVtcxgBIAMoCzIVLnF1aXoudjIuT3JkZXJpbmdJdGVtIsABCgpVc2VyQW5zd2VyEhMKC3F1ZXN0aW9uX2lkGAEgASgJEjQKDXNpbmdsZV9jaG9pY2UYCiABKAsyGy5xdWl6LnYyLlNpbmdsZUNob2ljZUFuc3dlckgAEjIKDG11bHRpX2Nob2ljZRgLIAEoCzIaLnF1aXoudjIuTXVsdGlDaG9pY2VBbnN3ZXJIABIrCghvcmRlcmluZxgMIAEoCzIXLnF1aXoudjIuT3JkZXJpbmdBbnN3ZXJIAEIGCgRib2R5IicKElNpbmdsZUNob2ljZUFuc3dlchIRCgljaG9pY2VfaWQYASABKAkiJwoRTXVsdGlDaG9pY2VBbnN3ZXISEgoKY2hvaWNlX2lkcxgBIAMoCSIqCg5PcmRlcmluZ0Fuc3dlchIYChBvcmRlcmVkX2l0ZW1faWRzGAEgAygJIlAKFFN1Ym1pdEFuc3dlcnNSZXF1ZXN0EhIKCmF0dGVtcHRfaWQYASABKAkSJAoHYW5zd2VycxgCIAMoCzITLnF1aXoudjIuVXNlckFuc3dlciJxChVTdWJtaXRBbnN3ZXJzUmVzcG9uc2USJgoGcmVzdWx0GAEgASgLMhYucXVpei52Mi5BdHRlbXB0UmVzdWx0EjAKD2luc2lnaHRzX3N0YXR1cxgCIAEoDjIXLnF1aXoudjIuSW5zaWdodHNTdGF0dXMifAoNQXR0ZW1wdFJlc3VsdBIVCg1jb3JyZWN0X2NvdW50GAEgASgFEhMKC3RvdGFsX2NvdW50GAIgASgFEgwKBHRpZXIYAyABKAkSMQoQcXVlc3Rpb25fcmVzdWx0cxgEIAMoCzIXLnF1aXoudjIuUXVlc3Rpb25SZXN1bHQi8wEKDlF1ZXN0aW9uUmVzdWx0EhMKC3F1ZXN0aW9uX2lkGAEgASgJEhIKCmlzX2NvcnJlY3QYAiABKAgSNQoNc2luZ2xlX2Nob2ljZRgKIAEoCzIcLnF1aXoudjIuU2luZ2xlQ2hvaWNlQ29ycmVjdEgAEjMKDG11bHRpX2Nob2ljZRgLIAEoCzIbLnF1aXoudjIuTXVsdGlDaG9pY2VDb3JyZWN0SAASLAoIb3JkZXJpbmcYDCABKAsyGC5xdWl6LnYyLk9yZGVyaW5nQ29ycmVjdEgAEhMKC2V4cGxhbmF0aW9uGBQgASgJQgkKB2NvcnJlY3QiKAoTU2luZ2xlQ2hvaWNlQ29ycmVjdBIRCgljaG9pY2VfaWQYASABKAkiKAoSTXVsdGlDaG9pY2VDb3JyZWN0EhIKCmNob2ljZV9pZHMYASADKAkiKwoPT3JkZXJpbmdDb3JyZWN0EhgKEG9yZGVyZWRfaXRlbV9pZHMYASADKAkiLwoZR2V0QXR0ZW1wdEluc2lnaHRzUmVxdWVzdBISCgphdHRlbXB0X2lkGAEgASgJIpcBChpHZXRBdHRlbXB0SW5zaWdodHNSZXNwb25zZRInCgZzdGF0dXMYASABKA4yFy5xdWl6LnYyLkluc2lnaHRzU3RhdHVzEhMKC2FpX2ZlZWRiYWNrGAIgASgJEiQKCWNpdGF0aW9ucxgDIAMoCzIRLnF1aXoudjIuQ2l0YXRpb24SFQoNZXJyb3JfbWVzc2FnZRgEIAEoCSIpCghDaXRhdGlvbhIOCgZzb3VyY2UYASABKAkSDQoFcXVvdGUYAiABKAkiJAoTTGlzdFJhbmtpbmdzUmVxdWVzdBINCgVsaW1pdBgBIAEoBSI+ChRMaXN0UmFua2luZ3NSZXNwb25zZRImCgdlbnRyaWVzGAEgAygLMhUucXVpei52Mi5SYW5raW5nRW50cnkifAoMUmFua2luZ0VudHJ5EgwKBHJhbmsYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSFQoNY29ycmVjdF9jb3VudBgDIAEoBRITCgt0b3RhbF9jb3VudBgEIAEoBRIMCgR0aWVyGAUgASgJEhIKCmNyZWF0ZWRfYXQYBiABKAkiJgoRTGlzdEdlbnJlc1JlcXVlc3QSEQoJY291cnNlX2lkGAEgASgJIlcKBUdlbnJlEgoKAmlkGAEgASgJEhEKCWNvdXJzZV9pZBgCIAEoCRIMCgRuYW1lGAMgASgJEg0KBWxhYmVsGAQgASgJEhIKCnNvcnRfb3JkZXIYBSABKAUiNAoSTGlzdEdlbnJlc1Jlc3BvbnNlEh4KBmdlbnJlcxgBIAMoCzIOLnF1aXoudjIuR2VucmUqhQEKDkluc2lnaHRzU3RhdHVzEh8KG0lOU0lHSFRTX1NUQVRVU19VTlNQRUNJRklFRBAAEhsKF0lOU0lHSFRTX1NUQVRVU19QRU5ESU5HEAESGQoVSU5TSUdIVFNfU1RBVFVTX1JFQURZEAISGgoWSU5TSUdIVFNfU1RBVFVTX0ZBSUxFRBADMrcECgtRdWl6U2VydmljZRJICgtMaXN0Q291cnNlcxIbLnF1aXoudjIuTGlzdENvdXJzZXNSZXF1ZXN0GhwucXVpei52Mi5MaXN0Q291cnNlc1Jlc3BvbnNlEksKDFN0YXJ0QXR0ZW1wdBIcLnF1aXoudjIuU3RhcnRBdHRlbXB0UmVxdWVzdBodLnF1aXoudjIuU3RhcnRBdHRlbXB0UmVzcG9uc2USTgoNTGlzdFF1ZXN0aW9ucxIdLnF1aXoudjIuTGlzdFF1ZXN0aW9uc1JlcXVlc3QaHi5xdWl6LnYyLkxpc3RRdWVzdGlvbnNSZXNwb25zZRJOCg1TdWJtaXRBbnN3ZXJzEh0ucXVpei52Mi5TdWJtaXRBbnN3ZXJzUmVxdWVzdBoeLnF1aXoudjIuU3VibWl0QW5zd2Vyc1Jlc3BvbnNlEl0KEkdldEF0dGVtcHRJbnNpZ2h0cxIiLnF1aXoudjIuR2V0QXR0ZW1wdEluc2lnaHRzUmVxdWVzdBojLnF1aXoudjIuR2V0QXR0ZW1wdEluc2lnaHRzUmVzcG9uc2USSwoMTGlzdFJhbmtpbmdzEhwucXVpei52Mi5MaXN0UmFua2luZ3NSZXF1ZXN0Gh0ucXVpei52Mi5MaXN0UmFua2luZ3NSZXNwb25zZRJFCgpMaXN0R2VucmVzEhoucXVpei52Mi5MaXN0R2VucmVzUmVxdWVzdBobLnF1aXoudjIuTGlzdEdlbnJlc1Jlc3BvbnNlQn8KC2NvbS5xdWl6LnYyQglRdWl6UHJvdG9QAVooZ2l0aHViLmNvbS9rbS9haS1xdWl6L2dlbi9xdWl6L3YyO3F1aXp2MqICA1FYWKoCB1F1aXouVjLKAgdRdWl6XFYy4gITUXVpelxWMlxHUEJNZXRhZGF0YeoCCFF1aXo6OlYyYgZwcm90bzM");
+  fileDesc("ChJxdWl6L3YyL3F1aXoucHJvdG8SB3F1aXoudjIiNwoGQ291cnNlEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkiFAoSTGlzdENvdXJzZXNSZXF1ZXN0IjcKE0xpc3RDb3Vyc2VzUmVzcG9uc2USIAoHY291cnNlcxgBIAMoCzIPLnF1aXoudjIuQ291cnNlIjoKE1N0YXJ0QXR0ZW1wdFJlcXVlc3QSEQoJY291cnNlX2lkGAEgASgJEhAKCHVzZXJuYW1lGAIgASgJIioKFFN0YXJ0QXR0ZW1wdFJlc3BvbnNlEhIKCmF0dGVtcHRfaWQYASABKAkiTQoUTGlzdFF1ZXN0aW9uc1JlcXVlc3QSEgoKYXR0ZW1wdF9pZBgBIAEoCRINCgVnZW5yZRgCIAEoCRISCgpkaWZmaWN1bHR5GAMgASgFIj0KFUxpc3RRdWVzdGlvbnNSZXNwb25zZRIkCglxdWVzdGlvbnMYASADKAsyES5xdWl6LnYyLlF1ZXN0aW9uIsICCghRdWVzdGlvbhIKCgJpZBgBIAEoCRIOCgZwcm9tcHQYAiABKAkSNQoKYXR0cmlidXRlcxgDIAMoCzIhLnF1aXoudjIuUXVlc3Rpb24uQXR0cmlidXRlc0VudHJ5EhMKC2V4cGxhbmF0aW9uGAQgASgJEjYKD211bHRpcGxlX2Nob2ljZRgKIAEoCzIbLnF1aXoudjIuTXVsdGlwbGVDaG9pY2VCb2R5SAASMAoMbXVsdGlfc2VsZWN0GAsgASgLMhgucXVpei52Mi5NdWx0aVNlbGVjdEJvZHlIABIpCghvcmRlcmluZxgMIAEoCzIVLnF1aXoudjIuT3JkZXJpbmdCb2R5SAAaMQoPQXR0cmlidXRlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCBgoEYm9keSI2CgZDaG9pY2USCgoCaWQYASABKAkSDAoEdGV4dBgCIAEoCRISCgpzb3J0X29yZGVyGAMgASgFIlEKEk11bHRpcGxlQ2hvaWNlQm9keRIgCgdjaG9pY2VzGAEgAygLMg8ucXVpei52Mi5DaG9pY2USGQoRY29ycmVjdF9jaG9pY2VfaWQYAiABKAkiMwoPTXVsdGlTZWxlY3RCb2R5EiAKB2Nob2ljZXMYASADKAsyDy5xdWl6LnYyLkNob2ljZSI8CgxPcmRlcmluZ0l0ZW0SCgoCaWQYASABKAkSDAoEdGV4dBgCIAEoCRISCgpzb3J0X29yZGVyGAMgASgFIjQKDE9yZGVyaW5nQm9keRIkCgVpdGVtcxgBIAMoCzIVLnF1aXoudjIuT3JkZXJpbmdJdGVtIsABCgpVc2VyQW5zd2VyEhMKC3F1ZXN0aW9uX2lkGAEgASgJEjQKDXNpbmdsZV9jaG9pY2UYCiABKAsyGy5xdWl6LnYyLlNpbmdsZUNob2ljZUFuc3dlckgAEjIKDG11bHRpX2Nob2ljZRgLIAEoCzIaLnF1aXoudjIuTXVsdGlDaG9pY2VBbnN3ZXJIABIrCghvcmRlcmluZxgMIAEoCzIXLnF1aXoudjIuT3JkZXJpbmdBbnN3ZXJIAEIGCgRib2R5IicKElNpbmdsZUNob2ljZUFuc3dlchIRCgljaG9pY2VfaWQYASABKAkiJwoRTXVsdGlDaG9pY2VBbnN3ZXISEgoKY2hvaWNlX2lkcxgBIAMoCSIqCg5PcmRlcmluZ0Fuc3dlchIYChBvcmRlcmVkX2l0ZW1faWRzGAEgAygJIlAKFFN1Ym1pdEFuc3dlcnNSZXF1ZXN0EhIKCmF0dGVtcHRfaWQYASABKAkSJAoHYW5zd2VycxgCIAMoCzITLnF1aXoudjIuVXNlckFuc3dlciJxChVTdWJtaXRBbnN3ZXJzUmVzcG9uc2USJgoGcmVzdWx0GAEgASgLMhYucXVpei52Mi5BdHRlbXB0UmVzdWx0EjAKD2luc2lnaHRzX3N0YXR1cxgCIAEoDjIXLnF1aXoudjIuSW5zaWdodHNTdGF0dXMifAoNQXR0ZW1wdFJlc3VsdBIVCg1jb3JyZWN0X2NvdW50GAEgASgFEhMKC3RvdGFsX2NvdW50GAIgASgFEgwKBHRpZXIYAyABKAkSMQoQcXVlc3Rpb25fcmVzdWx0cxgEIAMoCzIXLnF1aXoudjIuUXVlc3Rpb25SZXN1bHQi8wEKDlF1ZXN0aW9uUmVzdWx0EhMKC3F1ZXN0aW9uX2lkGAEgASgJEhIKCmlzX2NvcnJlY3QYAiABKAgSNQoNc2luZ2xlX2Nob2ljZRgKIAEoCzIcLnF1aXoudjIuU2luZ2xlQ2hvaWNlQ29ycmVjdEgAEjMKDG11bHRpX2Nob2ljZRgLIAEoCzIbLnF1aXoudjIuTXVsdGlDaG9pY2VDb3JyZWN0SAASLAoIb3JkZXJpbmcYDCABKAsyGC5xdWl6LnYyLk9yZGVyaW5nQ29ycmVjdEgAEhMKC2V4cGxhbmF0aW9uGBQgASgJQgkKB2NvcnJlY3QiKAoTU2luZ2xlQ2hvaWNlQ29ycmVjdBIRCgljaG9pY2VfaWQYASABKAkiKAoSTXVsdGlDaG9pY2VDb3JyZWN0EhIKCmNob2ljZV9pZHMYASADKAkiKwoPT3JkZXJpbmdDb3JyZWN0EhgKEG9yZGVyZWRfaXRlbV9pZHMYASADKAkiLwoZR2V0QXR0ZW1wdEluc2lnaHRzUmVxdWVzdBISCgphdHRlbXB0X2lkGAEgASgJIpcBChpHZXRBdHRlbXB0SW5zaWdodHNSZXNwb25zZRInCgZzdGF0dXMYASABKA4yFy5xdWl6LnYyLkluc2lnaHRzU3RhdHVzEhMKC2FpX2ZlZWRiYWNrGAIgASgJEiQKCWNpdGF0aW9ucxgDIAMoCzIRLnF1aXoudjIuQ2l0YXRpb24SFQoNZXJyb3JfbWVzc2FnZRgEIAEoCSIpCghDaXRhdGlvbhIOCgZzb3VyY2UYASABKAkSDQoFcXVvdGUYAiABKAkiJAoTTGlzdFJhbmtpbmdzUmVxdWVzdBINCgVsaW1pdBgBIAEoBSI+ChRMaXN0UmFua2luZ3NSZXNwb25zZRImCgdlbnRyaWVzGAEgAygLMhUucXVpei52Mi5SYW5raW5nRW50cnkifAoMUmFua2luZ0VudHJ5EgwKBHJhbmsYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSFQoNY29ycmVjdF9jb3VudBgDIAEoBRITCgt0b3RhbF9jb3VudBgEIAEoBRIMCgR0aWVyGAUgASgJEhIKCmNyZWF0ZWRfYXQYBiABKAkiJgoRTGlzdEdlbnJlc1JlcXVlc3QSEQoJY291cnNlX2lkGAEgASgJIlcKBUdlbnJlEgoKAmlkGAEgASgJEhEKCWNvdXJzZV9pZBgCIAEoCRIMCgRuYW1lGAMgASgJEg0KBWxhYmVsGAQgASgJEhIKCnNvcnRfb3JkZXIYBSABKAUiNAoSTGlzdEdlbnJlc1Jlc3BvbnNlEh4KBmdlbnJlcxgBIAMoCzIOLnF1aXoudjIuR2VucmUiFQoTR2V0TXlQcm9maWxlUmVxdWVzdCJECglNeVByb2ZpbGUSFAoMZGlzcGxheV9uYW1lGAEgASgJEg0KBWVtYWlsGAIgASgJEhIKCmNyZWF0ZWRfYXQYAyABKAkiOwoUR2V0TXlQcm9maWxlUmVzcG9uc2USIwoHcHJvZmlsZRgBIAEoCzISLnF1aXoudjIuTXlQcm9maWxlIiYKFUxpc3RNeUF0dGVtcHRzUmVxdWVzdBINCgVsaW1pdBgBIAEoBSJxCgxBdHRlbXB0RW50cnkSEwoLY291cnNlX25hbWUYASABKAkSFQoNY29ycmVjdF9jb3VudBgCIAEoBRITCgt0b3RhbF9jb3VudBgDIAEoBRIMCgR0aWVyGAQgASgJEhIKCmNyZWF0ZWRfYXQYBSABKAkiQQoWTGlzdE15QXR0ZW1wdHNSZXNwb25zZRInCghhdHRlbXB0cxgBIAMoCzIVLnF1aXoudjIuQXR0ZW1wdEVudHJ5KoUBCg5JbnNpZ2h0c1N0YXR1cxIfChtJTlNJR0hUU19TVEFUVVNfVU5TUEVDSUZJRUQQABIbChdJTlNJR0hUU19TVEFUVVNfUEVORElORxABEhkKFUlOU0lHSFRTX1NUQVRVU19SRUFEWRACEhoKFklOU0lHSFRTX1NUQVRVU19GQUlMRUQQAzLXBQoLUXVpelNlcnZpY2USSAoLTGlzdENvdXJzZXMSGy5xdWl6LnYyLkxpc3RDb3Vyc2VzUmVxdWVzdBocLnF1aXoudjIuTGlzdENvdXJzZXNSZXNwb25zZRJLCgxTdGFydEF0dGVtcHQSHC5xdWl6LnYyLlN0YXJ0QXR0ZW1wdFJlcXVlc3QaHS5xdWl6LnYyLlN0YXJ0QXR0ZW1wdFJlc3BvbnNlEk4KDUxpc3RRdWVzdGlvbnMSHS5xdWl6LnYyLkxpc3RRdWVzdGlvbnNSZXF1ZXN0Gh4ucXVpei52Mi5MaXN0UXVlc3Rpb25zUmVzcG9uc2USTgoNU3VibWl0QW5zd2VycxIdLnF1aXoudjIuU3VibWl0QW5zd2Vyc1JlcXVlc3QaHi5xdWl6LnYyLlN1Ym1pdEFuc3dlcnNSZXNwb25zZRJdChJHZXRBdHRlbXB0SW5zaWdodHMSIi5xdWl6LnYyLkdldEF0dGVtcHRJbnNpZ2h0c1JlcXVlc3QaIy5xdWl6LnYyLkdldEF0dGVtcHRJbnNpZ2h0c1Jlc3BvbnNlEksKDExpc3RSYW5raW5ncxIcLnF1aXoudjIuTGlzdFJhbmtpbmdzUmVxdWVzdBodLnF1aXoudjIuTGlzdFJhbmtpbmdzUmVzcG9uc2USRQoKTGlzdEdlbnJlcxIaLnF1aXoudjIuTGlzdEdlbnJlc1JlcXVlc3QaGy5xdWl6LnYyLkxpc3RHZW5yZXNSZXNwb25zZRJLCgxHZXRNeVByb2ZpbGUSHC5xdWl6LnYyLkdldE15UHJvZmlsZVJlcXVlc3QaHS5xdWl6LnYyLkdldE15UHJvZmlsZVJlc3BvbnNlElEKDkxpc3RNeUF0dGVtcHRzEh4ucXVpei52Mi5MaXN0TXlBdHRlbXB0c1JlcXVlc3QaHy5xdWl6LnYyLkxpc3RNeUF0dGVtcHRzUmVzcG9uc2VCfwoLY29tLnF1aXoudjJCCVF1aXpQcm90b1ABWihnaXRodWIuY29tL2ttL2FpLXF1aXovZ2VuL3F1aXovdjI7cXVpenYyogIDUVhYqgIHUXVpei5WMsoCB1F1aXpcVjLiAhNRdWl6XFYyXEdQQk1ldGFkYXRh6gIIUXVpejo6VjJiBnByb3RvMw");
 
 /**
  * @generated from message quiz.v2.Course
@@ -816,6 +816,134 @@ export const ListGenresResponseSchema: GenMessage<ListGenresResponse> = /*@__PUR
   messageDesc(file_quiz_v2_quiz, 32);
 
 /**
+ * @generated from message quiz.v2.GetMyProfileRequest
+ */
+export type GetMyProfileRequest = Message<"quiz.v2.GetMyProfileRequest"> & {
+};
+
+/**
+ * Describes the message quiz.v2.GetMyProfileRequest.
+ * Use `create(GetMyProfileRequestSchema)` to create a new message.
+ */
+export const GetMyProfileRequestSchema: GenMessage<GetMyProfileRequest> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_quiz, 33);
+
+/**
+ * @generated from message quiz.v2.MyProfile
+ */
+export type MyProfile = Message<"quiz.v2.MyProfile"> & {
+  /**
+   * @generated from field: string display_name = 1;
+   */
+  displayName: string;
+
+  /**
+   * @generated from field: string email = 2;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string created_at = 3;
+   */
+  createdAt: string;
+};
+
+/**
+ * Describes the message quiz.v2.MyProfile.
+ * Use `create(MyProfileSchema)` to create a new message.
+ */
+export const MyProfileSchema: GenMessage<MyProfile> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_quiz, 34);
+
+/**
+ * @generated from message quiz.v2.GetMyProfileResponse
+ */
+export type GetMyProfileResponse = Message<"quiz.v2.GetMyProfileResponse"> & {
+  /**
+   * @generated from field: quiz.v2.MyProfile profile = 1;
+   */
+  profile?: MyProfile;
+};
+
+/**
+ * Describes the message quiz.v2.GetMyProfileResponse.
+ * Use `create(GetMyProfileResponseSchema)` to create a new message.
+ */
+export const GetMyProfileResponseSchema: GenMessage<GetMyProfileResponse> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_quiz, 35);
+
+/**
+ * @generated from message quiz.v2.ListMyAttemptsRequest
+ */
+export type ListMyAttemptsRequest = Message<"quiz.v2.ListMyAttemptsRequest"> & {
+  /**
+   * @generated from field: int32 limit = 1;
+   */
+  limit: number;
+};
+
+/**
+ * Describes the message quiz.v2.ListMyAttemptsRequest.
+ * Use `create(ListMyAttemptsRequestSchema)` to create a new message.
+ */
+export const ListMyAttemptsRequestSchema: GenMessage<ListMyAttemptsRequest> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_quiz, 36);
+
+/**
+ * @generated from message quiz.v2.AttemptEntry
+ */
+export type AttemptEntry = Message<"quiz.v2.AttemptEntry"> & {
+  /**
+   * @generated from field: string course_name = 1;
+   */
+  courseName: string;
+
+  /**
+   * @generated from field: int32 correct_count = 2;
+   */
+  correctCount: number;
+
+  /**
+   * @generated from field: int32 total_count = 3;
+   */
+  totalCount: number;
+
+  /**
+   * @generated from field: string tier = 4;
+   */
+  tier: string;
+
+  /**
+   * @generated from field: string created_at = 5;
+   */
+  createdAt: string;
+};
+
+/**
+ * Describes the message quiz.v2.AttemptEntry.
+ * Use `create(AttemptEntrySchema)` to create a new message.
+ */
+export const AttemptEntrySchema: GenMessage<AttemptEntry> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_quiz, 37);
+
+/**
+ * @generated from message quiz.v2.ListMyAttemptsResponse
+ */
+export type ListMyAttemptsResponse = Message<"quiz.v2.ListMyAttemptsResponse"> & {
+  /**
+   * @generated from field: repeated quiz.v2.AttemptEntry attempts = 1;
+   */
+  attempts: AttemptEntry[];
+};
+
+/**
+ * Describes the message quiz.v2.ListMyAttemptsResponse.
+ * Use `create(ListMyAttemptsResponseSchema)` to create a new message.
+ */
+export const ListMyAttemptsResponseSchema: GenMessage<ListMyAttemptsResponse> = /*@__PURE__*/
+  messageDesc(file_quiz_v2_quiz, 38);
+
+/**
  * @generated from enum quiz.v2.InsightsStatus
  */
 export enum InsightsStatus {
@@ -919,6 +1047,26 @@ export const QuizService: GenService<{
     methodKind: "unary";
     input: typeof ListGenresRequestSchema;
     output: typeof ListGenresResponseSchema;
+  },
+  /**
+   * マイプロフィール取得（要認証: Authorization: Bearer <token>）
+   *
+   * @generated from rpc quiz.v2.QuizService.GetMyProfile
+   */
+  getMyProfile: {
+    methodKind: "unary";
+    input: typeof GetMyProfileRequestSchema;
+    output: typeof GetMyProfileResponseSchema;
+  },
+  /**
+   * 自分の受験履歴一覧（要認証: Authorization: Bearer <token>）
+   *
+   * @generated from rpc quiz.v2.QuizService.ListMyAttempts
+   */
+  listMyAttempts: {
+    methodKind: "unary";
+    input: typeof ListMyAttemptsRequestSchema;
+    output: typeof ListMyAttemptsResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_quiz_v2_quiz, 0);

@@ -1971,6 +1971,310 @@ func (x *ListGenresResponse) GetGenres() []*Genre {
 	return nil
 }
 
+type GetMyProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMyProfileRequest) Reset() {
+	*x = GetMyProfileRequest{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyProfileRequest) ProtoMessage() {}
+
+func (x *GetMyProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyProfileRequest.ProtoReflect.Descriptor instead.
+func (*GetMyProfileRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{33}
+}
+
+type MyProfile struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DisplayName   string                 `protobuf:"bytes,1,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MyProfile) Reset() {
+	*x = MyProfile{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MyProfile) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MyProfile) ProtoMessage() {}
+
+func (x *MyProfile) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MyProfile.ProtoReflect.Descriptor instead.
+func (*MyProfile) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *MyProfile) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *MyProfile) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *MyProfile) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+type GetMyProfileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Profile       *MyProfile             `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMyProfileResponse) Reset() {
+	*x = GetMyProfileResponse{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyProfileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyProfileResponse) ProtoMessage() {}
+
+func (x *GetMyProfileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyProfileResponse.ProtoReflect.Descriptor instead.
+func (*GetMyProfileResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *GetMyProfileResponse) GetProfile() *MyProfile {
+	if x != nil {
+		return x.Profile
+	}
+	return nil
+}
+
+type ListMyAttemptsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyAttemptsRequest) Reset() {
+	*x = ListMyAttemptsRequest{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyAttemptsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyAttemptsRequest) ProtoMessage() {}
+
+func (x *ListMyAttemptsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyAttemptsRequest.ProtoReflect.Descriptor instead.
+func (*ListMyAttemptsRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *ListMyAttemptsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type AttemptEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CourseName    string                 `protobuf:"bytes,1,opt,name=course_name,json=courseName,proto3" json:"course_name,omitempty"`
+	CorrectCount  int32                  `protobuf:"varint,2,opt,name=correct_count,json=correctCount,proto3" json:"correct_count,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,3,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	Tier          string                 `protobuf:"bytes,4,opt,name=tier,proto3" json:"tier,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AttemptEntry) Reset() {
+	*x = AttemptEntry{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AttemptEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AttemptEntry) ProtoMessage() {}
+
+func (x *AttemptEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AttemptEntry.ProtoReflect.Descriptor instead.
+func (*AttemptEntry) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *AttemptEntry) GetCourseName() string {
+	if x != nil {
+		return x.CourseName
+	}
+	return ""
+}
+
+func (x *AttemptEntry) GetCorrectCount() int32 {
+	if x != nil {
+		return x.CorrectCount
+	}
+	return 0
+}
+
+func (x *AttemptEntry) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *AttemptEntry) GetTier() string {
+	if x != nil {
+		return x.Tier
+	}
+	return ""
+}
+
+func (x *AttemptEntry) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+type ListMyAttemptsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Attempts      []*AttemptEntry        `protobuf:"bytes,1,rep,name=attempts,proto3" json:"attempts,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMyAttemptsResponse) Reset() {
+	*x = ListMyAttemptsResponse{}
+	mi := &file_quiz_v2_quiz_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMyAttemptsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMyAttemptsResponse) ProtoMessage() {}
+
+func (x *ListMyAttemptsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_v2_quiz_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMyAttemptsResponse.ProtoReflect.Descriptor instead.
+func (*ListMyAttemptsResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_v2_quiz_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *ListMyAttemptsResponse) GetAttempts() []*AttemptEntry {
+	if x != nil {
+		return x.Attempts
+	}
+	return nil
+}
+
 var File_quiz_v2_quiz_proto protoreflect.FileDescriptor
 
 const file_quiz_v2_quiz_proto_rawDesc = "" +
@@ -2112,12 +2416,33 @@ const file_quiz_v2_quiz_proto_rawDesc = "" +
 	"\n" +
 	"sort_order\x18\x05 \x01(\x05R\tsortOrder\"<\n" +
 	"\x12ListGenresResponse\x12&\n" +
-	"\x06genres\x18\x01 \x03(\v2\x0e.quiz.v2.GenreR\x06genres*\x85\x01\n" +
+	"\x06genres\x18\x01 \x03(\v2\x0e.quiz.v2.GenreR\x06genres\"\x15\n" +
+	"\x13GetMyProfileRequest\"c\n" +
+	"\tMyProfile\x12!\n" +
+	"\fdisplay_name\x18\x01 \x01(\tR\vdisplayName\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x03 \x01(\tR\tcreatedAt\"D\n" +
+	"\x14GetMyProfileResponse\x12,\n" +
+	"\aprofile\x18\x01 \x01(\v2\x12.quiz.v2.MyProfileR\aprofile\"-\n" +
+	"\x15ListMyAttemptsRequest\x12\x14\n" +
+	"\x05limit\x18\x01 \x01(\x05R\x05limit\"\xa8\x01\n" +
+	"\fAttemptEntry\x12\x1f\n" +
+	"\vcourse_name\x18\x01 \x01(\tR\n" +
+	"courseName\x12#\n" +
+	"\rcorrect_count\x18\x02 \x01(\x05R\fcorrectCount\x12\x1f\n" +
+	"\vtotal_count\x18\x03 \x01(\x05R\n" +
+	"totalCount\x12\x12\n" +
+	"\x04tier\x18\x04 \x01(\tR\x04tier\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\tR\tcreatedAt\"K\n" +
+	"\x16ListMyAttemptsResponse\x121\n" +
+	"\battempts\x18\x01 \x03(\v2\x15.quiz.v2.AttemptEntryR\battempts*\x85\x01\n" +
 	"\x0eInsightsStatus\x12\x1f\n" +
 	"\x1bINSIGHTS_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17INSIGHTS_STATUS_PENDING\x10\x01\x12\x19\n" +
 	"\x15INSIGHTS_STATUS_READY\x10\x02\x12\x1a\n" +
-	"\x16INSIGHTS_STATUS_FAILED\x10\x032\xb7\x04\n" +
+	"\x16INSIGHTS_STATUS_FAILED\x10\x032\xd7\x05\n" +
 	"\vQuizService\x12H\n" +
 	"\vListCourses\x12\x1b.quiz.v2.ListCoursesRequest\x1a\x1c.quiz.v2.ListCoursesResponse\x12K\n" +
 	"\fStartAttempt\x12\x1c.quiz.v2.StartAttemptRequest\x1a\x1d.quiz.v2.StartAttemptResponse\x12N\n" +
@@ -2126,7 +2451,9 @@ const file_quiz_v2_quiz_proto_rawDesc = "" +
 	"\x12GetAttemptInsights\x12\".quiz.v2.GetAttemptInsightsRequest\x1a#.quiz.v2.GetAttemptInsightsResponse\x12K\n" +
 	"\fListRankings\x12\x1c.quiz.v2.ListRankingsRequest\x1a\x1d.quiz.v2.ListRankingsResponse\x12E\n" +
 	"\n" +
-	"ListGenres\x12\x1a.quiz.v2.ListGenresRequest\x1a\x1b.quiz.v2.ListGenresResponseB\x7f\n" +
+	"ListGenres\x12\x1a.quiz.v2.ListGenresRequest\x1a\x1b.quiz.v2.ListGenresResponse\x12K\n" +
+	"\fGetMyProfile\x12\x1c.quiz.v2.GetMyProfileRequest\x1a\x1d.quiz.v2.GetMyProfileResponse\x12Q\n" +
+	"\x0eListMyAttempts\x12\x1e.quiz.v2.ListMyAttemptsRequest\x1a\x1f.quiz.v2.ListMyAttemptsResponseB\x7f\n" +
 	"\vcom.quiz.v2B\tQuizProtoP\x01Z(github.com/km/ai-quiz/gen/quiz/v2;quizv2\xa2\x02\x03QXX\xaa\x02\aQuiz.V2\xca\x02\aQuiz\\V2\xe2\x02\x13Quiz\\V2\\GPBMetadata\xea\x02\bQuiz::V2b\x06proto3"
 
 var (
@@ -2142,7 +2469,7 @@ func file_quiz_v2_quiz_proto_rawDescGZIP() []byte {
 }
 
 var file_quiz_v2_quiz_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_quiz_v2_quiz_proto_msgTypes = make([]protoimpl.MessageInfo, 34)
+var file_quiz_v2_quiz_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
 var file_quiz_v2_quiz_proto_goTypes = []any{
 	(InsightsStatus)(0),                // 0: quiz.v2.InsightsStatus
 	(*Course)(nil),                     // 1: quiz.v2.Course
@@ -2178,12 +2505,18 @@ var file_quiz_v2_quiz_proto_goTypes = []any{
 	(*ListGenresRequest)(nil),          // 31: quiz.v2.ListGenresRequest
 	(*Genre)(nil),                      // 32: quiz.v2.Genre
 	(*ListGenresResponse)(nil),         // 33: quiz.v2.ListGenresResponse
-	nil,                                // 34: quiz.v2.Question.AttributesEntry
+	(*GetMyProfileRequest)(nil),        // 34: quiz.v2.GetMyProfileRequest
+	(*MyProfile)(nil),                  // 35: quiz.v2.MyProfile
+	(*GetMyProfileResponse)(nil),       // 36: quiz.v2.GetMyProfileResponse
+	(*ListMyAttemptsRequest)(nil),      // 37: quiz.v2.ListMyAttemptsRequest
+	(*AttemptEntry)(nil),               // 38: quiz.v2.AttemptEntry
+	(*ListMyAttemptsResponse)(nil),     // 39: quiz.v2.ListMyAttemptsResponse
+	nil,                                // 40: quiz.v2.Question.AttributesEntry
 }
 var file_quiz_v2_quiz_proto_depIdxs = []int32{
 	1,  // 0: quiz.v2.ListCoursesResponse.courses:type_name -> quiz.v2.Course
 	8,  // 1: quiz.v2.ListQuestionsResponse.questions:type_name -> quiz.v2.Question
-	34, // 2: quiz.v2.Question.attributes:type_name -> quiz.v2.Question.AttributesEntry
+	40, // 2: quiz.v2.Question.attributes:type_name -> quiz.v2.Question.AttributesEntry
 	10, // 3: quiz.v2.Question.multiple_choice:type_name -> quiz.v2.MultipleChoiceBody
 	11, // 4: quiz.v2.Question.multi_select:type_name -> quiz.v2.MultiSelectBody
 	13, // 5: quiz.v2.Question.ordering:type_name -> quiz.v2.OrderingBody
@@ -2204,25 +2537,31 @@ var file_quiz_v2_quiz_proto_depIdxs = []int32{
 	27, // 20: quiz.v2.GetAttemptInsightsResponse.citations:type_name -> quiz.v2.Citation
 	30, // 21: quiz.v2.ListRankingsResponse.entries:type_name -> quiz.v2.RankingEntry
 	32, // 22: quiz.v2.ListGenresResponse.genres:type_name -> quiz.v2.Genre
-	2,  // 23: quiz.v2.QuizService.ListCourses:input_type -> quiz.v2.ListCoursesRequest
-	4,  // 24: quiz.v2.QuizService.StartAttempt:input_type -> quiz.v2.StartAttemptRequest
-	6,  // 25: quiz.v2.QuizService.ListQuestions:input_type -> quiz.v2.ListQuestionsRequest
-	18, // 26: quiz.v2.QuizService.SubmitAnswers:input_type -> quiz.v2.SubmitAnswersRequest
-	25, // 27: quiz.v2.QuizService.GetAttemptInsights:input_type -> quiz.v2.GetAttemptInsightsRequest
-	28, // 28: quiz.v2.QuizService.ListRankings:input_type -> quiz.v2.ListRankingsRequest
-	31, // 29: quiz.v2.QuizService.ListGenres:input_type -> quiz.v2.ListGenresRequest
-	3,  // 30: quiz.v2.QuizService.ListCourses:output_type -> quiz.v2.ListCoursesResponse
-	5,  // 31: quiz.v2.QuizService.StartAttempt:output_type -> quiz.v2.StartAttemptResponse
-	7,  // 32: quiz.v2.QuizService.ListQuestions:output_type -> quiz.v2.ListQuestionsResponse
-	19, // 33: quiz.v2.QuizService.SubmitAnswers:output_type -> quiz.v2.SubmitAnswersResponse
-	26, // 34: quiz.v2.QuizService.GetAttemptInsights:output_type -> quiz.v2.GetAttemptInsightsResponse
-	29, // 35: quiz.v2.QuizService.ListRankings:output_type -> quiz.v2.ListRankingsResponse
-	33, // 36: quiz.v2.QuizService.ListGenres:output_type -> quiz.v2.ListGenresResponse
-	30, // [30:37] is the sub-list for method output_type
-	23, // [23:30] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	35, // 23: quiz.v2.GetMyProfileResponse.profile:type_name -> quiz.v2.MyProfile
+	38, // 24: quiz.v2.ListMyAttemptsResponse.attempts:type_name -> quiz.v2.AttemptEntry
+	2,  // 25: quiz.v2.QuizService.ListCourses:input_type -> quiz.v2.ListCoursesRequest
+	4,  // 26: quiz.v2.QuizService.StartAttempt:input_type -> quiz.v2.StartAttemptRequest
+	6,  // 27: quiz.v2.QuizService.ListQuestions:input_type -> quiz.v2.ListQuestionsRequest
+	18, // 28: quiz.v2.QuizService.SubmitAnswers:input_type -> quiz.v2.SubmitAnswersRequest
+	25, // 29: quiz.v2.QuizService.GetAttemptInsights:input_type -> quiz.v2.GetAttemptInsightsRequest
+	28, // 30: quiz.v2.QuizService.ListRankings:input_type -> quiz.v2.ListRankingsRequest
+	31, // 31: quiz.v2.QuizService.ListGenres:input_type -> quiz.v2.ListGenresRequest
+	34, // 32: quiz.v2.QuizService.GetMyProfile:input_type -> quiz.v2.GetMyProfileRequest
+	37, // 33: quiz.v2.QuizService.ListMyAttempts:input_type -> quiz.v2.ListMyAttemptsRequest
+	3,  // 34: quiz.v2.QuizService.ListCourses:output_type -> quiz.v2.ListCoursesResponse
+	5,  // 35: quiz.v2.QuizService.StartAttempt:output_type -> quiz.v2.StartAttemptResponse
+	7,  // 36: quiz.v2.QuizService.ListQuestions:output_type -> quiz.v2.ListQuestionsResponse
+	19, // 37: quiz.v2.QuizService.SubmitAnswers:output_type -> quiz.v2.SubmitAnswersResponse
+	26, // 38: quiz.v2.QuizService.GetAttemptInsights:output_type -> quiz.v2.GetAttemptInsightsResponse
+	29, // 39: quiz.v2.QuizService.ListRankings:output_type -> quiz.v2.ListRankingsResponse
+	33, // 40: quiz.v2.QuizService.ListGenres:output_type -> quiz.v2.ListGenresResponse
+	36, // 41: quiz.v2.QuizService.GetMyProfile:output_type -> quiz.v2.GetMyProfileResponse
+	39, // 42: quiz.v2.QuizService.ListMyAttempts:output_type -> quiz.v2.ListMyAttemptsResponse
+	34, // [34:43] is the sub-list for method output_type
+	25, // [25:34] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_quiz_v2_quiz_proto_init() }
@@ -2251,7 +2590,7 @@ func file_quiz_v2_quiz_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quiz_v2_quiz_proto_rawDesc), len(file_quiz_v2_quiz_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   34,
+			NumMessages:   40,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

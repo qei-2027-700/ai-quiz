@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -23,13 +24,56 @@ type CreateUserParams struct {
 	Role  string `json:"role"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+type CreateUserRow struct {
+	ID        uuid.UUID `json:"id"`
+	Email     string    `json:"email"`
+	Role      string    `json:"role"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error) {
 	row := q.db.QueryRowContext(ctx, createUser, arg.Email, arg.Role)
-	var i User
+	var i CreateUserRow
 	err := row.Scan(
 		&i.ID,
 		&i.Email,
 		&i.Role,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const createUserWithPassword = `-- name: CreateUserWithPassword :one
+INSERT INTO users (email, role, password_hash, display_name)
+VALUES ($1, 'user', $2, $3)
+RETURNING id, email, role, display_name, created_at, updated_at
+`
+
+type CreateUserWithPasswordParams struct {
+	Email        string         `json:"email"`
+	PasswordHash sql.NullString `json:"password_hash"`
+	DisplayName  string         `json:"display_name"`
+}
+
+type CreateUserWithPasswordRow struct {
+	ID          uuid.UUID `json:"id"`
+	Email       string    `json:"email"`
+	Role        string    `json:"role"`
+	DisplayName string    `json:"display_name"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+func (q *Queries) CreateUserWithPassword(ctx context.Context, arg CreateUserWithPasswordParams) (CreateUserWithPasswordRow, error) {
+	row := q.db.QueryRowContext(ctx, createUserWithPassword, arg.Email, arg.PasswordHash, arg.DisplayName)
+	var i CreateUserWithPasswordRow
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Role,
+		&i.DisplayName,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -56,15 +100,54 @@ func (q *Queries) GetRefreshTokenByHash(ctx context.Context, tokenHash string) (
 	return i, err
 }
 
+const getUserByEmail = `-- name: GetUserByEmail :one
+SELECT id, email, role, password_hash, display_name, created_at, updated_at
+FROM users
+WHERE email = $1
+`
+
+type GetUserByEmailRow struct {
+	ID           uuid.UUID      `json:"id"`
+	Email        string         `json:"email"`
+	Role         string         `json:"role"`
+	PasswordHash sql.NullString `json:"password_hash"`
+	DisplayName  string         `json:"display_name"`
+	CreatedAt    time.Time      `json:"created_at"`
+	UpdatedAt    time.Time      `json:"updated_at"`
+}
+
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error) {
+	row := q.db.QueryRowContext(ctx, getUserByEmail, email)
+	var i GetUserByEmailRow
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Role,
+		&i.PasswordHash,
+		&i.DisplayName,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const getUserByID = `-- name: GetUserByID :one
 SELECT id, email, role, created_at, updated_at
 FROM users
 WHERE id = $1
 `
 
-func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
+type GetUserByIDRow struct {
+	ID        uuid.UUID `json:"id"`
+	Email     string    `json:"email"`
+	Role      string    `json:"role"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow, error) {
 	row := q.db.QueryRowContext(ctx, getUserByID, id)
-	var i User
+	var i GetUserByIDRow
 	err := row.Scan(
 		&i.ID,
 		&i.Email,
@@ -87,9 +170,17 @@ type GetUserByProviderSubParams struct {
 	ProviderSub string `json:"provider_sub"`
 }
 
-func (q *Queries) GetUserByProviderSub(ctx context.Context, arg GetUserByProviderSubParams) (User, error) {
+type GetUserByProviderSubRow struct {
+	ID        uuid.UUID `json:"id"`
+	Email     string    `json:"email"`
+	Role      string    `json:"role"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (q *Queries) GetUserByProviderSub(ctx context.Context, arg GetUserByProviderSubParams) (GetUserByProviderSubRow, error) {
 	row := q.db.QueryRowContext(ctx, getUserByProviderSub, arg.Provider, arg.ProviderSub)
-	var i User
+	var i GetUserByProviderSubRow
 	err := row.Scan(
 		&i.ID,
 		&i.Email,

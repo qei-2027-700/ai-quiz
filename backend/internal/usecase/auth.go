@@ -5,11 +5,13 @@ import (
 	"crypto/hmac"
 	"crypto/rand"
 	"crypto/sha256"
+	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"net/mail"
 	"net/url"
 	"os"
 	"strings"
@@ -17,6 +19,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/idtoken"
@@ -175,7 +178,7 @@ func (u *AuthUsecase) ParseAccessToken(ctx context.Context, token string) (*MeRe
 		return nil, errors.New("JWT_SECRET is required")
 	}
 
-	parsed, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+	parsed, err := jwt.Parse(token, func(t *jwt.Token) (any, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS256.Alg() {
 			return nil, fmt.Errorf("unexpected signing method: %s", t.Method.Alg())
 		}
@@ -320,29 +323,29 @@ func randomBase64URL(n int) (string, error) {
 }
 
 func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email string, name string, picture string) (db.User, error) {
-	user, err := u.queries.GetUserByProviderSub(ctx, db.GetUserByProviderSubParams{Provider: "google", ProviderSub: sub})
+	existing, err := u.queries.GetUserByProviderSub(ctx, db.GetUserByProviderSubParams{Provider: "google", ProviderSub: sub})
 	if err == nil {
 		if err := u.queries.UpsertOAuthIdentity(ctx, db.UpsertOAuthIdentityParams{
 			Provider:    "google",
 			ProviderSub: sub,
-			UserID:      user.ID,
+			UserID:      existing.ID,
 			Email:       email,
 			Name:        name,
 			PictureUrl:  picture,
 		}); err != nil {
 			return db.User{}, fmt.Errorf("upsert oauth identity: %w", err)
 		}
-		return user, nil
+		return db.User{ID: existing.ID, Email: existing.Email, Role: existing.Role, CreatedAt: existing.CreatedAt, UpdatedAt: existing.UpdatedAt}, nil
 	}
 
-	user, err = u.queries.CreateUser(ctx, db.CreateUserParams{Email: email, Role: "user"})
+	created, err := u.queries.CreateUser(ctx, db.CreateUserParams{Email: email, Role: "user"})
 	if err != nil {
 		return db.User{}, fmt.Errorf("create user: %w", err)
 	}
 	if err := u.queries.UpsertOAuthIdentity(ctx, db.UpsertOAuthIdentityParams{
 		Provider:    "google",
 		ProviderSub: sub,
-		UserID:      user.ID,
+		UserID:      created.ID,
 		Email:       email,
 		Name:        name,
 		PictureUrl:  picture,
@@ -350,7 +353,7 @@ func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email st
 		return db.User{}, fmt.Errorf("upsert oauth identity: %w", err)
 	}
 
-	return user, nil
+	return db.User{ID: created.ID, Email: created.Email, Role: created.Role, CreatedAt: created.CreatedAt, UpdatedAt: created.UpdatedAt}, nil
 }
 
 func newRefreshToken() (plain string, hash string, err error) {
@@ -360,6 +363,69 @@ func newRefreshToken() (plain string, hash string, err error) {
 	}
 	sum := sha256.Sum256([]byte(plain))
 	return plain, base64.RawURLEncoding.EncodeToString(sum[:]), nil
+}
+
+type RegisterWithPasswordResult struct {
+	AccessToken string
+	UserID      uuid.UUID
+	DisplayName string
+}
+
+func (u *AuthUsecase) RegisterWithPassword(ctx context.Context, email, password, name string) (*RegisterWithPasswordResult, error) {
+	if email == "" || password == "" {
+		return nil, errors.New("email and password are required")
+	}
+	if _, err := mail.ParseAddress(email); err != nil {
+		return nil, errors.New("invalid email address")
+	}
+	if len(password) < 8 {
+		return nil, errors.New("password must be at least 8 characters")
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	if err != nil {
+		return nil, fmt.Errorf("hash: %w", err)
+	}
+
+	hashStr := string(hash)
+	user, err := u.queries.CreateUserWithPassword(ctx, db.CreateUserWithPasswordParams{
+		Email:        email,
+		PasswordHash: sql.NullString{String: hashStr, Valid: true},
+		DisplayName:  name,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("create user: %w", err)
+	}
+
+	token, err := mintAccessToken(user.ID, user.Role)
+	if err != nil {
+		return nil, err
+	}
+
+	return &RegisterWithPasswordResult{AccessToken: token, UserID: user.ID, DisplayName: user.DisplayName}, nil
+}
+
+type LoginWithPasswordResult struct {
+	AccessToken string
+	DisplayName string
+}
+
+func (u *AuthUsecase) LoginWithPassword(ctx context.Context, email, password string) (*LoginWithPasswordResult, error) {
+	user, err := u.queries.GetUserByEmail(ctx, email)
+	if err != nil {
+		return nil, errors.New("invalid email or password")
+	}
+	if !user.PasswordHash.Valid {
+		return nil, errors.New("invalid email or password")
+	}
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash.String), []byte(password)); err != nil {
+		return nil, errors.New("invalid email or password")
+	}
+	token, err := mintAccessToken(user.ID, user.Role)
+	if err != nil {
+		return nil, err
+	}
+	return &LoginWithPasswordResult{AccessToken: token, DisplayName: user.DisplayName}, nil
 }
 
 func mintAccessToken(userID uuid.UUID, role string) (string, error) {

@@ -46,6 +46,20 @@ func (h *AuthHTTPHandler) Register(mux *http.ServeMux) {
 		}
 		h.me(w, r)
 	})
+	mux.HandleFunc("/auth/register", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		h.registerWithPassword(w, r)
+	})
+	mux.HandleFunc("/auth/login", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		h.emailLogin(w, r)
+	})
 }
 
 func (h *AuthHTTPHandler) googleStart(w http.ResponseWriter, r *http.Request) {
@@ -133,6 +147,55 @@ func (h *AuthHTTPHandler) me(w http.ResponseWriter, r *http.Request) {
 		"user_id": me.UserID.String(),
 		"email":   me.Email,
 		"role":    me.Role,
+	})
+}
+
+func (h *AuthHTTPHandler) registerWithPassword(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+		Name     string `json:"name"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "invalid request", http.StatusBadRequest)
+		return
+	}
+
+	res, err := h.uc.RegisterWithPassword(r.Context(), req.Email, req.Password, req.Name)
+	if err != nil {
+		h.logger.Warn("register failed", zap.Error(err))
+		http.Error(w, "registration failed", http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"access_token": res.AccessToken,
+		"user_id":      res.UserID.String(),
+		"display_name": res.DisplayName,
+	})
+}
+
+func (h *AuthHTTPHandler) emailLogin(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "invalid request", http.StatusBadRequest)
+		return
+	}
+
+	res, err := h.uc.LoginWithPassword(r.Context(), req.Email, req.Password)
+	if err != nil {
+		http.Error(w, "invalid email or password", http.StatusUnauthorized)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"access_token": res.AccessToken,
+		"display_name": res.DisplayName,
 	})
 }
 

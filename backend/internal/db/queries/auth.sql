@@ -38,3 +38,12 @@ UPDATE refresh_tokens
 SET revoked_at = NOW()
 WHERE id = $1;
 
+-- name: CreateUserWithPassword :one
+INSERT INTO users (email, role, password_hash, display_name)
+VALUES ($1, 'user', $2, $3)
+RETURNING id, email, role, display_name, created_at, updated_at;
+
+-- name: GetUserByEmail :one
+SELECT id, email, role, password_hash, display_name, created_at, updated_at
+FROM users
+WHERE email = $1;

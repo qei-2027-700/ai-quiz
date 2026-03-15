@@ -14,15 +14,17 @@ type Querier interface {
 	CourseExists(ctx context.Context, id uuid.UUID) (bool, error)
 	CreateAttempt(ctx context.Context, arg CreateAttemptParams) (uuid.UUID, error)
 	CreateGenre(ctx context.Context, arg CreateGenreParams) (Genre, error)
-	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error)
+	CreateUserWithPassword(ctx context.Context, arg CreateUserWithPasswordParams) (CreateUserWithPasswordRow, error)
 	GetAttempt(ctx context.Context, id uuid.UUID) (Attempt, error)
 	GetAttemptInsights(ctx context.Context, attemptID uuid.UUID) (AttemptInsight, error)
 	GetCourseByID(ctx context.Context, id uuid.UUID) (GetCourseByIDRow, error)
 	GetExplanationsByQuestionIDs(ctx context.Context, dollar_1 []uuid.UUID) ([]GetExplanationsByQuestionIDsRow, error)
 	GetFirstTopicID(ctx context.Context) (uuid.UUID, error)
 	GetRefreshTokenByHash(ctx context.Context, tokenHash string) (RefreshToken, error)
-	GetUserByID(ctx context.Context, id uuid.UUID) (User, error)
-	GetUserByProviderSub(ctx context.Context, arg GetUserByProviderSubParams) (User, error)
+	GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error)
+	GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow, error)
+	GetUserByProviderSub(ctx context.Context, arg GetUserByProviderSubParams) (GetUserByProviderSubRow, error)
 	InsertChoiceWithID(ctx context.Context, arg InsertChoiceWithIDParams) error
 	InsertExplanationWithID(ctx context.Context, arg InsertExplanationWithIDParams) error
 	InsertQuestionWithID(ctx context.Context, arg InsertQuestionWithIDParams) error

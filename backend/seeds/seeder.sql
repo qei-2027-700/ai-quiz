@@ -1261,13 +1261,19 @@ INSERT INTO explanations (question_id, text) VALUES (
 -- ── ジャンル（DB設定） ─────────────────────────────────────────────
 INSERT INTO genres (course_id, name, label, sort_order) VALUES (
   '00000000-0000-0000-0000-000000000001', 'ai_basics', 'AI基礎', 1
-) ON CONFLICT (course_id, name) DO NOTHING;
+) ON CONFLICT (course_id, name) DO UPDATE SET
+  label = EXCLUDED.label,
+  sort_order = EXCLUDED.sort_order;
 INSERT INTO genres (course_id, name, label, sort_order) VALUES (
   '00000000-0000-0000-0000-000000000001', 'ai_services', 'AIサービス', 2
-) ON CONFLICT (course_id, name) DO NOTHING;
+) ON CONFLICT (course_id, name) DO UPDATE SET
+  label = EXCLUDED.label,
+  sort_order = EXCLUDED.sort_order;
 INSERT INTO genres (course_id, name, label, sort_order) VALUES (
   '00000000-0000-0000-0000-000000000001', 'engineering', 'AIコーディング', 3
-) ON CONFLICT (course_id, name) DO NOTHING;
+) ON CONFLICT (course_id, name) DO UPDATE SET
+  label = EXCLUDED.label,
+  sort_order = EXCLUDED.sort_order;
 
 
 -- ── スコアティア（DB設定） ─────────────────────────────────────────

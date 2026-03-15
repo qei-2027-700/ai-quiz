@@ -14,12 +14,13 @@ import (
 
 // QuizV2Handler implements the Connect-RPC quiz.v2.QuizServiceHandler interface.
 type QuizV2Handler struct {
-	uc     usecase.QuizV2Usecase
-	logger *zap.Logger
+	uc        usecase.QuizV2Usecase
+	profileUc *usecase.ProfileUsecase
+	logger    *zap.Logger
 }
 
-func NewQuizV2Handler(uc usecase.QuizV2Usecase, logger *zap.Logger) *QuizV2Handler {
-	return &QuizV2Handler{uc: uc, logger: logger}
+func NewQuizV2Handler(uc usecase.QuizV2Usecase, profileUc *usecase.ProfileUsecase, logger *zap.Logger) *QuizV2Handler {
+	return &QuizV2Handler{uc: uc, profileUc: profileUc, logger: logger}
 }
 
 func (h *QuizV2Handler) ListCourses(

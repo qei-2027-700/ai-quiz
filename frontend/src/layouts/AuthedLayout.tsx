@@ -33,6 +33,16 @@ export function AuthedLayout() {
             ランキング
           </button>
           <button
+            onClick={() => navigate("/profile")}
+            className={`hidden sm:block cursor-pointer text-sm transition-colors duration-150 ${
+              location.pathname === "/profile"
+                ? "text-cyan-500 font-semibold"
+                : "text-gray-500 dark:text-white/40 hover:text-gray-800 dark:hover:text-white"
+            }`}
+          >
+            プロフィール
+          </button>
+          <button
             onClick={() => navigate("/settings")}
             className={`cursor-pointer text-sm transition-colors duration-150 ${
               location.pathname === "/settings"

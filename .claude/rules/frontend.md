@@ -210,11 +210,17 @@ Chrome DevTools の Device Toolbar（⌘+Shift+M）で iPhone SE（375px）と i
 
 ```
 / (Landing)           ← ログイン済みなら /quiz へリダイレクト
-  ├─→ /login        （「ログイン」ボタン・未ログイン時のCTA）
+  ├─→ /register     （「無料で始める」CTA・ナビバー「新規登録」）
+  ├─→ /login        （「ログイン」ボタン）
   └─→ /ranking      （「ランキングを見る」リンク）
 
-/login
-  └─→ /quiz         （ログイン成功後リダイレクト）
+/register             ← ログイン済みなら /quiz へリダイレクト
+  ├─→ /quiz         （登録成功後リダイレクト）
+  └─→ /login        （「すでにアカウントをお持ちの方」リンク）
+
+/login                ← ログイン済みなら /quiz へリダイレクト
+  ├─→ /quiz         （ログイン成功後リダイレクト）
+  └─→ /register     （「アカウントをお持ちでない方」リンク）
 
 /quiz
   └─→ /quiz/result  （回答提出後）
@@ -258,7 +264,7 @@ Chrome DevTools の Device Toolbar（⌘+Shift+M）で iPhone SE（375px）と i
 
 | 種別 | loader | 未ログイン時 | ログイン済み時 | 該当ページ |
 |------|--------|------------|--------------|----------|
-| **guest-only** | `requireGuest` | そのまま表示 | `/quiz` へリダイレクト | `/` `/en` `/login` |
+| **guest-only** | `requireGuest` | そのまま表示 | `/quiz` へリダイレクト | `/` `/en` `/login` `/register` |
 | **protected** | `requireAuth` | `/login` へリダイレクト | そのまま表示 | `/quiz` `/quiz/result` `/settings` |
 | **public** | なし | そのまま表示 | そのまま表示 | `/ranking` |
 

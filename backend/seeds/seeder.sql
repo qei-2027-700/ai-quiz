@@ -1258,6 +1258,35 @@ INSERT INTO explanations (question_id, text) VALUES (
   text = EXCLUDED.text;
 
 
+-- ── 10000000-0000-0000-0000-000000000044: Claude Code で `/clear` コマンドを実行した場合と、`exi... ──
+INSERT INTO questions (id, topic_id, text, difficulty, genre)
+VALUES (
+  '10000000-0000-0000-0000-000000000044',
+  '00000000-0000-0000-0000-000000000001',
+  'Claude Code で `/clear` コマンドを実行した場合と、`exit`（または `quit`）でCLIを終了した場合の挙動の違いとして正しいものはどれか？',
+  2, 'engineering'
+) ON CONFLICT (id) DO UPDATE SET
+  text = EXCLUDED.text,
+  difficulty = EXCLUDED.difficulty,
+  genre = EXCLUDED.genre;
+
+INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
+  ('54000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000044', 'どちらも会話履歴を完全に削除し、`claude` コマンドで再起動しても以前の会話は復元できない', false, 1),
+  ('54000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000044', '`/clear` はコンテキストウィンドウ（会話履歴）をリセットしてセッションを継続するが、`exit` で終了しても会話履歴はディスクに保存されており `claude -c` で再開できる', true, 2),
+  ('54000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000044', '`/clear` はCLIプロセスを終了し、`exit` はコンテキストのみリセットしてセッションを継続する', false, 3),
+  ('54000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000044', '`/clear` と `exit` の動作は同一で、どちらを実行しても違いはない', false, 4)
+ON CONFLICT (id) DO UPDATE SET
+  text = EXCLUDED.text,
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
+
+INSERT INTO explanations (question_id, text) VALUES (
+  '10000000-0000-0000-0000-000000000044',
+  '`/clear` はコンテキストウィンドウ（会話履歴）をリセットして新しいコンテキストでセッションを継続するコマンドで、CLAUDE.mdも再読み込みされる。一方 `exit`/`quit` はCLIセッション自体を終了するが、会話履歴はディスクに保存されているため `claude -c`（`--continue`）で最新セッションを再開したり、`claude -r <sessionID>` で特定のセッションを指定して再開することができる。無関係なタスクの間に `/clear` を実行してコンテキストを整理することで、トークン消費を抑えつつ精度を保てる。'
+) ON CONFLICT (question_id) DO UPDATE SET
+  text = EXCLUDED.text;
+
+
 -- ── ジャンル（DB設定） ─────────────────────────────────────────────
 INSERT INTO genres (course_id, name, label, sort_order) VALUES (
   '00000000-0000-0000-0000-000000000001', 'ai_basics', 'AI基礎', 1

@@ -624,4 +624,18 @@ export const MOCK_QUESTIONS: MockQuestion[] = [
     ],
     explanation: "Microsoftは2026年3月、Anthropicと共同開発した「Copilot Cowork」をMicrosoft 365に統合すると発表した。MicrosoftはCopilotを特定のAIモデルに縛られないマルチモデルプラットフォームと位置づけており、「業界全体のベストなイノベーションを取り込み、タスクに応じて最適なモデルを選ぶ」戦略をとっている。Copilot CoworkはOutlook・Teams・SharePoint・Excel等のM365データをフルに活用し、プレゼン作成・データ集計・メール送信などのマルチステップタスクをエージェントが自律実行する。新しいE7ライセンスティアと同時に提供された。",
   },
+  {
+    id: '10000000-0000-0000-0000-000000000044',
+    topicId: TOPIC_ID,
+    text: "Claude Code で `/clear` コマンドを実行した場合と、`exit`（または `quit`）でCLIを終了した場合の挙動の違いとして正しいものはどれか？",
+    difficulty: 2,
+    genre: 'engineering',
+    choices: [
+      { id: '54000000-0000-0000-0000-000000000001', text: "どちらも会話履歴を完全に削除し、`claude` コマンドで再起動しても以前の会話は復元できない", isCorrect: false, sortOrder: 1 },
+      { id: '54000000-0000-0000-0000-000000000002', text: "`/clear` はコンテキストウィンドウ（会話履歴）をリセットしてセッションを継続するが、`exit` で終了しても会話履歴はディスクに保存されており `claude -c` で再開できる", isCorrect: true, sortOrder: 2 },
+      { id: '54000000-0000-0000-0000-000000000003', text: "`/clear` はCLIプロセスを終了し、`exit` はコンテキストのみリセットしてセッションを継続する", isCorrect: false, sortOrder: 3 },
+      { id: '54000000-0000-0000-0000-000000000004', text: "`/clear` と `exit` の動作は同一で、どちらを実行しても違いはない", isCorrect: false, sortOrder: 4 },
+    ],
+    explanation: "`/clear` はコンテキストウィンドウ（会話履歴）をリセットして新しいコンテキストでセッションを継続するコマンドで、CLAUDE.mdも再読み込みされる。一方 `exit`/`quit` はCLIセッション自体を終了するが、会話履歴はディスクに保存されているため `claude -c`（`--continue`）で最新セッションを再開したり、`claude -r <sessionID>` で特定のセッションを指定して再開することができる。無関係なタスクの間に `/clear` を実行してコンテキストを整理することで、トークン消費を抑えつつ精度を保てる。",
+  },
 ];

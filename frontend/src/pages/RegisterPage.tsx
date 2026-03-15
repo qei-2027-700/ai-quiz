@@ -71,8 +71,9 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* 表示名 */}
             <div>
-              <label className={labelClass}>表示名</label>
+              <label htmlFor="reg-name" className={labelClass}>表示名</label>
               <input
+                id="reg-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -84,8 +85,9 @@ export default function RegisterPage() {
 
             {/* メールアドレス */}
             <div>
-              <label className={labelClass}>メールアドレス</label>
+              <label htmlFor="reg-email" className={labelClass}>メールアドレス</label>
               <input
+                id="reg-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -97,8 +99,9 @@ export default function RegisterPage() {
 
             {/* パスワード */}
             <div>
-              <label className={labelClass}>パスワード（8文字以上）</label>
+              <label htmlFor="reg-password" className={labelClass}>パスワード（8文字以上）</label>
               <input
+                id="reg-password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -110,8 +113,9 @@ export default function RegisterPage() {
 
             {/* パスワード確認 */}
             <div>
-              <label className={labelClass}>パスワード（確認）</label>
+              <label htmlFor="reg-confirm" className={labelClass}>パスワード（確認）</label>
               <input
+                id="reg-confirm"
                 type="password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}

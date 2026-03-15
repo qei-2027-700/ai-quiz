@@ -29,6 +29,7 @@ import (
 )
 
 var ErrEmailAlreadyRegistered = errors.New("email already registered")
+var ErrInvalidCredentials = errors.New("invalid credentials")
 
 type AuthUsecase struct {
 	queries *db.Queries
@@ -341,7 +342,7 @@ func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email st
 		return db.User{ID: existing.ID, Email: existing.Email, Role: existing.Role, DisplayName: existing.DisplayName, CreatedAt: existing.CreatedAt, UpdatedAt: existing.UpdatedAt}, nil
 	}
 
-	created, err := u.queries.CreateUser(ctx, db.CreateUserParams{Email: email, Role: "user"})
+	created, err := u.queries.CreateUser(ctx, db.CreateUserParams{Email: email, Role: "user", DisplayName: name})
 	if err != nil {
 		return db.User{}, fmt.Errorf("create user: %w", err)
 	}
@@ -434,13 +435,17 @@ type LoginWithPasswordResult struct {
 func (u *AuthUsecase) LoginWithPassword(ctx context.Context, email, password string) (*LoginWithPasswordResult, error) {
 	user, err := u.queries.GetUserByEmail(ctx, email)
 	if err != nil {
-		return nil, errors.New("invalid email or password")
+		// sql.ErrNoRows → 認証失敗。それ以外は内部エラー
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrInvalidCredentials
+		}
+		return nil, fmt.Errorf("get user: %w", err)
 	}
 	if !user.PasswordHash.Valid {
-		return nil, errors.New("invalid email or password")
+		return nil, ErrInvalidCredentials
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash.String), []byte(password)); err != nil {
-		return nil, errors.New("invalid email or password")
+		return nil, ErrInvalidCredentials
 	}
 	token, err := mintAccessToken(user.ID, user.Role)
 	if err != nil {

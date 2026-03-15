@@ -14,31 +14,34 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (email, role)
-VALUES ($1, $2)
-RETURNING id, email, role, created_at, updated_at
+INSERT INTO users (email, role, display_name)
+VALUES ($1, $2, $3)
+RETURNING id, email, role, display_name, created_at, updated_at
 `
 
 type CreateUserParams struct {
-	Email string `json:"email"`
-	Role  string `json:"role"`
+	Email       string `json:"email"`
+	Role        string `json:"role"`
+	DisplayName string `json:"display_name"`
 }
 
 type CreateUserRow struct {
-	ID        uuid.UUID `json:"id"`
-	Email     string    `json:"email"`
-	Role      string    `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID          uuid.UUID `json:"id"`
+	Email       string    `json:"email"`
+	Role        string    `json:"role"`
+	DisplayName string    `json:"display_name"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error) {
-	row := q.db.QueryRowContext(ctx, createUser, arg.Email, arg.Role)
+	row := q.db.QueryRowContext(ctx, createUser, arg.Email, arg.Role, arg.DisplayName)
 	var i CreateUserRow
 	err := row.Scan(
 		&i.ID,
 		&i.Email,
 		&i.Role,
+		&i.DisplayName,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)

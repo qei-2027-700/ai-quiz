@@ -1,7 +1,7 @@
 -- name: CreateUser :one
-INSERT INTO users (email, role)
-VALUES ($1, $2)
-RETURNING id, email, role, created_at, updated_at;
+INSERT INTO users (email, role, display_name)
+VALUES ($1, $2, $3)
+RETURNING id, email, role, display_name, created_at, updated_at;
 
 -- name: GetUserByID :one
 SELECT id, email, role, display_name, created_at, updated_at

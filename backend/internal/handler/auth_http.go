@@ -203,7 +203,11 @@ func (h *AuthHTTPHandler) emailLogin(w http.ResponseWriter, r *http.Request) {
 	res, err := h.uc.LoginWithPassword(r.Context(), req.Email, req.Password)
 	if err != nil {
 		h.logger.Warn("login failed", zap.Error(err))
-		http.Error(w, "invalid email or password", http.StatusUnauthorized)
+		if errors.Is(err, usecase.ErrInvalidCredentials) {
+			http.Error(w, "invalid email or password", http.StatusUnauthorized)
+			return
+		}
+		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
 

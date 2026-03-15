@@ -86,7 +86,8 @@ for (const q of MOCK_QUESTIONS) {
     });
     lines.push(`ON CONFLICT (id) DO UPDATE SET`);
     lines.push(`  text = EXCLUDED.text,`);
-    lines.push(`  is_correct = EXCLUDED.is_correct;`);
+    lines.push(`  is_correct = EXCLUDED.is_correct,`);
+    lines.push(`  sort_order = EXCLUDED.sort_order;`);
     lines.push("");
   }
 

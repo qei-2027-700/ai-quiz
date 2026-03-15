@@ -30,7 +30,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('11000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000001', 'LLM自身の記憶（パラメータ）だけを参照する', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000001',
@@ -58,7 +59,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('12000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000002', 'モデルのファインチューニングを自動化するため', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000002',
@@ -86,7 +88,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('13000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000003', 'テキスト以外のモダリティ（画像・音声）を扱えない問題', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000003',
@@ -114,7 +117,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('14000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000004', '経済産業省が主導する政府プロジェクト単独での開発', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000004',
@@ -142,7 +146,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('15000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000005', 'オープンソースとして無償公開され、誰でも商用利用できる', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000005',
@@ -170,7 +175,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('16000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000006', 'ELYZA-japanese-Llama', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000006',
@@ -198,7 +204,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('17000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000007', 'Stability AI Japanが公開したオープンソースモデルである', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000007',
@@ -226,7 +233,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('18000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000008', 'Rinna', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000008',
@@ -254,7 +262,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('19000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000009', 'チャットボットパッケージのSMB向け販売代理', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000009',
@@ -282,7 +291,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('20000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000010', 'Stockmark-LLM', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000010',
@@ -310,7 +320,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('21000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000011', '学習データに含まれていた誤情報をそのまま記憶・再現しているため', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000011',
@@ -338,7 +349,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('22000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000012', 'Gitのコミットメッセージテンプレートを定義するファイル', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000012',
@@ -366,7 +378,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('23000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000013', 'テキスト以外の画像・音声入力にも対応するマルチモーダル化を実現する', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000013',
@@ -394,7 +407,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('24000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000014', 'Transformerの自己注意機構を削除してモデルを軽量化するため', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000014',
@@ -422,7 +436,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('25000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000015', '英語専用モデルで、日本語は公式にサポートされていない', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000015',
@@ -450,7 +465,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('26000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000016', 'テキスト生成ではなく画像生成に特化したモデルとして設計された', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000016',
@@ -478,7 +494,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('27000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000017', '日本語に対応しておらず、英語専用モデルとして提供されている', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000017',
@@ -506,7 +523,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('28000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000018', '最新データで定期的に再学習を自動実行してモデルの知識を更新するため', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000018',
@@ -534,7 +552,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('29000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000019', 'Citation Prompting：回答の根拠となる情報源の引用を要求する', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000019',
@@ -562,7 +581,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('30000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000020', 'APIのレート制限が発生したときにのみハルシネーションが起きる', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000020',
@@ -590,7 +610,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('31000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000021', 'temperatureパラメータを最大値（2.0）に設定して多様な出力を促す', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000021',
@@ -618,7 +639,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('32000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000022', '並列エージェントが必ず起動される', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000022',
@@ -646,7 +668,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('33000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000023', '画像・スクリーンショットの添付を増やして言語情報を減らす', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000023',
@@ -674,7 +697,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('34000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000024', '大きなファイルを全文読み込まず、必要な行範囲のみ指定して読む', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000024',
@@ -702,7 +726,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('35000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000025', 'コードの型チェックとLintを自動実行するCIパイプラインを構築する', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000025',
@@ -730,7 +755,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('36000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000026', 'Meta', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000026',
@@ -758,7 +784,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('37000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000027', 'Bard', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000027',
@@ -786,7 +813,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('38000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000028', 'YouTube動画をAIが自動要約する機能', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000028',
@@ -814,7 +842,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('39000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000029', 'MetaのAI研究部門が開発したオープンソースエージェント', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000029',
@@ -842,7 +871,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('40000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000030', 'VS CodeやCursorなどのコードエディタプラグイン', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000030',
@@ -870,7 +900,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('41000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000031', 'OpenAIと合弁会社を設立して軍事AI開発を別法人で継続することを発表したため', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000031',
@@ -898,7 +929,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('42000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000032', 'オックスフォード大学で倫理学の修士号を取得した', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000032',
@@ -926,7 +958,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('43000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000033', '両サービスとも月額$50（約7,500円）', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000033',
@@ -954,7 +987,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('44000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000034', '生成AIはインターネット接続を必要としないため、データセンターの回線設備が不要になるから', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000034',
@@ -982,7 +1016,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('45000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000035', 'AIの精度が十分に高い場合のみ、人が最初に一度だけ要件を伝えれば以降は完全自動で運用できることを指す用語', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000035',
@@ -1010,7 +1045,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('46000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000036', 'ログは毎回 Git にコミットして公開リポジトリに残すのが望ましい', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000036',
@@ -1038,7 +1074,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('47000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000037', 'ログが増えると面倒なので、まずはログ取得を完全にやめてから運用を開始する', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000037',
@@ -1066,7 +1103,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('48000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000038', 'skills は有料プランのみ、custom commands は無料プランで使える機能の違いである', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000038',
@@ -1094,7 +1132,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('49000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000039', 'CLAUDE.md に「常に実行すること」と記述するだけでよい', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000039',
@@ -1122,7 +1161,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('50000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000040', '`package.json` の `scripts` フィールドにコマンドを登録する', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000040',
@@ -1150,7 +1190,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('51000000-0000-0000-0000-000000000008', '10000000-0000-0000-0000-000000000041', 'Claudeを組み込んだ画像生成・動画編集に特化したクリエイティブ向けツール', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000041',
@@ -1178,7 +1219,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('52000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000042', 'Google DeepMindとAppleが共同でApple Siliconに最適化した新チップを開発するため', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000042',
@@ -1206,7 +1248,8 @@ INSERT INTO choices (id, question_id, text, is_correct, sort_order) VALUES
   ('53000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000043', 'EU AI法の規制を回避するため、GPT-4の代わりにAnthropicのClaudeをEU圏向けに採用したため', false, 4)
 ON CONFLICT (id) DO UPDATE SET
   text = EXCLUDED.text,
-  is_correct = EXCLUDED.is_correct;
+  is_correct = EXCLUDED.is_correct,
+  sort_order = EXCLUDED.sort_order;
 
 INSERT INTO explanations (question_id, text) VALUES (
   '10000000-0000-0000-0000-000000000043',

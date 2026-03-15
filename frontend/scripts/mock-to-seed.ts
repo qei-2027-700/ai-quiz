@@ -8,7 +8,7 @@
 import { writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-import { MOCK_QUESTIONS } from "../packages/shared/src/mocks/quizMockData.js";
+import { MOCK_QUESTIONS, TOPIC_ID } from "../packages/shared/src/mocks/quizMockData.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outputPath = join(__dirname, "../../backend/seeds/seeder.sql");
@@ -17,8 +17,7 @@ const outputPath = join(__dirname, "../../backend/seeds/seeder.sql");
 // 問題コンテンツとは別に管理。変更する場合はこのスクリプトを直接編集する。
 
 const TOPIC = {
-  // 固定 UUID。変更する場合は quizMockData.ts の TOPIC_ID も合わせて更新すること。
-  id: "00000000-0000-0000-0000-000000000001",
+  id: TOPIC_ID, // quizMockData.ts の TOPIC_ID と自動的に同期
   name: "AI基礎・最新動向",
   description: "RAG・LLM・AI Agentなど、AIエンジニアが押さえておくべき基礎知識と最新トレンド",
 };
@@ -64,7 +63,7 @@ lines.push("");
 
 // ── 問題・選択肢・解説 ────────────────────────────────────────────
 for (const q of MOCK_QUESTIONS) {
-  lines.push(`-- ── ${q.id} ──`);
+  lines.push(`-- ── ${q.id}: ${q.text.slice(0, 40).replace(/\n/g, " ")}... ──`);
   lines.push(`INSERT INTO questions (id, topic_id, text, difficulty, genre)`);
   lines.push(`VALUES (`);
   lines.push(`  '${q.id}',`);

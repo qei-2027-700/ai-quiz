@@ -7,19 +7,21 @@
 3. ブランチが remote に push されていなければ `git push -u origin <branch>` する
 4. **Playwright MCP でスクリーンショットを撮影していた場合**、以下を実行する:
    ```bash
-   # スクショは .claude/screenshots/ に main ブランチへ直接コミット
-   # （コードに影響しない検証成果物のため PR 不要）
+   # .claude/screenshots/ に main ブランチへ直接コミット
+   # （コードに影響しない検証成果物のため PR 不要。マージ後に削除する）
    PR_NUM=<gh pr create 後に確定した番号>
-   git stash                                      # 作業中変更を退避（必要な場合）
+   CURRENT_BRANCH=$(git branch --show-current)
+   git stash
    git checkout main && git pull origin main
    mkdir -p .claude/screenshots/pr-${PR_NUM}
    cp .playwright-mcp/*.png .claude/screenshots/pr-${PR_NUM}/
    git add .claude/screenshots/pr-${PR_NUM}/
    git commit -m "docs: PR #${PR_NUM} 検証スクリーンショット"
    git push origin main
-   git checkout -                                 # 元のブランチに戻る
-   git stash pop                                  # 退避した変更を復元（必要な場合）
+   git checkout ${CURRENT_BRANCH}
+   git stash pop
    ```
+   > PR マージ後は `git rm -r .claude/screenshots/pr-${PR_NUM}` で削除する（スキル外・手動）
 5. 以下のフォーマットで `gh pr create` を実行する
 
 ## PR フォーマット
@@ -62,7 +64,7 @@ Playwright MCP でスクリーンショットを撮影した場合は **必ず**
 ![<alt>](https://raw.githubusercontent.com/<owner>/<repo>/main/.claude/screenshots/pr-<number>/<filename>.png)
 ```
 
-> **Note**: `raw.githubusercontent.com` の URL はブランチが remote に push されていれば即座に有効になる。PR マージ後は `main` ブランチの URL に変わるが、どちらも同一ファイルを参照する。
+> **Note**: `uploads.github.com` への直接アップロードは GitHub 内部の CSRF トークンが必要なため CLI からは使用不可。`raw.githubusercontent.com` 経由が唯一の現実的な方法。
 
 ## ブランチ戦略
 

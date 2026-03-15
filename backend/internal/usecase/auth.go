@@ -443,8 +443,14 @@ type LoginWithPasswordResult struct {
 func (u *AuthUsecase) LoginWithPassword(ctx context.Context, email, password string) (*LoginWithPasswordResult, error) {
 	user, err := u.queries.GetUserByEmail(ctx, email)
 	if err != nil {
-		// sql.ErrNoRows → 認証失敗。それ以外は内部エラー
+		// sql.ErrNoRows → 認証失敗。それ以外は内部エラー。
+		// タイミング攻撃対策: ユーザー不在時もダミー bcrypt 比較を行い、
+		// メールアドレス列挙をレスポンス時間差で防ぐ。
 		if errors.Is(err, sql.ErrNoRows) {
+			_ = bcrypt.CompareHashAndPassword(
+				[]byte("$2a$12$dummy.dummy.dummy.dummy.dummy.dummydummydummydummyO"),
+				[]byte(password),
+			)
 			return nil, ErrInvalidCredentials
 		}
 		return nil, fmt.Errorf("get user: %w", err)

@@ -15,29 +15,31 @@ gh issue view <N> --repo qei-2027-700/ai-quiz
 Issue のタイトル・本文・ラベルをすべて把握する。
 実装方針が不明な場合は `docs/sterring/` を参照して自己判断する。
 
-### Step 2: ブランチを作成する
+### Step 2: worktree を作成する
 
 ```bash
 git checkout main
 git pull origin main
-git checkout -b fix/issue-<N>-<slug>
+git worktree add .worktrees/<slug> -b feat/issue-<N>-<slug>
 ```
 
-- `<slug>` は Issue タイトルを英小文字・ハイフン区切りで短縮したもの（例: `ctx-export`）
-- feat 系の Issue は `feat/issue-<N>-<slug>`、fix 系は `fix/issue-<N>-<slug>`
+- `<slug>` は Issue タイトルを英小文字・ハイフン区切りで短縮したもの（例: `ux-check`）
+- feat 系は `feat/issue-<N>-<slug>`、fix 系は `fix/issue-<N>-<slug>`
+- 以降の作業はすべて `.worktrees/<slug>/` ディレクトリ内で行う
 
 ### Step 3: 実装する
 
 - `.claude/rules/` のコーディング規約に従う
-- ファイルが 3 つ以上 / backend と frontend が独立している場合は Agent ツールでサブエージェントを並列起動する
+- **作業ディレクトリは `.worktrees/<slug>/`** であることを常に意識する
+- ファイルが 3 つ以上 / backend と frontend が独立している場合は Agent ツールでサブエージェントを並列起動する（worktree パスを引き継ぐこと）
 - 実装が完了したら型チェック・lint を実行する:
 
 ```bash
-# Frontend を変更した場合
-cd frontend && pnpm type-check
+# Frontend を変更した場合（worktree 内から実行）
+cd .worktrees/<slug>/frontend && pnpm type-check
 
 # 全体 lint
-mise run lint
+cd .worktrees/<slug> && mise run lint
 ```
 
 エラーがあれば修正してから次へ進む。
@@ -45,6 +47,7 @@ mise run lint
 ### Step 4: コミット & プッシュ
 
 ```bash
+cd .worktrees/<slug>
 git add <変更したファイルを個別に列挙>
 git commit -m "feat/fix: <変更内容の要約>
 

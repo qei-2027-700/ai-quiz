@@ -92,6 +92,7 @@ Thumbs.db
 .claude/ctx-export*.md
 .claude/handoff*.md
 .claude/current.md
+.worktrees/
 
 # ========================
 # Misc

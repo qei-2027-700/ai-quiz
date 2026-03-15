@@ -74,6 +74,54 @@ function isMockMode(): boolean {
   return nodeFlag === "true";
 }
 
+const _mockInst = isMockMode() ? createMockQuizClient() : null;
+
 export const quizClient = isMockMode()
-  ? (createMockQuizClient() as unknown as ReturnType<typeof createQuizClient>)
+  ? (_mockInst as unknown as ReturnType<typeof createQuizClient>)
   : createQuizClient();
+
+interface AuthClient {
+  register: (p: { email: string; password: string; name: string }) => Promise<{ accessToken: string; displayName: string }>;
+  login: (p: { email: string; password: string }) => Promise<{ accessToken: string; displayName: string }>;
+}
+
+function createRealAuthClient(): AuthClient {
+  const baseUrl = resolveBaseUrl();
+  return {
+    async register({ email, password, name }) {
+      const res = await fetch(`${baseUrl}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password, name }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text.trim() || "registration failed");
+      }
+      const data = await res.json() as { access_token: string; display_name: string };
+      return { accessToken: data.access_token, displayName: data.display_name };
+    },
+    async login({ email, password }) {
+      const res = await fetch(`${baseUrl}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text.trim() || "invalid email or password");
+      }
+      const data = await res.json() as { access_token: string; display_name: string };
+      return { accessToken: data.access_token, displayName: data.display_name };
+    },
+  };
+}
+
+export const authClient: AuthClient = isMockMode()
+  ? {
+      register: (p) => _mockInst!.register(p),
+      login: (p) => _mockInst!.login(p),
+    }
+  : createRealAuthClient();

@@ -109,9 +109,11 @@ type Topic struct {
 }
 
 type User struct {
-	ID        uuid.UUID `json:"id"`
-	Email     string    `json:"email"`
-	Role      string    `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID           uuid.UUID      `json:"id"`
+	Email        string         `json:"email"`
+	Role         string         `json:"role"`
+	CreatedAt    time.Time      `json:"created_at"`
+	UpdatedAt    time.Time      `json:"updated_at"`
+	PasswordHash sql.NullString `json:"password_hash"`
+	DisplayName  string         `json:"display_name"`
 }

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/url"
 	"os"
@@ -45,6 +46,20 @@ func (h *AuthHTTPHandler) Register(mux *http.ServeMux) {
 			return
 		}
 		h.me(w, r)
+	})
+	mux.HandleFunc("/auth/register", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		h.registerWithPassword(w, r)
+	})
+	mux.HandleFunc("/auth/login", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		h.emailLogin(w, r)
 	})
 }
 
@@ -133,6 +148,87 @@ func (h *AuthHTTPHandler) me(w http.ResponseWriter, r *http.Request) {
 		"user_id": me.UserID.String(),
 		"email":   me.Email,
 		"role":    me.Role,
+	})
+}
+
+func (h *AuthHTTPHandler) registerWithPassword(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+		Name     string `json:"name"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "invalid request", http.StatusBadRequest)
+		return
+	}
+
+	res, err := h.uc.RegisterWithPassword(r.Context(), req.Email, req.Password, req.Name)
+	if err != nil {
+		h.logger.Warn("register failed", zap.Error(err))
+		if errors.Is(err, usecase.ErrEmailAlreadyRegistered) {
+			http.Error(w, "email already registered", http.StatusConflict)
+			return
+		}
+		var valErr *usecase.ValidationError
+		if errors.As(err, &valErr) {
+			http.Error(w, valErr.Error(), http.StatusBadRequest)
+			return
+		}
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    res.RefreshToken,
+		Path:     "/auth",
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   int((7 * 24 * time.Hour).Seconds()),
+		Secure:   isCookieSecure(),
+	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"access_token": res.AccessToken,
+		"user_id":      res.UserID.String(),
+		"display_name": res.DisplayName,
+	})
+}
+
+func (h *AuthHTTPHandler) emailLogin(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "invalid request", http.StatusBadRequest)
+		return
+	}
+
+	res, err := h.uc.LoginWithPassword(r.Context(), req.Email, req.Password)
+	if err != nil {
+		h.logger.Warn("login failed", zap.Error(err))
+		if errors.Is(err, usecase.ErrInvalidCredentials) {
+			http.Error(w, "invalid email or password", http.StatusUnauthorized)
+			return
+		}
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    res.RefreshToken,
+		Path:     "/auth",
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   int((7 * 24 * time.Hour).Seconds()),
+		Secure:   isCookieSecure(),
+	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"access_token": res.AccessToken,
+		"display_name": res.DisplayName,
 	})
 }
 

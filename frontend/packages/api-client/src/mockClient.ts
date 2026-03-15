@@ -34,6 +34,8 @@ type MockQuizClient = {
   getAttemptInsights: (params: { attemptId: string }) => Promise<unknown>;
   listRankings: (params: { limit?: number }) => Promise<unknown>;
   listGenres: (params: { courseId: string }) => Promise<unknown>;
+  register: (params: { email: string; password: string; name: string }) => Promise<{ accessToken: string; displayName: string }>;
+  login: (params: { email: string; password: string }) => Promise<{ accessToken: string; displayName: string }>;
 };
 
 function generateMockAIFeedback(tier: string, correctCount: number, totalCount: number): string {
@@ -61,6 +63,7 @@ function calcTier(correctCount: number, totalCount: number): string {
 
 export function createMockQuizClient(): MockQuizClient {
   const attempts = new Map<string, AttemptState>();
+  const mockUsers = new Map<string, { password: string; name: string }>();
 
   return {
     async listCourses() {
@@ -196,6 +199,25 @@ export function createMockQuizClient(): MockQuizClient {
           { id: "genre-3", courseId: _courseId, name: "engineering", label: "AIコーディング", sortOrder: 3 },
         ],
       };
+    },
+
+    async register({ email, password, name }) {
+      if (mockUsers.has(email)) {
+        throw new Error("このメールアドレスはすでに登録されています");
+      }
+      mockUsers.set(email, { password, name });
+      return { accessToken: "mock-token", displayName: name || email };
+    },
+
+    async login({ email, password }) {
+      if (email === "test@example.com" && password === "password") {
+        return { accessToken: "mock-token", displayName: "テストユーザー" };
+      }
+      const user = mockUsers.get(email);
+      if (!user || user.password !== password) {
+        throw new Error("メールアドレスまたはパスワードが違います");
+      }
+      return { accessToken: "mock-token", displayName: user.name || email };
     },
   };
 }

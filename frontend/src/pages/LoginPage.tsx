@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "@ai-quiz/shared/stores";
 import { createQuizClient } from "@ai-quiz/api-client";
 
@@ -141,6 +141,16 @@ export default function LoginPage() {
               {isLoading ? "ログイン中..." : "ログイン"}
             </button>
           </form>
+
+          <p className="mt-6 text-center text-sm text-gray-500 dark:text-white/40">
+            アカウントをお持ちでない方は{" "}
+            <Link
+              to="/register"
+              className="cursor-pointer text-cyan-500 hover:text-cyan-400 font-medium transition-colors duration-150"
+            >
+              新規登録
+            </Link>
+          </p>
         </div>
       </div>
     </div>

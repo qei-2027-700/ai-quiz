@@ -5,11 +5,13 @@ import (
 	"crypto/hmac"
 	"crypto/rand"
 	"crypto/sha256"
+	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"net/mail"
 	"net/url"
 	"os"
 	"strings"
@@ -17,12 +19,25 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/lib/pq"
+	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/idtoken"
 
 	db "github.com/km/ai-quiz/internal/db/gen"
 )
+
+var ErrEmailAlreadyRegistered = errors.New("email already registered")
+var ErrInvalidCredentials = errors.New("invalid credentials")
+
+// ValidationError はユーザー起因の入力エラーを表す。ハンドラーはこの型を
+// errors.As で検出してメッセージをそのままレスポンスに載せる。
+type ValidationError struct{ msg string }
+
+func (e *ValidationError) Error() string { return e.msg }
+
+func validationError(msg string) error { return &ValidationError{msg: msg} }
 
 type AuthUsecase struct {
 	queries *db.Queries
@@ -175,7 +190,7 @@ func (u *AuthUsecase) ParseAccessToken(ctx context.Context, token string) (*MeRe
 		return nil, errors.New("JWT_SECRET is required")
 	}
 
-	parsed, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+	parsed, err := jwt.Parse(token, func(t *jwt.Token) (any, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS256.Alg() {
 			return nil, fmt.Errorf("unexpected signing method: %s", t.Method.Alg())
 		}
@@ -320,29 +335,29 @@ func randomBase64URL(n int) (string, error) {
 }
 
 func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email string, name string, picture string) (db.User, error) {
-	user, err := u.queries.GetUserByProviderSub(ctx, db.GetUserByProviderSubParams{Provider: "google", ProviderSub: sub})
+	existing, err := u.queries.GetUserByProviderSub(ctx, db.GetUserByProviderSubParams{Provider: "google", ProviderSub: sub})
 	if err == nil {
 		if err := u.queries.UpsertOAuthIdentity(ctx, db.UpsertOAuthIdentityParams{
 			Provider:    "google",
 			ProviderSub: sub,
-			UserID:      user.ID,
+			UserID:      existing.ID,
 			Email:       email,
 			Name:        name,
 			PictureUrl:  picture,
 		}); err != nil {
 			return db.User{}, fmt.Errorf("upsert oauth identity: %w", err)
 		}
-		return user, nil
+		return db.User{ID: existing.ID, Email: existing.Email, Role: existing.Role, DisplayName: existing.DisplayName, CreatedAt: existing.CreatedAt, UpdatedAt: existing.UpdatedAt}, nil
 	}
 
-	user, err = u.queries.CreateUser(ctx, db.CreateUserParams{Email: email, Role: "user"})
+	created, err := u.queries.CreateUser(ctx, db.CreateUserParams{Email: email, Role: "user", DisplayName: name})
 	if err != nil {
 		return db.User{}, fmt.Errorf("create user: %w", err)
 	}
 	if err := u.queries.UpsertOAuthIdentity(ctx, db.UpsertOAuthIdentityParams{
 		Provider:    "google",
 		ProviderSub: sub,
-		UserID:      user.ID,
+		UserID:      created.ID,
 		Email:       email,
 		Name:        name,
 		PictureUrl:  picture,
@@ -350,7 +365,7 @@ func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email st
 		return db.User{}, fmt.Errorf("upsert oauth identity: %w", err)
 	}
 
-	return user, nil
+	return db.User{ID: created.ID, Email: created.Email, Role: created.Role, DisplayName: created.DisplayName, CreatedAt: created.CreatedAt, UpdatedAt: created.UpdatedAt}, nil
 }
 
 func newRefreshToken() (plain string, hash string, err error) {
@@ -360,6 +375,108 @@ func newRefreshToken() (plain string, hash string, err error) {
 	}
 	sum := sha256.Sum256([]byte(plain))
 	return plain, base64.RawURLEncoding.EncodeToString(sum[:]), nil
+}
+
+type RegisterWithPasswordResult struct {
+	AccessToken  string
+	RefreshToken string
+	UserID       uuid.UUID
+	DisplayName  string
+}
+
+func (u *AuthUsecase) RegisterWithPassword(ctx context.Context, email, password, name string) (*RegisterWithPasswordResult, error) {
+	if email == "" || password == "" || name == "" {
+		return nil, validationError("email, password and name are required")
+	}
+	if _, err := mail.ParseAddress(email); err != nil {
+		return nil, validationError("invalid email address")
+	}
+	if len(password) < 8 {
+		return nil, validationError("password must be at least 8 characters")
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	if err != nil {
+		return nil, fmt.Errorf("hash: %w", err)
+	}
+
+	hashStr := string(hash)
+	user, err := u.queries.CreateUserWithPassword(ctx, db.CreateUserWithPasswordParams{
+		Email:        email,
+		PasswordHash: sql.NullString{String: hashStr, Valid: true},
+		DisplayName:  name,
+	})
+	if err != nil {
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) && pqErr.Code == "23505" {
+			return nil, ErrEmailAlreadyRegistered
+		}
+		return nil, fmt.Errorf("create user: %w", err)
+	}
+
+	token, err := mintAccessToken(user.ID, user.Role)
+	if err != nil {
+		return nil, err
+	}
+
+	refresh, refreshHash, err := newRefreshToken()
+	if err != nil {
+		return nil, err
+	}
+	if err := u.queries.InsertRefreshToken(ctx, db.InsertRefreshTokenParams{
+		UserID:    user.ID,
+		TokenHash: refreshHash,
+		ExpiresAt: time.Now().Add(7 * 24 * time.Hour),
+	}); err != nil {
+		return nil, fmt.Errorf("insert refresh token: %w", err)
+	}
+
+	return &RegisterWithPasswordResult{AccessToken: token, RefreshToken: refresh, UserID: user.ID, DisplayName: user.DisplayName}, nil
+}
+
+type LoginWithPasswordResult struct {
+	AccessToken  string
+	RefreshToken string
+	DisplayName  string
+}
+
+func (u *AuthUsecase) LoginWithPassword(ctx context.Context, email, password string) (*LoginWithPasswordResult, error) {
+	user, err := u.queries.GetUserByEmail(ctx, email)
+	if err != nil {
+		// sql.ErrNoRows → 認証失敗。それ以外は内部エラー。
+		// タイミング攻撃対策: ユーザー不在時もダミー bcrypt 比較を行い、
+		// メールアドレス列挙をレスポンス時間差で防ぐ。
+		if errors.Is(err, sql.ErrNoRows) {
+			_ = bcrypt.CompareHashAndPassword(
+				[]byte("$2a$12$dummy.dummy.dummy.dummy.dummy.dummydummydummydummyO"),
+				[]byte(password),
+			)
+			return nil, ErrInvalidCredentials
+		}
+		return nil, fmt.Errorf("get user: %w", err)
+	}
+	if !user.PasswordHash.Valid {
+		return nil, ErrInvalidCredentials
+	}
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash.String), []byte(password)); err != nil {
+		return nil, ErrInvalidCredentials
+	}
+	token, err := mintAccessToken(user.ID, user.Role)
+	if err != nil {
+		return nil, err
+	}
+	refresh, refreshHash, err := newRefreshToken()
+	if err != nil {
+		return nil, err
+	}
+	if err := u.queries.InsertRefreshToken(ctx, db.InsertRefreshTokenParams{
+		UserID:    user.ID,
+		TokenHash: refreshHash,
+		ExpiresAt: time.Now().Add(7 * 24 * time.Hour),
+	}); err != nil {
+		return nil, fmt.Errorf("insert refresh token: %w", err)
+	}
+	return &LoginWithPasswordResult{AccessToken: token, RefreshToken: refresh, DisplayName: user.DisplayName}, nil
 }
 
 func mintAccessToken(userID uuid.UUID, role string) (string, error) {

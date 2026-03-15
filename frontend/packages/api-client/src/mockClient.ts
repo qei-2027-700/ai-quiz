@@ -63,7 +63,7 @@ function calcTier(correctCount: number, totalCount: number): string {
 
 function getMockUsers(): Record<string, { password: string; name: string }> {
   try {
-    return JSON.parse(localStorage.getItem("mock_users") ?? "{}");
+    return JSON.parse(localStorage.getItem("__mock__users") ?? "{}");
   } catch {
     return {};
   }
@@ -214,7 +214,7 @@ export function createMockQuizClient(): MockQuizClient {
         throw new Error("このメールアドレスはすでに登録されています");
       }
       users[email] = { password, name };
-      localStorage.setItem("mock_users", JSON.stringify(users));
+      localStorage.setItem("__mock__users", JSON.stringify(users));
       return { accessToken: "mock-token", displayName: name || email };
     },
 

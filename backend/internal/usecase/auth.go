@@ -19,6 +19,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -335,7 +336,7 @@ func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email st
 		}); err != nil {
 			return db.User{}, fmt.Errorf("upsert oauth identity: %w", err)
 		}
-		return db.User{ID: existing.ID, Email: existing.Email, Role: existing.Role, CreatedAt: existing.CreatedAt, UpdatedAt: existing.UpdatedAt}, nil
+		return db.User{ID: existing.ID, Email: existing.Email, Role: existing.Role, DisplayName: name, CreatedAt: existing.CreatedAt, UpdatedAt: existing.UpdatedAt}, nil
 	}
 
 	created, err := u.queries.CreateUser(ctx, db.CreateUserParams{Email: email, Role: "user"})
@@ -353,7 +354,7 @@ func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email st
 		return db.User{}, fmt.Errorf("upsert oauth identity: %w", err)
 	}
 
-	return db.User{ID: created.ID, Email: created.Email, Role: created.Role, CreatedAt: created.CreatedAt, UpdatedAt: created.UpdatedAt}, nil
+	return db.User{ID: created.ID, Email: created.Email, Role: created.Role, DisplayName: name, CreatedAt: created.CreatedAt, UpdatedAt: created.UpdatedAt}, nil
 }
 
 func newRefreshToken() (plain string, hash string, err error) {
@@ -372,8 +373,8 @@ type RegisterWithPasswordResult struct {
 }
 
 func (u *AuthUsecase) RegisterWithPassword(ctx context.Context, email, password, name string) (*RegisterWithPasswordResult, error) {
-	if email == "" || password == "" {
-		return nil, errors.New("email and password are required")
+	if email == "" || password == "" || name == "" {
+		return nil, errors.New("email, password and name are required")
 	}
 	if _, err := mail.ParseAddress(email); err != nil {
 		return nil, errors.New("invalid email address")
@@ -394,6 +395,10 @@ func (u *AuthUsecase) RegisterWithPassword(ctx context.Context, email, password,
 		DisplayName:  name,
 	})
 	if err != nil {
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) && pqErr.Code == "23505" {
+			return nil, errors.New("email already registered")
+		}
 		return nil, fmt.Errorf("create user: %w", err)
 	}
 

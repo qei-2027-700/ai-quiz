@@ -164,6 +164,10 @@ func (h *AuthHTTPHandler) registerWithPassword(w http.ResponseWriter, r *http.Re
 	res, err := h.uc.RegisterWithPassword(r.Context(), req.Email, req.Password, req.Name)
 	if err != nil {
 		h.logger.Warn("register failed", zap.Error(err))
+		if err.Error() == "email already registered" {
+			http.Error(w, "email already registered", http.StatusConflict)
+			return
+		}
 		http.Error(w, "registration failed", http.StatusBadRequest)
 		return
 	}

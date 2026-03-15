@@ -70,7 +70,10 @@ for (const q of MOCK_QUESTIONS) {
   lines.push(`  '${TOPIC.id}',`);
   lines.push(`  '${escapeSql(q.text)}',`);
   lines.push(`  ${q.difficulty}, '${q.genre}'`);
-  lines.push(`) ON CONFLICT (id) DO NOTHING;`);
+  lines.push(`) ON CONFLICT (id) DO UPDATE SET`);
+  lines.push(`  text = EXCLUDED.text,`);
+  lines.push(`  difficulty = EXCLUDED.difficulty,`);
+  lines.push(`  genre = EXCLUDED.genre;`);
   lines.push("");
 
   if (q.choices.length > 0) {
@@ -81,7 +84,9 @@ for (const q of MOCK_QUESTIONS) {
         `  ('${c.id}', '${q.id}', '${escapeSql(c.text)}', ${c.isCorrect}, ${c.sortOrder})${isLast ? "" : ","}`
       );
     });
-    lines.push(`ON CONFLICT (id) DO NOTHING;`);
+    lines.push(`ON CONFLICT (id) DO UPDATE SET`);
+    lines.push(`  text = EXCLUDED.text,`);
+    lines.push(`  is_correct = EXCLUDED.is_correct;`);
     lines.push("");
   }
 
@@ -89,7 +94,8 @@ for (const q of MOCK_QUESTIONS) {
     lines.push(`INSERT INTO explanations (question_id, text) VALUES (`);
     lines.push(`  '${q.id}',`);
     lines.push(`  '${escapeSql(q.explanation)}'`);
-    lines.push(`) ON CONFLICT (question_id) DO NOTHING;`);
+    lines.push(`) ON CONFLICT (question_id) DO UPDATE SET`);
+    lines.push(`  text = EXCLUDED.text;`);
     lines.push("");
   }
 

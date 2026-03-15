@@ -86,6 +86,13 @@ Thumbs.db
 *~
 
 # ========================
+# Claude Code
+# ========================
+.claude/scheduled_tasks.lock
+.claude/ctx-export*.md
+.claude/handoff*.md
+
+# ========================
 # Misc
 # ========================
 *.log

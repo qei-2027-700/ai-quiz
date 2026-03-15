@@ -1,6 +1,7 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import LandingPage from "./pages/landing/LandingPage";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import AdminImportPage from "./pages/AdminImportPage";
 import QuizPage from "./pages/QuizPage";
 import QuizResultPage from "./pages/QuizResultPage";
@@ -31,7 +32,8 @@ export const router = createBrowserRouter([
   { path: "/",        loader: requireGuest, element: <LandingPage locale="ja" /> },
   { path: "/en",      loader: requireGuest, element: <LandingPage locale="en" /> },
   { path: "/ranking", element: <RankingPage /> },
-  { path: "/login",   loader: requireGuest, element: <LoginPage /> },
+  { path: "/login",    loader: requireGuest, element: <LoginPage /> },
+  { path: "/register", loader: requireGuest, element: <RegisterPage /> },
   { path: "/admin",   element: <AdminImportPage /> },
 
   // Protected — AuthedLayout provides header + Outlet

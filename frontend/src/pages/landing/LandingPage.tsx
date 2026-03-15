@@ -205,6 +205,12 @@ export default function LandingPage({ locale }: Props) {
           </button>
           <LangSwitcher locale={locale} />
           <button
+            onClick={() => navigate("/register")}
+            className="cursor-pointer whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-semibold rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black transition-all duration-200"
+          >
+            {locale === "ja" ? "新規登録" : "Sign up"}
+          </button>
+          <button
             onClick={() => navigate("/login")}
             className="cursor-pointer whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-semibold rounded-lg border border-white/20 text-white hover:bg-white hover:text-black transition-all duration-200"
           >
@@ -238,9 +244,15 @@ export default function LandingPage({ locale }: Props) {
 
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-14 sm:mb-20 w-full sm:w-auto">
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/register")}
             className="cursor-pointer w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm text-black transition-all duration-200 hover:scale-105 active:scale-100"
             style={{ background: "linear-gradient(135deg, #00e5ff, #0891b2)" }}
+          >
+            {locale === "ja" ? "無料で始める" : "Get started free"}
+          </button>
+          <button
+            onClick={() => navigate("/login")}
+            className="cursor-pointer w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm text-white/70 border border-white/15 hover:border-white/35 hover:text-white transition-all duration-200"
           >
             {c.hero.ctaPrimary}
           </button>

@@ -34,6 +34,8 @@ type MockQuizClient = {
   getAttemptInsights: (params: { attemptId: string }) => Promise<unknown>;
   listRankings: (params: { limit?: number }) => Promise<unknown>;
   listGenres: (params: { courseId: string }) => Promise<unknown>;
+  register: (params: { email: string; password: string; name: string }) => Promise<{ accessToken: string; displayName: string }>;
+  login: (params: { email: string; password: string }) => Promise<{ accessToken: string; displayName: string }>;
 };
 
 function generateMockAIFeedback(tier: string, correctCount: number, totalCount: number): string {
@@ -57,6 +59,14 @@ function calcTier(correctCount: number, totalCount: number): string {
   if (ratio >= 0.7) return "A";
   if (ratio >= 0.5) return "B";
   return "C";
+}
+
+function getMockUsers(): Record<string, { password: string; name: string }> {
+  try {
+    return JSON.parse(localStorage.getItem("mock_users") ?? "{}");
+  } catch {
+    return {};
+  }
 }
 
 export function createMockQuizClient(): MockQuizClient {
@@ -196,6 +206,29 @@ export function createMockQuizClient(): MockQuizClient {
           { id: "genre-3", courseId: _courseId, name: "engineering", label: "AIコーディング", sortOrder: 3 },
         ],
       };
+    },
+
+    async register({ email, password, name }) {
+      const users = getMockUsers();
+      if (users[email]) {
+        throw new Error("このメールアドレスはすでに登録されています");
+      }
+      users[email] = { password, name };
+      localStorage.setItem("mock_users", JSON.stringify(users));
+      return { accessToken: "mock-token", displayName: name || email };
+    },
+
+    async login({ email, password }) {
+      // テストユーザー
+      if (email === "test@example.com" && password === "password") {
+        return { accessToken: "mock-token", displayName: "テストユーザー" };
+      }
+      const users = getMockUsers();
+      const user = users[email];
+      if (!user || user.password !== password) {
+        throw new Error("メールアドレスまたはパスワードが違います");
+      }
+      return { accessToken: "mock-token", displayName: user.name || email };
     },
   };
 }

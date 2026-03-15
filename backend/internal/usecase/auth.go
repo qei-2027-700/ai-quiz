@@ -338,7 +338,7 @@ func (u *AuthUsecase) ensureGoogleUser(ctx context.Context, sub string, email st
 		}); err != nil {
 			return db.User{}, fmt.Errorf("upsert oauth identity: %w", err)
 		}
-		return db.User{ID: existing.ID, Email: existing.Email, Role: existing.Role, DisplayName: name, CreatedAt: existing.CreatedAt, UpdatedAt: existing.UpdatedAt}, nil
+		return db.User{ID: existing.ID, Email: existing.Email, Role: existing.Role, DisplayName: existing.DisplayName, CreatedAt: existing.CreatedAt, UpdatedAt: existing.UpdatedAt}, nil
 	}
 
 	created, err := u.queries.CreateUser(ctx, db.CreateUserParams{Email: email, Role: "user"})

@@ -132,17 +132,18 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (GetUserByEm
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, email, role, created_at, updated_at
+SELECT id, email, role, display_name, created_at, updated_at
 FROM users
 WHERE id = $1
 `
 
 type GetUserByIDRow struct {
-	ID        uuid.UUID `json:"id"`
-	Email     string    `json:"email"`
-	Role      string    `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID          uuid.UUID `json:"id"`
+	Email       string    `json:"email"`
+	Role        string    `json:"role"`
+	DisplayName string    `json:"display_name"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow, error) {
@@ -152,6 +153,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow
 		&i.ID,
 		&i.Email,
 		&i.Role,
+		&i.DisplayName,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -159,7 +161,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (GetUserByIDRow
 }
 
 const getUserByProviderSub = `-- name: GetUserByProviderSub :one
-SELECT u.id, u.email, u.role, u.created_at, u.updated_at
+SELECT u.id, u.email, u.role, u.display_name, u.created_at, u.updated_at
 FROM users u
 JOIN oauth_identities oi ON oi.user_id = u.id
 WHERE oi.provider = $1 AND oi.provider_sub = $2
@@ -171,11 +173,12 @@ type GetUserByProviderSubParams struct {
 }
 
 type GetUserByProviderSubRow struct {
-	ID        uuid.UUID `json:"id"`
-	Email     string    `json:"email"`
-	Role      string    `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID          uuid.UUID `json:"id"`
+	Email       string    `json:"email"`
+	Role        string    `json:"role"`
+	DisplayName string    `json:"display_name"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 func (q *Queries) GetUserByProviderSub(ctx context.Context, arg GetUserByProviderSubParams) (GetUserByProviderSubRow, error) {
@@ -185,6 +188,7 @@ func (q *Queries) GetUserByProviderSub(ctx context.Context, arg GetUserByProvide
 		&i.ID,
 		&i.Email,
 		&i.Role,
+		&i.DisplayName,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)

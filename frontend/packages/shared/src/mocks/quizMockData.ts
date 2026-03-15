@@ -14,7 +14,7 @@ export interface MockQuestion {
   topicId: string;
   text: string;
   difficulty: 1 | 2 | 3;
-  genre: 'ai_basics' | 'ai_services' | 'hallucination' | 'engineering';
+  genre: 'ai_basics' | 'ai_services' | 'engineering';
   choices: MockChoice[];
   explanation: string;
 }

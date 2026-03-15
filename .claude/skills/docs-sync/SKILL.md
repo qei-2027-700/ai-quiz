@@ -1,6 +1,6 @@
 # docs-sync
 
-目的: `docs/sterring/` 配下のいずれかのドキュメントが変更されたとき、関連する他の md ファイルとの整合性を確認・修正する。
+目的: `docs/` 配下のいずれかのドキュメントが変更されたとき、関連する他の md ファイルとの整合性を確認・修正する。
 
 ## 使う場面
 
@@ -20,6 +20,8 @@ git diff --name-only HEAD~1 HEAD -- '*.md'
 git diff --name-only -- '*.md'  # 未コミットの変更も確認
 ```
 
+`docs/` 配下のすべてのサブディレクトリ（`sterring/`・`rfc/`・`spec/` 等）を対象とする。
+
 ### Step 2: 関連ファイルを特定する
 
 変更されたファイルに応じて、以下の対応表から関連ファイルを確認する:
@@ -30,7 +32,9 @@ git diff --name-only -- '*.md'  # 未コミットの変更も確認
 | `docs/sterring/auth.md` | `CLAUDE.md`・`docs/sterring/api-design.md` |
 | `docs/sterring/api-design.md` | `docs/sterring/auth.md`・`proto/` の定義との整合 |
 | `docs/sterring/ai-feedback.md` | `CLAUDE.md` の「現在のフェーズ」・`docs/sterring/tech-stack.md` |
-| `CLAUDE.md` | `docs/sterring/` 全体 |
+| `docs/spec/**/*.md` | `CLAUDE.md`・対応する `docs/sterring/` ファイル・`docs/rfc/` の関連計画 |
+| `docs/rfc/*.md` | 対応する `docs/spec/` や `docs/sterring/` ファイルとの整合 |
+| `CLAUDE.md` | `docs/sterring/` 全体・`docs/spec/` 全体 |
 | `.claude/rules/*.md` | `CLAUDE.md` の「コーディング規約」セクション |
 
 上記にない場合はファイルの内容を読み、どのドキュメントと関連するかを自己判断する。

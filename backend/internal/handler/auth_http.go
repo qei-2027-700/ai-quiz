@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/url"
 	"os"
@@ -164,7 +165,7 @@ func (h *AuthHTTPHandler) registerWithPassword(w http.ResponseWriter, r *http.Re
 	res, err := h.uc.RegisterWithPassword(r.Context(), req.Email, req.Password, req.Name)
 	if err != nil {
 		h.logger.Warn("register failed", zap.Error(err))
-		if err.Error() == "email already registered" {
+		if errors.Is(err, usecase.ErrEmailAlreadyRegistered) {
 			http.Error(w, "email already registered", http.StatusConflict)
 			return
 		}
@@ -172,6 +173,15 @@ func (h *AuthHTTPHandler) registerWithPassword(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    res.RefreshToken,
+		Path:     "/auth",
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   int((7 * 24 * time.Hour).Seconds()),
+		Secure:   isCookieSecure(),
+	})
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"access_token": res.AccessToken,
@@ -196,6 +206,15 @@ func (h *AuthHTTPHandler) emailLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    res.RefreshToken,
+		Path:     "/auth",
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   int((7 * 24 * time.Hour).Seconds()),
+		Secure:   isCookieSecure(),
+	})
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"access_token": res.AccessToken,

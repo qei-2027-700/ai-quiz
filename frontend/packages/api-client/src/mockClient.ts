@@ -61,16 +61,9 @@ function calcTier(correctCount: number, totalCount: number): string {
   return "C";
 }
 
-function getMockUsers(): Record<string, { password: string; name: string }> {
-  try {
-    return JSON.parse(localStorage.getItem("__mock__users") ?? "{}");
-  } catch {
-    return {};
-  }
-}
-
 export function createMockQuizClient(): MockQuizClient {
   const attempts = new Map<string, AttemptState>();
+  const mockUsers = new Map<string, { password: string; name: string }>();
 
   return {
     async listCourses() {
@@ -209,22 +202,18 @@ export function createMockQuizClient(): MockQuizClient {
     },
 
     async register({ email, password, name }) {
-      const users = getMockUsers();
-      if (users[email]) {
+      if (mockUsers.has(email)) {
         throw new Error("このメールアドレスはすでに登録されています");
       }
-      users[email] = { password, name };
-      localStorage.setItem("__mock__users", JSON.stringify(users));
+      mockUsers.set(email, { password, name });
       return { accessToken: "mock-token", displayName: name || email };
     },
 
     async login({ email, password }) {
-      // テストユーザー
       if (email === "test@example.com" && password === "password") {
         return { accessToken: "mock-token", displayName: "テストユーザー" };
       }
-      const users = getMockUsers();
-      const user = users[email];
+      const user = mockUsers.get(email);
       if (!user || user.password !== password) {
         throw new Error("メールアドレスまたはパスワードが違います");
       }

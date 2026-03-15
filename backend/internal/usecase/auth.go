@@ -28,6 +28,8 @@ import (
 	db "github.com/km/ai-quiz/internal/db/gen"
 )
 
+var ErrEmailAlreadyRegistered = errors.New("email already registered")
+
 type AuthUsecase struct {
 	queries *db.Queries
 }
@@ -179,7 +181,7 @@ func (u *AuthUsecase) ParseAccessToken(ctx context.Context, token string) (*MeRe
 		return nil, errors.New("JWT_SECRET is required")
 	}
 
-	parsed, err := jwt.Parse(token, func(t *jwt.Token) (any, error) {
+	parsed, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS256.Alg() {
 			return nil, fmt.Errorf("unexpected signing method: %s", t.Method.Alg())
 		}
@@ -367,9 +369,10 @@ func newRefreshToken() (plain string, hash string, err error) {
 }
 
 type RegisterWithPasswordResult struct {
-	AccessToken string
-	UserID      uuid.UUID
-	DisplayName string
+	AccessToken  string
+	RefreshToken string
+	UserID       uuid.UUID
+	DisplayName  string
 }
 
 func (u *AuthUsecase) RegisterWithPassword(ctx context.Context, email, password, name string) (*RegisterWithPasswordResult, error) {
@@ -397,7 +400,7 @@ func (u *AuthUsecase) RegisterWithPassword(ctx context.Context, email, password,
 	if err != nil {
 		var pqErr *pq.Error
 		if errors.As(err, &pqErr) && pqErr.Code == "23505" {
-			return nil, errors.New("email already registered")
+			return nil, ErrEmailAlreadyRegistered
 		}
 		return nil, fmt.Errorf("create user: %w", err)
 	}
@@ -407,12 +410,25 @@ func (u *AuthUsecase) RegisterWithPassword(ctx context.Context, email, password,
 		return nil, err
 	}
 
-	return &RegisterWithPasswordResult{AccessToken: token, UserID: user.ID, DisplayName: user.DisplayName}, nil
+	refresh, refreshHash, err := newRefreshToken()
+	if err != nil {
+		return nil, err
+	}
+	if err := u.queries.InsertRefreshToken(ctx, db.InsertRefreshTokenParams{
+		UserID:    user.ID,
+		TokenHash: refreshHash,
+		ExpiresAt: time.Now().Add(7 * 24 * time.Hour),
+	}); err != nil {
+		return nil, fmt.Errorf("insert refresh token: %w", err)
+	}
+
+	return &RegisterWithPasswordResult{AccessToken: token, RefreshToken: refresh, UserID: user.ID, DisplayName: user.DisplayName}, nil
 }
 
 type LoginWithPasswordResult struct {
-	AccessToken string
-	DisplayName string
+	AccessToken  string
+	RefreshToken string
+	DisplayName  string
 }
 
 func (u *AuthUsecase) LoginWithPassword(ctx context.Context, email, password string) (*LoginWithPasswordResult, error) {
@@ -430,7 +446,18 @@ func (u *AuthUsecase) LoginWithPassword(ctx context.Context, email, password str
 	if err != nil {
 		return nil, err
 	}
-	return &LoginWithPasswordResult{AccessToken: token, DisplayName: user.DisplayName}, nil
+	refresh, refreshHash, err := newRefreshToken()
+	if err != nil {
+		return nil, err
+	}
+	if err := u.queries.InsertRefreshToken(ctx, db.InsertRefreshTokenParams{
+		UserID:    user.ID,
+		TokenHash: refreshHash,
+		ExpiresAt: time.Now().Add(7 * 24 * time.Hour),
+	}); err != nil {
+		return nil, fmt.Errorf("insert refresh token: %w", err)
+	}
+	return &LoginWithPasswordResult{AccessToken: token, RefreshToken: refresh, DisplayName: user.DisplayName}, nil
 }
 
 func mintAccessToken(userID uuid.UUID, role string) (string, error) {
